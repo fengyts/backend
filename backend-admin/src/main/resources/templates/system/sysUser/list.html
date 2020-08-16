@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta th:include="/common/common_header :: header('后台系统')">
+    <!--    <title>Title</title>-->
+</head>
+<body>
+<div class="form-container">
+    <form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+        <div class="layui-row">
+            <div class="layui-col-md6">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="" placeholder="请输入" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-col-md3 layui-col-md-offset3">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="*">查询</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<hr class="layui-bg-gray">
+<div id="searchAdvBox">
+    <form class="layui-form layui-form-sm" lay-filter="searchAdvForm" id="searchAdvForm">
+        <div class="layui-row no-margins padding10">
+        </div>
+    </form>
+</div>
+
+<div>
+    <div class="layui-row">
+        <button type="button" class="layui-btn">
+            <i class="layui-icon">&#xe608;</i> 添加
+        </button>
+    </div>
+    <table id="list"></table>
+</div>
+
+<script th:src="@{/plugins/jquery/jquery-3.5.1.min.js}" charset="utf-8"></script>
+<script th:src="@{/plugins/layui/layui.js}" charset="utf-8"></script>
+<!--<script th:inline="javascript" th:src="@{list.js}" charset="utf-8"></script>-->
+<script th:inline="javascript" th:src="@{list.js}" charset="utf-8"></script>
+</body>
+</html>

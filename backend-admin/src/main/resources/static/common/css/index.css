@@ -1,0 +1,200 @@
+/* logo 样式 */
+.bk-logo > div {
+    position: relative;
+    display: inline-block;
+}
+
+.bk-logo-title {
+    max-width: 170px;
+    white-space: nowrap;
+    overflow: hidden;
+    color: rgba(255, 255, 255, .7);
+}
+
+.bk-logo-icon {
+    float: right;
+    width: 30px;
+    max-width: 30px;
+    font-size: 20px;
+    color: rgba(255, 255, 255, .7);
+}
+
+.bk-icon, .bk-btn {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none
+}
+
+.bk-icon {
+    font-family: layui-icon !important;
+    font-size: 16px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale
+}
+
+/* 垂直导航 */
+.nav_left_box {
+    top: 60px !important;
+}
+
+/**========= start ===== tab样式开始 */
+/** tab box容器样式 */
+.nav-tabs-box {
+    z-index: 999;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    left: 200px;
+    height: 40px;
+    width: calc(100vw - 200px);
+    line-height: 40px;
+    border-bottom: solid 1px #e4eaec;
+}
+
+/** tab通用样式 */
+.nav-tab-home, .nav-tab-p, .nav-tab-handle {
+    display: inline-block;
+    text-align: left !important;
+    text-align: -webkit-left !important;
+    height: 40px;
+}
+
+/** tab首页 */
+.nav-tab-home {
+    display: inline-block;
+    float: left;
+    max-width: 60px;
+    width: 60px;
+    font-size: 18px;
+    text-align: center !important;
+    border-right: solid 1px #f0f0f0;
+    cursor: pointer;
+}
+
+/** tabs ul的父div样式 */
+.nav-tab-p {
+    position: relative;
+    white-space: nowrap;
+    font-size: 0;
+}
+
+/** tabs ul样式 */
+.nav-tab-p ul {
+    position: relative;
+    left: 0;
+    height: inherit;
+}
+
+/** tabs li样式 */
+.nav-tab-item {
+}
+
+.tab-item-select {
+    background: #f0f0f0;
+    border-bottom: solid 1px #f0f0f0;
+}
+
+/** tabs 标签样式, 忽略第一个home元素 */
+.nav-tab-p ul > li:not(:first-child) {
+    display: inline-block;
+    position: relative;
+    min-width: 65px;
+    padding: 0 15px;
+    line-height: 40px;
+    font-size: 14px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.nav-tab-p ul > li:hover {
+    background: #f0f0f0;
+    border-bottom: solid 1px #f0f0f0;
+}
+
+.nav-tab-item > i:hover {
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    background: #FF5722;
+}
+
+/*.nav-tab-item > i {} */
+.tab-close-btn {
+    position: relative;
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    line-height: 19px;
+    margin-left: 6px;
+    top: 1px;
+    text-align: center;
+    font-size: 12px;
+    color: #c2c2c2;
+    transition: all .2s;
+    -webkit-transition: all .2s
+}
+
+/**========= end ===== tab样式结束 */
+
+/**========= start ===== tab 页签操作样式开始 */
+/** tab页签操作 */
+.nav-tab-handle, .nva-tab-handle-title {
+    width: 100px;
+}
+
+.nav-tab-handle {
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    text-align: center !important;
+    border-left: solid 1px #f0f0f0;
+    cursor: pointer;
+}
+
+.nva-tab-handle-title {
+    height: 40px;
+}
+
+.tab-handle-child {
+    z-index: 999;
+    background: #ffffff !important;
+    border: solid 1px #f0f0f0;
+}
+
+.tab-handle-child dd:hover {
+    width: 101px;
+    height: 40px;
+    background: #f0f0f0 !important;
+}
+
+/**========= end ===== tab 页签操作样式结束 */
+
+/**========= start ===== tab主体内容样式开始 */
+.nav-tab-container {
+    position: relative;
+    background: #F2F2F2;
+    /*height: calc(100vh - 145px);*/
+    /*width: calc(100vw - 200px);;*/
+    top: 100px !important;
+    padding: 10px;
+}
+
+.container-content {
+    background: #ffffff;
+    min-height: calc(100vh - 168px);
+    min-width: calc(100vw - 235px);
+}
+
+.container-content > iframe {
+    position: relative;
+    min-height: calc(100vh - 168px);
+    min-width: calc(100vw - 235px);
+}
+
+.form-container {
+    margin: 10px 0 0 0;
+}
+
+/**========= end ===== tab主体内容结束 */
+
+

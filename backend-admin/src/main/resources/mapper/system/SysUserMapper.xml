@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.backend.system.mapper.SysUserMapper">
+
+    <select id="selectByUserName" resultType="com.backend.system.entity.SysUser">
+        SELECT * FROM ad_sys_user su WHERE su.user_name = #{userName}
+    </select>
+
+    <select id="findRolesByUserName" resultType="com.backend.system.entity.SysRole">
+        SELECT
+            sr.*
+        FROM ad_sys_role sr
+        LEFT JOIN ad_sys_user_role sur ON sur.role_id = sr.id
+        LEFT JOIN ad_sys_user su ON su.id = sur.user_id
+        WHERE su.user_name = #{userName}
+    </select>
+
+    <select id="selectMenusByRoleId" resultType="com.backend.system.entity.SysMenu">
+        SELECT
+            sr.*
+        FROM ad_sys_menu sm
+        LEFT JOIN ad_sys_role_menu srm ON srm.menu_id = sm.id
+        LEFT JOIN ad_sys_role sr ON sr.id = srm.role_id
+        WHERE sr.id = #{roleId}
+    </select>
+
+
+</mapper>

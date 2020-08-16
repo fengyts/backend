@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.backend.system.mapper.SysMenuMapper">
+
+    <resultMap id="SysMenusMap" type="com.backend.system.dto.SysMenuDto">
+        <id column="id" property="id"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="level" property="level"/>
+        <result column="menuName" property="menuName"/>
+        <result column="sort" property="sort"/>
+        <result column="url" property="url"/>
+        <result column="icon" property="icon"/>
+        <collection property="subMenus" ofType="com.backend.system.dto.SysMenuDto">
+            <id column="id1" property="id"/>
+            <result column="parentId1" property="parentId"/>
+            <result column="level1" property="level"/>
+            <result column="menuName1" property="menuName"/>
+            <result column="sort1" property="sort"/>
+            <result column="url1" property="url"/>
+            <result column="icon1" property="icon"/>
+            <collection property="subMenus" ofType="com.backend.system.dto.SysMenuDto">
+                <id column="id2" property="id"/>
+                <result column="parentId2" property="parentId"/>
+                <result column="level2" property="level"/>
+                <result column="menuName2" property="menuName"/>
+                <result column="sort2" property="sort"/>
+                <result column="url2" property="url"/>
+                <result column="icon2" property="icon"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <select id="selectAllMenus" resultMap="SysMenusMap">
+        SELECT
+            sm.id, sm.parent_id, sm.`level`, sm.`name` menuName, sm.sort, sm.url, sm.icon
+            ,sm1.id id1, sm1.parent_id parentId1, sm1.`level` level1, sm1.`name` menuName1, sm1.sort sort1, sm1.url url1, sm1.icon icon1
+            ,sm2.id id2, sm2.parent_id parentId2, sm2.`level` level2, sm2.`name` menuName2, sm2.sort sort2, sm2.url url2, sm2.icon icon2
+            ,sm3.id id3, sm3.parent_id parentId3, sm3.`level` LEVEL3, sm3.`name` menuName3, sm3.sort sort3, sm3.url url3, sm3.icon icon3
+        FROM ad_sys_menu sm
+        LEFT JOIN ad_sys_menu sm1 ON sm1.parent_id = sm.id
+        LEFT JOIN ad_sys_menu sm2 ON sm2.parent_id = sm1.id
+        LEFT JOIN ad_sys_menu sm3 ON sm3.parent_id = sm2.id
+        WHERE sm.`level` = 0 AND sm.parent_id = 0
+        ORDER BY sm.sort ASC, sm1.sort ASC, sm2.sort ASC , sm3.sort ASC
+    </select>
+
+</mapper>
