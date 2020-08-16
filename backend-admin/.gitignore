@@ -6,6 +6,7 @@ target/
 
 *.class
 /target
+/.mvn
 
 ### mvn ###
 .mvn/
