@@ -51,10 +51,10 @@ public class LoginCongroller extends BaseController {
             return AjaxResult.success("/index");
         } catch (UnknownAccountException e) {
             logger.info("用户名不存在：{}", e);
-            return AjaxResult.error(e.getMessage());
+            return AjaxResult.error("用户名不存在");
         } catch (IncorrectCredentialsException e) {
             logger.info("用户名密码错误：{}", e);
-            return AjaxResult.error(e.getMessage());
+            return AjaxResult.error("用户名密码错误");
         }
     }
 

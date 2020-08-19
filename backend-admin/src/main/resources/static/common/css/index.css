@@ -181,8 +181,8 @@
 
 .container-content {
     background: #ffffff;
-    min-height: calc(100vh - 168px);
-    min-width: calc(100vw - 235px);
+    /*min-height: calc(100vh - 168px);*/
+    /*min-width: calc(100vw - 235px);*/
 }
 
 .container-content > iframe {
@@ -196,5 +196,4 @@
 }
 
 /**========= end ===== tab主体内容结束 */
-
 

@@ -9,7 +9,7 @@ layui.use(['table', 'form'], function () {
         url: "/system/sysUser/queryPageList",
         method: 'post',
         cellMinWidth: 100,
-        height: 'full-90',
+        height: 'full-130',
         cols: [
             [
                 {type: 'radio', width: 30, fixed: 'left'},

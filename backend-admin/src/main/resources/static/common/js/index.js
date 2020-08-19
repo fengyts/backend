@@ -243,8 +243,8 @@ layui.use('element', function () {
             $("#nav_left_p").append(_ul);
         });
         // 动态加载的, 重新渲染样式
-        // element.render('nav', 'navTopLevel');
-        // element.render('nav', 'nav-menus');
+        element.render('nav', 'navTopLevel');
+        element.render('nav', 'nav-menus');
     }
 
     /* 页面元素样式替换,用newClass替换oldClass;
@@ -269,6 +269,9 @@ function changeFrameHeight(iframe) {
         var bHeight = _iframe.contentWindow.document.body.scrollHeight;
         var dHeight = _iframe.contentWindow.document.documentElement.scrollHeight;
         var height = Math.max(bHeight, dHeight);
+        console.log(bHeight);
+        console.log(dHeight);
+        console.log(height);
         _iframe.height = height;
     } catch (ex) {
     }
