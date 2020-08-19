@@ -5,6 +5,7 @@ import com.backend.system.entity.SysRole;
 import com.backend.system.entity.SysUser;
 import com.backend.system.mapper.SysUserMapper;
 import com.backend.system.service.ISysUserService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ import java.util.List;
 @Service
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements ISysUserService {
 
-//    @Autowired
-//    private SysUserMapper sysUserDao;
+    @Autowired
+    private SysUserMapper sysUserDao;
 
     @Override
     public SysUser selectByUserName(String username) {
@@ -46,14 +47,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Override
     public Page<SysUser> queryPageList(Page<SysUser> webPageQuery) {
-        Page<SysUser> page = new Page<SysUser>();
-        List<SysUser> records = this.list();
-        page.setRecords(records);
-        page.setTotal(1);
-        page.setCurrent(1);
-        page.setSize(10);
-        page.setPages(1);
-        return page;
+        Page<SysUser> page = new Page<>();
+        IPage<SysUser> iPage = baseMapper.selectSysUserPageVo(webPageQuery);
+        return (Page<SysUser>) iPage;
+
+//        List<SysUser> records = this.list();
+//        page.setRecords(records);
+//        page.setTotal(1);
+//        page.setCurrent(1);
+//        page.setSize(10);
+//        page.setPages(1);
+//        return page;
     }
 
 }

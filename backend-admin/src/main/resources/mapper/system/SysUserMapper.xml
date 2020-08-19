@@ -24,5 +24,9 @@
         WHERE sr.id = #{roleId}
     </select>
 
+    <select id="selectSysUserPageVo" resultType="com.backend.system.entity.SysUser">
+        select * from ad_sys_user su
+    </select>
+
 
 </mapper>

@@ -1,6 +1,7 @@
 package com.backend.system.controller;
 
 import com.backend.common.BaseController;
+import com.backend.common.WebPageQuery;
 import com.backend.system.entity.SysUser;
 import com.backend.system.service.ISysUserService;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -23,8 +24,11 @@ public class SysUserController extends BaseController {
 
     @RequestMapping("queryPageList")
     @ResponseBody
-    public Page<SysUser> queryPageList(Page<SysUser> webPageQuery){
-        Page<SysUser> page = sysUserService.queryPageList(webPageQuery);
+    public Page<SysUser> queryPageList(WebPageQuery<SysUser> webPageQuery){
+        Page<SysUser> queryPage = new Page<>();
+        queryPage.setCurrent(webPageQuery.getPage());
+        queryPage.setSize(webPageQuery.getRows());
+        Page<SysUser> page = sysUserService.queryPageList(queryPage);
         return page;
     }
 

@@ -4,6 +4,8 @@ import com.backend.system.entity.SysMenu;
 import com.backend.system.entity.SysRole;
 import com.backend.system.entity.SysUser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -23,5 +25,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
     List<SysRole> findRolesByUserName(@Param("userName") String userName);
 
     List<SysMenu> selectMenusByRoleId(@Param("roleId") Long roleId);
+
+    IPage<SysUser> selectSysUserPageVo(Page<SysUser> page);
 
 }
