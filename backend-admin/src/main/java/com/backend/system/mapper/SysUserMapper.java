@@ -1,5 +1,6 @@
 package com.backend.system.mapper;
 
+import com.backend.system.dto.SysUserDto;
 import com.backend.system.entity.SysMenu;
 import com.backend.system.entity.SysRole;
 import com.backend.system.entity.SysUser;
@@ -26,6 +27,6 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 
     List<SysMenu> selectMenusByRoleId(@Param("roleId") Long roleId);
 
-    IPage<SysUser> selectSysUserPageVo(Page<SysUser> page);
+    IPage<SysUserDto> selectSysUserPageVo(Page<SysUserDto> page);
 
 }

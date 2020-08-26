@@ -197,3 +197,22 @@
 
 /**========= end ===== tab主体内容结束 */
 
+/* 表单的placeholder字体样式 开始 */
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+    /* WebKit browsers */
+    color: #ddd;
+}
+input:-moz-placeholder, textarea:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: #ddd;
+}
+input::-moz-placeholder, textarea::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: #ddd;
+}
+input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+    /* Internet Explorer 10+ */
+    color: #ddd;
+}
+/* 表单的placeholder字体样式 结束 */
+

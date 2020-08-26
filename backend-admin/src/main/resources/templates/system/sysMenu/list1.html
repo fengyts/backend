@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta th:include="common/common_header :: header('后台系统')">
+    <!--    <title>Title</title>-->
+<!--    <style>-->
+<!--        body{-->
+<!--            min-height: 500px;-->
+<!--        }-->
+<!--    </style>-->
+</head>
+<body>
+<div>
+    <div class="form-container">
+        <form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+            <div class="layui-row">
+                <div class="layui-col-xs5">
+                    <label class="layui-form-label">用户账号</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="userName" placeholder="请输入用户账号" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-col-xs5">
+                    <label class="layui-form-label">用户名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="nickName" placeholder="请输入用户名称" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-col-xs2">
+                    <div class="layui-input-block" style="margin-left: 45%;">
+                        <button class="layui-btn layui-btn-normal" lay-submit lay-filter="*">查询</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <hr class="layui-bg-gray">
+
+    <div>
+        <button type="button" id="btn1" class="layui-btn  layui-btn-primary">添加最上级行</button>
+        <button type="button" id="btn2" class="layui-btn  layui-btn-primary">获取勾选数据</button>
+        <button type="button" id="btn3" class="layui-btn  layui-btn-primary">获取全部数据</button>
+        <button type="button" id="btn4" class="layui-btn  layui-btn-primary">关闭勾选节点</button>
+        <button type="button" id="btn5" class="layui-btn  layui-btn-primary">展开勾选节点</button>
+        <button type="button" id="btn6" class="layui-btn  layui-btn-primary">关闭所有子叶节点</button>
+        <button type="button" id="btn7" class="layui-btn  layui-btn-primary">展开所有子叶节点</button>
+        <button type="button" id="btn8" class="layui-btn  layui-btn-primary">获取表格树配置</button>
+        <button type="button" id="btn9" class="layui-btn  layui-btn-primary">重载表格树</button>
+        <button type="button" id="btn10" class="layui-btn  layui-btn-primary">删除选中行</button>
+
+        <table class="layui-hide" id="tableId" lay-filter="tableEvent"></table>
+    </div>
+
+</div>
+
+<!-- 引入js模板 -->
+<div th:replace="common/common_js :: common_js(~{::script})">
+    <!--    <script th:inline="javascript" th:src="@{/plugins/treeTable.js}" charset="utf-8"></script>-->
+    <script th:inline="javascript" th:src="@{sysMenu.js}" charset="utf-8"></script>
+</div>
+</body>
+</html>

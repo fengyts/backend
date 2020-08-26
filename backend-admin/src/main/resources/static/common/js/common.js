@@ -1,48 +1,42 @@
-/**
- * 定义了系统中需要使用的公共函数
- *
- */
+$(function () {
 
-const util = {
-    isEmptyString: function (obj) {
-        // if(!obj || (obj typeof undefined)) return true;
-        if (!obj || (typeof (obj) === undefined) || obj != "") return true;
-        if (typeof (obj) === "string" && obj.trim().length === 0) return true;
-    },
-    formatMoney: function (money) {
+    formRequired();
+    formEditReadonly();
 
-    },
-    formatDate: function (date, formatter) {
-
-    },
-    isMobile: function (mobile) {
-
-    },
-    isEmail: function (email) {
-
-    },
-    isIdentity: function (identity) {
-
+    // 设置表单必填项 ‘*’ 样式
+    function formRequired() {
+        let _formRequired = '<span style="color: red;font-size:16px;vertical-align:middle;">*</span>';
+        $(".form-required").append(_formRequired);
     }
-};
 
-const regex = {
-    mobile: "",
-    email: "",
-    identity: ""
-};
-
-/*$(function () {
-    disablePageBack();
-
-    //消除后退的所有动作。包括 键盘、鼠标手势等产生的后退动作。，用户登录到系统中后，浏览器回退按钮失效，只能点击退出按钮退出系统！
-    function disablePageBack() {
-        history.pushState(null, null, document.URL);
-        window.addEventListener('popstate', function () {
-            history.pushState(null, null, document.URL);
-        });
+    // 设置表单编辑页 ‘数据不可修改’ 样式
+    function formEditReadonly() {
+        $(".form-readonly").addClass('layui-disabled');
     }
-});*/
 
-export {util, regex};
+});
 
+// 关闭layer弹窗函数
+function closePage(index) {
+    if (index) {
+        parent.layer.close(index);
+    } else {
+        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+        parent.layer.close(index);
+    }
+}
+
+// form 简单表单 数据获取，json对象格式
+function serializeObj(formId) {
+    var formJson = {};
+    var formArray = $("#" + formId).serializeArray();
+    $.each(formArray, function (i, n) {
+        formJson[n.name] = n.value;
+    })
+    return formJson;
+}
+
+// form 简单表单 数据获取，json对象格式的字符串
+function serializeObjStr(formId) {
+    return JSON.stringify(serializeObj(formId));
+}

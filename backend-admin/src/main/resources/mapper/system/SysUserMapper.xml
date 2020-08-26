@@ -24,7 +24,7 @@
         WHERE sr.id = #{roleId}
     </select>
 
-    <select id="selectSysUserPageVo" resultType="com.backend.system.entity.SysUser">
+    <select id="selectSysUserPageVo" resultType="com.backend.system.dto.SysUserDto">
         select * from ad_sys_user su
     </select>
 

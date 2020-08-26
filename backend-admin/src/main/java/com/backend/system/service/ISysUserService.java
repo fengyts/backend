@@ -1,5 +1,7 @@
 package com.backend.system.service;
 
+import com.backend.common.ResultData;
+import com.backend.system.dto.SysUserDto;
 import com.backend.system.entity.SysMenu;
 import com.backend.system.entity.SysRole;
 import com.backend.system.entity.SysUser;
@@ -24,7 +26,10 @@ public interface ISysUserService extends IService<SysUser> {
 
     List<SysMenu> selectMenusByRoleId(Long roleId);
 
-    Page<SysUser> queryPageList(Page<SysUser> webPageQuery);
+    Page<SysUserDto> queryPageList(Page<SysUserDto> webPageQuery);
 
+    SysUserDto selectOneByUserId(Long userId);
+
+    ResultData saveOrUpdate(SysUserDto sysUserDto);
 
 }

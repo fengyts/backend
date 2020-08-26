@@ -4,8 +4,6 @@ import com.backend.system.entity.SysMenu;
 import com.backend.system.entity.SysRole;
 import com.backend.system.entity.SysUser;
 import com.backend.system.service.ISysUserService;
-import com.backend.util.EncodeUtil;
-import lombok.SneakyThrows;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationException;
@@ -23,10 +21,6 @@ import java.util.Objects;
 @Component
 public class SysAuthorizingRealm extends AuthorizingRealm {
 
-    //    @Autowired
-//    private SysUserMapper sysUserDao;
-//    @Autowired
-//    private SysUserRole sysUserRoleDao;
     @Autowired
     private ISysUserService sysUserService;
 

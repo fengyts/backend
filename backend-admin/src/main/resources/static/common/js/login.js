@@ -1,5 +1,4 @@
 $(function () {
-
     layui.use(['form', 'util'], function () {
         var form = layui.form;
         var util = layui.util;
@@ -7,22 +6,31 @@ $(function () {
         form.on('submit(login-form)', function (data) {
             let userName = data.field['userName'].trim();
             let passwd = data.field['passwd'];
-            let smsCode = data.field['smsCode'].trim();
-            let kaptcha = data.field['kaptcha'].trim();
             if (!userName || !passwd || userName.length < 1 || passwd.length < 1) {
                 layer.msg("用户名/密码不能为空", {icon: 2, time: 1500});
                 return false;
             }
-            if (!smsCode || !kaptcha || smsCode.length < 1 || kaptcha.length < 1) {
-                layer.msg("验证码不能为空", {icon: 2, time: 1500});
-                return false;
+            var smsCode = '', kaptcha = '';
+            if (kaptchaSwitch) {
+                kaptcha = data.field['kaptcha'].trim();
+                if(!kaptcha || kaptcha.length < 1){
+                    layer.msg("验证码不能为空", {icon: 2, time: 1500});
+                    return false;
+                }
+            }
+            if (smsSwitch){
+                smsCode = data.field['smsCode'].trim();
+                if(!smsCode || smsCode.length < 1){
+                    layer.msg("验证码不能为空", {icon: 2, time: 1500});
+                    return false;
+                }
             }
             var _param = {
                 userName: userName,
                 passwd: passwd,
                 smsCode: smsCode,
                 kaptcha: kaptcha,
-                rememberMe: data.field['rememberMe'] === '1' ? true : false
+                rememberMe: data.field['rememberMe'] === '1' ? true : false,
             };
             let _paramS = JSON.stringify(_param);
             $.ajax({
@@ -33,6 +41,7 @@ $(function () {
                 contentType: 'application/json',
                 data: _paramS,
                 success: function (res) {
+                    console.log(res);
                     if (res && res.code != 200) {
                         layer.msg(res.msg, {time: 2000});
                     } else {
@@ -111,7 +120,7 @@ $(function () {
 
     // iframe页面出现登录页的解决方案
     function iframeLoginPage() {
-        // 这种方案页可以实现
+        // 这种方案也可以实现
         // if(top.location != location) {
         //     top.location.href = location.href;
         // }

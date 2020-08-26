@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!--    <title>Title</title>-->
+    <meta th:include="/common/common_header :: header('后台系统')">
+</head>
+<body>
+
+<div class="form-container layui-container">
+    <form class="layui-form" id="formId">
+        <!-- 隐藏数据区域 -->
+        <div class="layui-hide">
+            <input type="hidden" name="id" th:value="${sysUser?.id}">
+        </div>
+        <div class="layui-form-item layui-row">
+            <div class="layui-col-sm6">
+                <label class="layui-form-label form-required">用户账号</label>
+                <div class="layui-input-block">
+                    <input type="text" name="userName" placeholder="请输入登陆账号" lay-verify="required" autocomplete="off"
+                           class="layui-input" th:classappend="${sysUser?.id}?'layui-disabled'" th:disabled="${sysUser?.id}"
+                           th:value="${sysUser}?${sysUser.userName}">
+                </div>
+            </div>
+            <div class="layui-col-sm6">
+                <label class="layui-form-label form-required">姓名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="nickName" placeholder="请输入用户姓名" lay-verify="required" autocomplete="off"
+                           class="layui-input" th:value="${sysUser?.nickName}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-row">
+            <div class="layui-col-sm6">
+                <label class="layui-form-label form-required">手机</label>
+                <div class="layui-input-block">
+                    <input type="tel" name="mobile" placeholder="请输入手机号" lay-verify="required|phone" autocomplete="off"
+                           class="layui-input" th:value="${sysUser?.mobile}">
+                </div>
+            </div>
+            <div class="layui-col-sm6">
+                <label class="layui-form-label form-required">邮箱</label>
+                <div class="layui-input-block">
+                    <input type="text" name="email" placeholder="请输入邮箱" lay-verify="required|email" autocomplete="off"
+                           class="layui-input" th:value="${sysUser?.email}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-row">
+            <div class="layui-col-sm6">
+                <label class="layui-form-label">固定电话</label>
+                <div class="layui-input-block">
+                    <input type="text" name="phone" placeholder="请输入固定电话" autocomplete="off"
+                           class="layui-input" th:value="${sysUser?.phone}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-row">
+            <div class="layui-col-sm6">
+                <label class="layui-form-label">性别</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="sex" value="1" title="男" checked=""
+                           th:checked="${sysUser}?${sysUser?.sex==1}:true">
+                    <input type="radio" name="sex" value="0" title="女" th:checked="${sysUser?.sex==0}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-row">
+            <div class="layui-col-sm6">
+                <label class="layui-form-label">状态</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="status" lay-skin="switch" lay-filter="switchStatu"
+                           value="1" lay-text="正常|冻结" th:checked="${sysUser}?${sysUser?.status==1}:true">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-row layui-col-space10" th:if="${initialPwd}">
+            <div class="layui-col-sm6">
+                <label class="layui-form-label">初始密码</label>
+                <div class="layui-input-block">
+                    <input type="password" name="passwd" placeholder="初始密码" autocomplete="off"
+                           class="layui-input layui-disabled" th:value="${initialPwd}">
+                </div>
+            </div>
+            <div class="layui-col-sm6">
+                <div class="layui-form-mid layui-word-aux">默认初始密码:[[${initialPwd}]]</div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-row">
+            <div class="layui-btn-container layui-col-sm6 layui-col-sm-offset4">
+                <button type="button" class="layui-btn saveBtn" lay-submit lay-filter="formSubmit">保存</button>
+                <button type="button" class="layui-btn layui-btn-primary closeBtn">取消</button>
+                <button type="reset" class="layui-btn layui-btn-normal" th:unless="${sysUser?.id}">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script th:src="@{/plugins/jquery/jquery-3.5.1.min.js}" charset="utf-8"></script>
+<script th:src="@{/plugins/layui/layui.js}" charset="utf-8"></script>
+<script th:inline="javascript" th:src="@{/common/js/common.js}" charset="utf-8"></script>
+<script th:inline="javascript" th:src="@{list.js}" charset="utf-8"></script>
+</body>
+</html>

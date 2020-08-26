@@ -139,8 +139,6 @@ layui.use('element', function () {
                 var $tabId = "#" + _tabId, $frameId = "#" + _frameId;
                 closeTab($tabId, $frameId);
             });
-            // iframe 自适应高度设置
-            _main_frame.on('load', changeFrameHeight(_main_frame));
         });
     }
 
@@ -258,22 +256,41 @@ layui.use('element', function () {
 
 // 定义在 layui|jquery ready之外的函数, 如果在页面中需要调用则必须定义在ready函数之外, 否则会出现 ‘函数未定义的错误’
 // iframe 自适应高度设置
-// function changeFrameHeight(_frame_id) {
-//     var ifm = document.getElementById(_frame_id);
-//     ifm.height = document.documentElement.clientHeight;
-// }
-function changeFrameHeight(iframe) {
+/*function changeFrameHeight(iframe) {
     var _frame_id = iframe.id;
     var _iframe = document.getElementById(_frame_id);
     try {
         var bHeight = _iframe.contentWindow.document.body.scrollHeight;
         var dHeight = _iframe.contentWindow.document.documentElement.scrollHeight;
         var height = Math.max(bHeight, dHeight);
-        console.log(bHeight);
-        console.log(dHeight);
-        console.log(height);
         _iframe.height = height;
     } catch (ex) {
+    }
+}*/
+
+/**
+ * iframe自适应高度，height为手动设置的最小高度
+ */
+function changeFrameHeight(_iframe){
+    var height = 150;
+    var _iframe_id = _iframe.id;
+    var userAgent = navigator.userAgent;
+    var iframe = parent.document.getElementById(_iframe_id);
+    var subdoc = iframe.contentDocument || iframe.contentWindow.document;
+    var subbody = subdoc.body;
+    var realHeight;
+    //谷歌浏览器特殊处理
+    if(userAgent.indexOf("Chrome") > -1){
+        realHeight = subdoc.documentElement.scrollHeight;
+    }
+    else{
+        realHeight = subbody.scrollHeight;
+    }
+    if(realHeight < height){
+        $(iframe).height(height);
+    }
+    else{
+        $(iframe).height(realHeight);
     }
 }
 

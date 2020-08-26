@@ -97,21 +97,9 @@
 
 <script th:src="@{/plugins/jquery/jquery-3.5.1.min.js}" charset="utf-8"></script>
 <script th:src="@{/plugins/layui/layui.js}" charset="utf-8"></script>
-<script th:src="@{/common/js/common.js}" charset="utf-8" type="module"></script>
+<script th:src="@{/common/js/util.js}" charset="utf-8" type="module"></script>
 <script th:src="@{/common/js/index.js}" charset="utf-8"></script>
 <script type="text/javascript">
-    // function reinitIframe(){
-    //     var iframe = document.getElementById("frame-home");
-    //     try{
-    //         var bHeight = iframe.contentWindow.document.body.scrollHeight;
-    //         var dHeight = iframe.contentWindow.document.documentElement.scrollHeight;
-    //         var height = Math.max(bHeight, dHeight);
-    //         iframe.height = height;
-    //         console.log(height);
-    //     }catch (ex){}
-    // }
-    // window.setInterval("reinitIframe()", 200);
-
     disablePageBack();
     //消除后退的所有动作。包括 键盘、鼠标手势等产生的后退动作。，用户登录到系统中后，浏览器回退按钮失效，只能点击退出按钮退出系统！
     function disablePageBack() {

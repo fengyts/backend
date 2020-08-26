@@ -22,17 +22,17 @@ public class ShiroUtil {
     /** 用户密码加密 */
     public static String encryptPasswdShiro(String passwd) {
         String salt = generateSalt();
-        ByteSource byteSalt = ByteSource.Util.bytes(generateSalt());
+        ByteSource byteSalt = ByteSource.Util.bytes(salt);
         SimpleHash result = new SimpleHash(ShiroConstant.MD5, passwd, byteSalt, ShiroConstant.HASH_ITERATIONS);
         String pwd = salt + result.toString();
         return pwd;
     }
 
-    public static String encryptPasswdCustom(String passwd){
-        String salt = generateSalt();
-        String pwd = MD5Util.encrypt16md5(passwd);
-        return salt + pwd;
-    }
+//    public static String encryptPasswdCustom(String passwd){
+//        String salt = generateSalt();
+//        String pwd = MD5Util.encrypt16md5(passwd);
+//        return salt + pwd;
+//    }
 
     /**
      * 生成安全的密码，生成随机的16位salt并经过1024次 sha-1 hash
@@ -42,8 +42,6 @@ public class ShiroUtil {
         byte[] hashPassword = sha1(plainPassword.getBytes(), salt, ShiroConstant.HASH_ITERATIONS);
         String saltEncode = EncodeUtil.encodeHex(salt);
         String hashPwd = EncodeUtil.encodeHex(hashPassword);
-        System.out.println(saltEncode);
-        System.out.println(hashPwd);
         return  saltEncode + hashPwd;
     }
 
