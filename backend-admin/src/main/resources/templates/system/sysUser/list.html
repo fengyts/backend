@@ -3,14 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta th:include="common/common_header :: header('后台系统')">
-    <!--    <title>Title</title>-->
-    <style>
-        body{
-            min-height: 500px;
-        }
-    </style>
 </head>
-<body>
+<body class="frame-body">
+<div class="frame-content-box">
+
 <div class="form-container">
     <form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
         <div class="layui-row">
@@ -52,9 +48,12 @@
     <table id="list" lay-filter="list"></table>
 </div>
 
-<script th:src="@{/plugins/jquery/jquery-3.5.1.min.js}" charset="utf-8"></script>
-<script th:src="@{/plugins/layui/layui.js}" charset="utf-8"></script>
-<!--<script th:inline="javascript" th:src="@{list.js}" charset="utf-8"></script>-->
-<script th:inline="javascript" th:src="@{list.js}" charset="utf-8"></script>
+</div>
+
+<!-- 引入js模板 -->
+<div th:replace="common/common_js :: common_js(~{::script})">
+    <!--    <script th:inline="javascript" th:src="@{/plugins/treeTable.js}" charset="utf-8"></script>-->
+    <script th:inline="javascript" th:src="@{list.js}" charset="utf-8"></script>
+</div>
 </body>
 </html>

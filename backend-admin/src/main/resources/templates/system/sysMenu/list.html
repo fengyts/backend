@@ -5,14 +5,9 @@
     <meta charset="UTF-8">
     <meta th:include="common/common_header :: header('后台系统')">
     <!--    <title>Title</title>-->
-    <style>
-        body{
-            min-height: 500px;
-        }
-    </style>
 </head>
-<body>
-<div>
+<body class="frame-body">
+<div class="frame-content-box">
     <div class="form-container">
         <form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
             <div class="layui-row">
@@ -47,36 +42,9 @@
 
         <table class="layui-table layui-form" id="tree-table" lay-size="sm"></table>
 
-        <hr class="layui-bg-green">
+<!--        <div id="tree"  class="layui-anim"></div>-->
 
-        <div id="tree"  class="layui-anim"></div>
-
-        <hr class="layui-bg-green">
-
-        <div class="layui-unselect layui-form-select">
-            <div class="layui-select-title" style="position: relative;">
-                <input type="text" placeholder="请选择" value="" readonly="" class="layui-input layui-unselect">
-                <i class="layui-edge"></i>
-            </div>
-            <div id="tree1"  class="layui-anim" style="display: none;border: 1px solid #e2e2e2;padding: 5px;margin-top: 5px;"></div>
-        </div>
-
-        <hr class="layui-bg-green">
-
-        <div class="layui-unselect layui-form-select">
-            <div class="layui-select-title" style="position: relative;"><input type="text" placeholder="请选择" value="" readonly="" class="layui-input layui-unselect"><i class="layui-edge"></i></div>
-            <table class="layui-table layui-form layui-anim" id="tree-table1" lay-size="sm" style="display: none;"></table>
-        </div>
-
-        <hr class="layui-bg-green">
-
-        <div id="tree"></div>
-        <div>范德萨范德萨发撒</div>
-        <div>范德萨范德萨发撒</div>
-        <div>范德萨范德萨发撒</div>
-
-        啊啊啊
-        end
+<!--        <div id="tree"></div>-->
     </div>
 
 </div>

@@ -30,7 +30,7 @@
         </collection>
     </resultMap>
 
-    <select id="selectAllMenus" resultMap="SysMenusMap">
+    <select id="selectAllMenusByTier" resultMap="SysMenusMap">
         SELECT
             sm.id, sm.parent_id, sm.`level`, sm.`name` menuName, sm.sort, sm.url, sm.icon
             ,sm1.id id1, sm1.parent_id parentId1, sm1.`level` level1, sm1.`name` menuName1, sm1.sort sort1, sm1.url url1, sm1.icon icon1
@@ -42,6 +42,13 @@
         LEFT JOIN ad_sys_menu sm3 ON sm3.parent_id = sm2.id
         WHERE sm.`level` = 0 AND sm.parent_id = 0
         ORDER BY sm.sort ASC, sm1.sort ASC, sm2.sort ASC , sm3.sort ASC
+    </select>
+
+    <select id="selectAllMenus" resultType="com.backend.system.dto.SysMenuDto">
+        SELECT
+            sm.id, sm.parent_id, sm.`level`, sm.`name` menuName, sm.sort, sm.url, sm.icon
+        FROM ad_sys_menu sm
+        ORDER BY sm.parent_id
     </select>
 
 </mapper>

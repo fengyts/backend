@@ -41,7 +41,6 @@ $(function () {
                 contentType: 'application/json',
                 data: _paramS,
                 success: function (res) {
-                    console.log(res);
                     if (res && res.code != 200) {
                         layer.msg(res.msg, {time: 2000});
                     } else {

@@ -20,7 +20,7 @@ public class SysController extends BaseController {
     @GetMapping("/getMenus")
     public List<SysMenuDto> getMenus(){
         Long userId = 1L;
-        List<SysMenuDto> menus = sysMenuService.getAllMenus(userId);
+        List<SysMenuDto> menus = sysMenuService.getAllMenusByTier(userId);
         return menus;
     }
 }

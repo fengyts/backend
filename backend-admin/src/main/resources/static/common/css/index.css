@@ -33,9 +33,13 @@
     -moz-osx-font-smoothing: grayscale
 }
 
-/* 垂直导航 */
-.nav_left_box {
-    top: 60px !important;
+/* 左侧垂直导航 layui-side-scroll */
+.nav-left-p {
+    position: relative;
+    width: 200px;
+    /*width: 220px;*/
+    height: 100%;
+    overflow-x: hidden;
 }
 
 /**========= start ===== tab样式开始 */
@@ -170,29 +174,46 @@
 /**========= end ===== tab 页签操作样式结束 */
 
 /**========= start ===== tab主体内容样式开始 */
-.nav-tab-container {
+.mainframe-container {
     position: relative;
-    background: #F2F2F2;
-    /*height: calc(100vh - 145px);*/
-    /*width: calc(100vw - 200px);;*/
-    top: 100px !important;
-    padding: 10px;
+    left: 200px;
+    margin: 0;
+    padding: 0;
 }
 
-.container-content {
-    background: #ffffff;
-    /*min-height: calc(100vh - 168px);*/
+.mainframe-container-box {
+    position: relative;
+    /*min-width: calc(100vw - 200px);*/
+    /*min-height: calc(100vh - 145px);*/
+    width: calc(100vw - 200px);
+    height: 100%;
+    overflow-y: auto;
+}
+
+.content-iframe {
+    width: 100%;
+    height: 100%;
     /*min-width: calc(100vw - 235px);*/
+    min-height: calc(100vh - 145px);
 }
 
-.container-content > iframe {
-    position: relative;
-    min-height: calc(100vh - 168px);
-    min-width: calc(100vw - 235px);
+/*.nav-tab-container::-webkit-scrollbar{
+    display: none;
 }
+.container-content::-webkit-scrollbar {
+    display: none;
+}*/
 
 .form-container {
-    margin: 10px 0 0 0;
+    /*padding: 10px 0 0 0;*/
+}
+.frame-body {
+    padding: 10px;
+    background: #F2F2F2;
+}
+.frame-content-box {
+    padding:10px 5px 5px 5px;
+    background: #FFFFFF;
 }
 
 /**========= end ===== tab主体内容结束 */

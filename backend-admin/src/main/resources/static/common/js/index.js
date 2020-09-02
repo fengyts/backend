@@ -115,8 +115,8 @@ layui.use('element', function () {
             $('.nav-tab-c').append(_tab);
             $($tab_show_id).removeClass('tab-item-select');
             // 添加iframe
-            var _main_frame = $('<iframe class="layadmin-iframe content-iframe" src="' + _href + '" width="100%" height="100%" ' +
-                'frameborder="0" scrolling="no" id="' + _frame_id + '" onload="changeFrameHeight(this)"></iframe>');
+            var _main_frame = $('<iframe class="content-iframe" src="' + _href + '" width="100%" height="100%" ' +
+                'frameborder="0" scrolling="auto" id="' + _frame_id + '"></iframe>');
             $($frame_show_id).addClass('layui-hide');
             $('#container-content').append(_main_frame);
             $tab_show_id = $tab_id;
@@ -252,11 +252,12 @@ layui.use('element', function () {
         $(selector).removeClass(oldClass);
         $(selector).addClass(newClass);
     }
+
 });
 
 // 定义在 layui|jquery ready之外的函数, 如果在页面中需要调用则必须定义在ready函数之外, 否则会出现 ‘函数未定义的错误’
 // iframe 自适应高度设置
-/*function changeFrameHeight(iframe) {
+function changeFrameHeight(iframe) {
     var _frame_id = iframe.id;
     var _iframe = document.getElementById(_frame_id);
     try {
@@ -264,34 +265,38 @@ layui.use('element', function () {
         var dHeight = _iframe.contentWindow.document.documentElement.scrollHeight;
         var height = Math.max(bHeight, dHeight);
         _iframe.height = height;
+        $("#container-content").attr("height", height);
     } catch (ex) {
     }
-}*/
+}
 
 /**
  * iframe自适应高度，height为手动设置的最小高度
  */
-function changeFrameHeight(_iframe){
-    var height = 150;
+/*function changeFrameHeight(_iframe) {
+    // var height = 150;
     var _iframe_id = _iframe.id;
-    var userAgent = navigator.userAgent;
+
     var iframe = parent.document.getElementById(_iframe_id);
-    var subdoc = iframe.contentDocument || iframe.contentWindow.document;
-    var subbody = subdoc.body;
+    let subDoc = iframe.contentWindow.document;
+    var subDocBody = subDoc.body;
+    var bHeight = subDocBody.scrollHeight
+        , dHeight = subDoc.documentElement.scrollHeight;
+    var height = Math.max(bHeight, dHeight);
     var realHeight;
+    var userAgent = navigator.userAgent;
     //谷歌浏览器特殊处理
-    if(userAgent.indexOf("Chrome") > -1){
-        realHeight = subdoc.documentElement.scrollHeight;
+    if (userAgent.indexOf("Chrome") > -1) {
+        realHeight = subDoc.documentElement.scrollHeight;
+    } else {
+        realHeight = subDocBody.scrollHeight;
     }
-    else{
-        realHeight = subbody.scrollHeight;
-    }
-    if(realHeight < height){
+    if (realHeight < height) {
         $(iframe).height(height);
-    }
-    else{
+    } else {
         $(iframe).height(realHeight);
     }
-}
+}*/
+
 
 

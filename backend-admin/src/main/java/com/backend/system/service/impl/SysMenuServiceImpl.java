@@ -22,8 +22,14 @@ import java.util.List;
 public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> implements ISysMenuService {
 
     @Override
-    public List<SysMenuDto> getAllMenus(Long userId) {
+    public List<SysMenuDto> getAllMenusByTier(Long userId) {
 //        List<SysMenuDto> menuList = generateStaticTestMenus();
+        List<SysMenuDto> menuList = baseMapper.selectAllMenusByTier(userId);
+        return menuList;
+    }
+
+    @Override
+    public List<SysMenuDto> getAllMenus(Long userId) {
         List<SysMenuDto> menuList = baseMapper.selectAllMenus(userId);
         return menuList;
     }

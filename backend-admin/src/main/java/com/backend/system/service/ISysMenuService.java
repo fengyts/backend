@@ -16,6 +16,10 @@ import java.util.List;
  */
 public interface ISysMenuService extends IService<SysMenu> {
 
+    /* 首页获取菜单信息, 父子嵌套层级结构 */
+    List<SysMenuDto> getAllMenusByTier(Long userId);
+
+    /* 系统菜单列表页 */
     List<SysMenuDto> getAllMenus(Long userId);
 
 }
