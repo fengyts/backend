@@ -6,8 +6,7 @@
     <meta name="renderer" content="webkit|ie-comp|ie-stand"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta th:include="/common/common_header :: header('后台系统')">
-    <!--    <title>Title</title>-->
+    <meta th:include="/common/common_header :: header('后台系统', ~{}, ~{})">
 </head>
 
 <body class="layui-layout-body">
@@ -96,7 +95,6 @@
 <script th:src="@{/plugins/jquery/jquery-3.5.1.min.js}" charset="utf-8"></script>
 <script th:src="@{/plugins/layui/layui.js}" charset="utf-8"></script>
 <script th:src="@{/common/js/util.js}" charset="utf-8" type="module"></script>
-<!--<script th:src="@{/common/js/iframe.js}" charset="utf-8"></script>-->
 <script th:src="@{/common/js/index.js}" charset="utf-8"></script>
 <script type="text/javascript">
     disablePageBack();

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="/common/common_header :: header('', ~{}, ~{})">
     <meta charset="UTF-8">
-    <meta th:include="common/common_header :: header('后台系统')">
+<!--    <meta th:include="common/common_header :: header('后台系统', ~{}, ~{})">-->
 </head>
 <body class="frame-body">
 <div class="frame-content-box">

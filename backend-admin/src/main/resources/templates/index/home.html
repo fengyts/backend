@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:include="/common/common_header :: header('')">
+<head th:replace="/common/common_header :: header('', ~{}, ~{})">
     <meta charset="UTF-8">
-    <title>Title</title>
+<!--    <title>Title</title>-->
 </head>
 <body class="frame-body">
 <div class="frame-content-box">

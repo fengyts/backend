@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="/common/common_header :: header('', ~{}, ~{})">
     <meta charset="UTF-8">
-    <meta th:include="common/common_header :: header('后台系统')">
-    <!--    <title>Title</title>-->
 </head>
 <body class="frame-body">
 <div class="frame-content-box">
-    <div class="form-container">
-        <form class="layui-form"> <!-- 提示：如果你不想用form，你可以换成div等任何一个普通元素 -->
+    <!--<div class="form-container">
+        <form class="layui-form"> &lt;!&ndash; 提示：如果你不想用form，你可以换成div等任何一个普通元素 &ndash;&gt;
             <div class="layui-row">
                 <div class="layui-col-xs5">
                     <label class="layui-form-label">用户账号</label>
@@ -31,20 +29,18 @@
             </div>
         </form>
     </div>
-    <hr class="layui-bg-gray">
+    <hr class="layui-bg-gray">-->
 
     <div>
-        <button type="button" class="layui-btn layui-btn-primary layui-btn-sm get-checked">获取选中</button>
-        <button type="button" class="layui-btn layui-btn-primary layui-btn-sm refresh">刷新（新增）</button>
+        <!--        <button type="button" class="layui-btn layui-btn-primary layui-btn-sm get-checked">获取选中</button>-->
+        <button type="button" class="layui-btn layui-btn-primary layui-btn-sm refresh">刷新数据</button>
         <button type="button" class="layui-btn layui-btn-primary layui-btn-sm open-all">全部展开</button>
         <button type="button" class="layui-btn layui-btn-primary layui-btn-sm close-all">全部关闭</button>
-        <button type="button" class="layui-btn layui-btn-primary layui-btn-sm change-icon">随机更换小图标</button>
+        <!--        <button type="button" class="layui-btn layui-btn-primary layui-btn-sm change-icon">随机更换小图标</button>-->
+
+        <button type="button" class="layui-btn layui-btn-sm addTopLevel">&nbsp;&nbsp;新增&nbsp;&nbsp;</button>
 
         <table class="layui-table layui-form" id="tree-table" lay-size="sm"></table>
-
-<!--        <div id="tree"  class="layui-anim"></div>-->
-
-<!--        <div id="tree"></div>-->
     </div>
 
 </div>

@@ -1,17 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head>
+<head th:replace="/common/common_header :: header('', ~{}, ~{::style})">
     <meta charset="UTF-8">
-    <meta th:include="/common/common_header :: header('登录')">
+<!--    <meta th:include="/common/common_header :: header('登录', ~{}, ~{})">-->
     <!--    <title>Title</title>-->
     <style>
-        /*body {
-            background: #4E5465;
-        }*/
         .layui-container {
-            /*position: relative;*/
             margin-top: calc(100vh / 3 - 50px);
-            /*margin-left: calc(100vw / 3);*/
         }
 
         /*.bk-kaptcha {
