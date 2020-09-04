@@ -16,6 +16,11 @@ mybatis-plus:
 #  mapper-locations: classpath*:/mapper/**/*.xml
 
 spring:
+  mail:
+    host: smtp.163.com
+    username: yangguangshequ2018@163.com
+    password: Zhanyi88
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://47.94.199.26:3306/backend_admin?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&autoReconnect=true

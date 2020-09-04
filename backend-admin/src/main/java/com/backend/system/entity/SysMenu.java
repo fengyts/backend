@@ -35,6 +35,11 @@ public class SysMenu extends BaseDO {
     private Long parentId;
 
     /**
+     * 菜单类型：0-目录；1-菜单；2-按钮
+     */
+    private Long type;
+
+    /**
      * 级别：0-系统级；1-顶级top菜单；2-一级菜单；3-二级菜单；4-三级菜单
      */
     private Integer level;

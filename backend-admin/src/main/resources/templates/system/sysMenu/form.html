@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!--    <title>Title</title>-->
+    <meta th:include="/common/common_header :: header('', ~{}, ~{})">
+</head>
+<body>
+
+<div class="form-container layui-container">
+    <form class="layui-form" id="formId">
+        <!-- 隐藏数据区域 -->
+        <div class="layui-hide">
+            <input type="hidden" name="id" th:value="${sysMenu !=null ? sysMenu.id : id}">
+        </div>
+        <div class="layui-form-item layui-row">
+            <div class="layui-col-sm6">
+                <label class="layui-form-label form-required">菜单类型</label>
+                <div class="layui-input-block">
+                    <select name="type" lay-verify="required">
+                        <option value="">--请选择--</option>
+                        <option th:each="type:${menuTypes}"
+                                th:value="${type.code}" th:text="${type.desc}"
+                                th:selected="${type.code == (sysMenu != null ? sysMenu.type: '')}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-col-sm6">
+                <label class="layui-form-label form-required">名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="name" placeholder="请输入菜单名称" lay-verify="required" autocomplete="off"
+                           class="layui-input" th:value="${sysMenu?.name}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-row">
+            <div class="layui-col-sm6">
+                <label class="layui-form-label form-required">图标</label>
+                <div class="layui-input-block">
+                    <input type="tel" name="icon" placeholder="请选择图标" lay-verify="required" autocomplete="off"
+                           class="layui-input" th:value="${sysMenu?.icon}">
+                </div>
+            </div>
+            <div class="layui-col-sm6">
+                <label class="layui-form-label form-required">排序</label>
+                <div class="layui-input-block">
+                    <input type="text" name="sort" placeholder="请输入排序值" lay-verify="required" autocomplete="off"
+                           class="layui-input" th:value="${sysMenu?.sort}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-row">
+            <div class="layui-col-sm12">
+                <label class="layui-form-label">url</label>
+                <div class="layui-input-block">
+                    <input type="text" name="url" placeholder="请输入url" autocomplete="off"
+                           class="layui-input" th:value="${sysMenu?.url}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-row">
+            <div class="layui-col-sm6">
+                <label class="layui-form-label">是否显示</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="isShow" lay-skin="switch" lay-filter="switchStatu"
+                           value="1" lay-text="显示|隐藏" th:checked="${sysMenu}?${sysMenu?.isShow==1}:true">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-row layui-col-space10" th:if="${initialPwd}">
+            <div class="layui-col-sm6">
+                <label class="layui-form-label">初始密码</label>
+                <div class="layui-input-block">
+                    <input type="password" name="passwd" placeholder="初始密码" autocomplete="off"
+                           class="layui-input layui-disabled" th:value="${initialPwd}">
+                </div>
+            </div>
+            <div class="layui-col-sm6">
+                <div class="layui-form-mid layui-word-aux">默认初始密码:[[${initialPwd}]]</div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-row">
+            <div class="layui-btn-container layui-col-sm6 layui-col-sm-offset4">
+                <button type="button" class="layui-btn saveBtn" lay-submit lay-filter="formSubmit">保存</button>
+                <button type="button" class="layui-btn layui-btn-primary closeBtn">取消</button>
+                <button type="reset" class="layui-btn layui-btn-normal" th:unless="${sysMenu?.id}">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- 引入js模板 -->
+<div th:replace="common/common_js :: common_js(~{::script})">
+    <script th:inline="javascript" th:src="@{sysMenu.js}" charset="utf-8"></script>
+</div>
+</body>
+</html>

@@ -22,4 +22,7 @@ public interface ISysMenuService extends IService<SysMenu> {
     /* 系统菜单列表页 */
     List<SysMenuDto> getAllMenus(Long userId);
 
+    /* 根据id获取菜单详情 */
+    SysMenuDto getMenuById(Long id);
+
 }

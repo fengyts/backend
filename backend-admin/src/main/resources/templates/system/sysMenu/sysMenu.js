@@ -8,15 +8,13 @@ $(function (d) {
             treeTable = layui.treeTable;
         var re = treeTable.render({
             elem: '#tree-table',
-            url: '/system/sysMenu/getMenuList1',
+            url: '/system/sysMenu/getMenuList',
             icon_key: 'menuName',
             is_checkbox: true,
             primary_key: 'id',
             parent_key: 'parentId',
             checked: {
                 key: 'id',
-                width: '20px',
-                align: 'center',
                 // data: [0, 1, 4, 10, 11, 5, 2, 6, 7, 3, 8, 9],
             },
             end: function (e) {
@@ -125,6 +123,7 @@ $(function (d) {
             treeTable.render(re);
         });*/
 
+
         // 监听自定义 -> 新增
         treeTable.on('tree(add)', function (data) {
             layer.msg(JSON.stringify(data));
@@ -146,7 +145,16 @@ $(function (d) {
         o('.close-all').click(function () {
             treeTable.closeAll(re);
         })
+        // 新增根菜单(目录)
+        o('.addRootMenu').click(function () {
+            var config = {
+                "title": "菜单 >> 新增",
+                "area": ['770px', '450px'],
+                "url": "/system/sysMenu/add?id=" + 1
+            };
+            openWindow(config);
+        });
 
-    })
+    });
 
 });

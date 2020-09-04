@@ -32,9 +32,6 @@ import java.util.Objects;
 @Service
 public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> implements ISysUserService {
 
-//    @Autowired
-//    private SysUserMapper sysUserDao;
-
     @Autowired
     private SysUserConverter converter;
 
@@ -75,9 +72,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     public ResultData saveOrUpdate(SysUserDto sysUserDto) {
         SysUser sysUser = converter.toEntity(sysUserDto);
         Long id = sysUserDto.getId();
-        // 新增用户
-        // 校验是否存在
-        // 设置初始密码
+        // 新增用户 & 校验是否存在 & 设置初始密码
         if(null == id){
             SysUser userDb = this.selectByUserName(sysUserDto.getUserName());
             if (!Objects.isNull(userDb)) {

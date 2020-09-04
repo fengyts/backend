@@ -16,6 +16,31 @@ $(function () {
 
 });
 
+var layConfig = {};
+
+function openWindow(layConfig){
+    var _type = layConfig.type,
+        _title = layConfig.title,
+        _area = layConfig.area,
+        _url = layConfig.url
+    ;
+    _type = _type ? _type : 2;
+    _area = _area ? _area : ['770px', '450px'];
+    let index = layer.open({
+        type: _type ? _type : 2,
+        title: _title,
+        // skin: 'layui-layer-molv',
+        border: [3, 0.3, '#000'],
+        shadeClose: false,
+        shade: [0.3, '#000'],
+        maxmin: true,
+        scrollbar: false,
+        area: _area,
+        content: _url
+    });
+    return index;
+}
+
 // 关闭layer弹窗函数
 function closePage(index) {
     if (index) {

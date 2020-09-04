@@ -1,10 +1,12 @@
 package com.backend.system.service.impl;
 
+import com.backend.system.converter.SysMenuConverter;
 import com.backend.system.dto.SysMenuDto;
 import com.backend.system.entity.SysMenu;
 import com.backend.system.mapper.SysMenuMapper;
 import com.backend.system.service.ISysMenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,6 +23,9 @@ import java.util.List;
 @Service
 public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> implements ISysMenuService {
 
+    @Autowired
+    private SysMenuConverter converter;
+
     @Override
     public List<SysMenuDto> getAllMenusByTier(Long userId) {
 //        List<SysMenuDto> menuList = generateStaticTestMenus();
@@ -32,6 +37,13 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     public List<SysMenuDto> getAllMenus(Long userId) {
         List<SysMenuDto> menuList = baseMapper.selectAllMenus(userId);
         return menuList;
+    }
+
+    @Override
+    public SysMenuDto getMenuById(Long id) {
+        SysMenu sysMenu = baseMapper.selectById(id);
+        SysMenuDto sysMenuDto = converter.toEntityDto(sysMenu);
+        return sysMenuDto;
     }
 
     private List<SysMenuDto> generateStaticTestMenus() {
