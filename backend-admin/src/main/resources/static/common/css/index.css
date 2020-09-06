@@ -1,3 +1,41 @@
+/* ======== start ======== 重写覆盖layui样式 开始*/
+.layui-header {
+    height: 45px !important;
+}
+
+.bk-logo, .layui-nav-item {
+    line-height: 45px !important;
+}
+
+.layui-side {
+    top: 45px !important;
+}
+
+/* ======== end ======== 重写覆盖layui样式 结束*/
+
+/* 表单的placeholder字体样式 开始 */
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+    /* WebKit browsers */
+    color: #ddd;
+}
+
+input:-moz-placeholder, textarea:-moz-placeholder {
+    /* Mozilla Firefox 4 to 18 */
+    color: #ddd;
+}
+
+input::-moz-placeholder, textarea::-moz-placeholder {
+    /* Mozilla Firefox 19+ */
+    color: #ddd;
+}
+
+input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+    /* Internet Explorer 10+ */
+    color: #ddd;
+}
+
+/* 表单的placeholder字体样式 结束 */
+
 /* logo 样式 */
 .bk-logo > div {
     position: relative;
@@ -173,7 +211,8 @@
 
 /**========= end ===== tab 页签操作样式结束 */
 
-/**========= start ===== tab主体内容样式开始 */
+/**========= start ========= iframe 样式开始 */
+/**=== start === iframe父容器样式开始 */
 .mainframe-container {
     position: relative;
     left: 200px;
@@ -183,57 +222,44 @@
 
 .mainframe-container-box {
     position: relative;
-    /*min-width: calc(100vw - 200px);*/
-    /*min-height: calc(100vh - 145px);*/
     width: calc(100vw - 200px);
     height: 100%;
-    overflow-y: auto;
+    /*overflow-y: auto;*/
 }
 
+/* iframe标签样式 */
 .content-iframe {
-    width: 100%;
-    height: 100%;
-    /*min-width: calc(100vw - 235px);*/
-    min-height: calc(100vh - 145px);
+    width: inherit;
+    height: inherit;
+    min-height: calc(100vh - 130px);
 }
 
-/*.nav-tab-container::-webkit-scrollbar{
-    display: none;
-}
-.container-content::-webkit-scrollbar {
-    display: none;
-}*/
+/**=== end === iframe父容器样式结束 */
 
+/* 表单容器 */
 .form-container {
-    /*padding: 10px 0 0 0;*/
+    padding: 10px 0 0 0;
 }
+
+/**=== start === iframe 主体内容样式开始 */
 .frame-body {
+    position: relative;
     padding: 10px;
     background: #F2F2F2;
+    height: 100%;
 }
+
 .frame-content-box {
-    padding:10px 5px 5px 5px;
+    padding: 10px 5px 5px 5px;
     background: #FFFFFF;
 }
 
-/**========= end ===== tab主体内容结束 */
+.content {
+    padding: 5px;
+}
 
-/* 表单的placeholder字体样式 开始 */
-input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
-    /* WebKit browsers */
-    color: #ddd;
-}
-input:-moz-placeholder, textarea:-moz-placeholder {
-    /* Mozilla Firefox 4 to 18 */
-    color: #ddd;
-}
-input::-moz-placeholder, textarea::-moz-placeholder {
-    /* Mozilla Firefox 19+ */
-    color: #ddd;
-}
-input:-ms-input-placeholder, textarea:-ms-input-placeholder {
-    /* Internet Explorer 10+ */
-    color: #ddd;
-}
-/* 表单的placeholder字体样式 结束 */
+/**=== end === iframe 主体内容样式结束 */
+
+/**========= end ========= iframe样式结束 */
+
 

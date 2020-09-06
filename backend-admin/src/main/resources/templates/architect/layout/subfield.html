@@ -1,0 +1,76 @@
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/common/common_header :: header('分栏展示', ~{}, ~{::style})">
+    <!--
+        切换滚动条样式，参考下面<style>中的样式修改
+        1. 整个页面只显示右侧一个垂直滚动条
+            1) [html, body]中设置: overflow: auto;
+            2) [.container-box]中去掉: height: 100%;
+            3) [.role-box, .role-menu-box]中去掉: overflow: auto;
+        2. 整个页面没有滚动条, 两个分栏分别显示滚动条
+            1) [html, body]中去掉: overflow: auto;
+            2) [.container-box]中设置: height: 100%;
+            3) [.role-box, .role-menu-box]中设置: overflow: auto;
+    -->
+
+    <style>
+        html, body {
+            height: calc(100vh - 25px);
+            width: calc(100vw - 20px);
+            margin: 0;
+            padding: 0;
+            overflow: auto;
+        }
+
+        .container-box {
+            display: flex;
+            /*height: 100%;*/
+        }
+
+        .frame-content-box {
+            padding: 0 !important;
+            background: #FFFFFF;
+        }
+
+        .role-box, .role-menu-box {
+            position: relative;
+            margin: 0 auto;
+            width: 50%;
+            height: 100%;
+            overflow: auto;
+        }
+
+        .role-box {
+            /*overflow: auto;*/
+        }
+
+        .vertical-hr {
+            color: #4E5465;
+            /*border-left: solid 1px #2D93CA;*/
+            min-width: 1px;
+            width: 10px;
+            background-color: #F2F2F2;
+        }
+
+        .role-menu-box {
+            /*overflow: auto;*/
+        }
+
+    </style>
+</head>
+<body class="frame-body">
+<div class="frame-content-box container-box">
+    <div class="role-box">
+        <table id="list" lay-filter="list"></table>
+    </div>
+    <div class="vertical-hr"></div><!-- 垂直分割线 -->
+    <div class="role-menu-box">
+        menu
+    </div>
+</div>
+<!-- 引入js模板 -->
+<div th:replace="common/common_js :: common_js(~{::script})">
+    <script th:inline="javascript" th:src="@{sysRole.js}" charset="utf-8"></script>
+</div>
+</body>
+</html>

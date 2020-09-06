@@ -12,6 +12,7 @@
 <body class="layui-layout-body">
 <div class="layui-layout layui-layout-admin body-container">
     <div class="layui-header layui-bg-black">
+<!--        <div class="layui-logo bk-logo">-->
         <div class="layui-logo bk-logo">
             <div class="bk-logo-title">通用后台管理系统</div>
             <div class="layui-icon layui-icon-shrink-right bk-logo-icon" id="shrink-right"></div>
@@ -119,10 +120,11 @@
 <div th:replace="common/common_js :: common_js(~{::script})">
     <script th:inline="javascript" th:src="@{/common/js/index.js}" charset="utf-8"></script>
     <script type="text/javascript">
-        var layer;
-        layui.use(['layer'], function (){
-            layer = layui.layer;
-        });
+        // var form, layer;
+        // layui.use(['layer', 'form'], function (){
+        //     form = layui.form;
+        //     layer = layui.layer;
+        // });
 
         disablePageBack();
 

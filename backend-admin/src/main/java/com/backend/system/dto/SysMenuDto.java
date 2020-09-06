@@ -10,8 +10,9 @@ public class SysMenuDto extends BaseDto {
     private static final long serialVersionUID = 1L;
 
     private Long id;
-    private Integer level;
     private Long parentId;
+    private Integer type;
+    private Integer level;
     private String menuName;
     private Integer sort;
     private String url;

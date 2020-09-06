@@ -13,9 +13,7 @@ import com.backend.system.shiro.SysUserUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,18 +22,17 @@ import java.util.List;
 public class SysMenuController extends BaseController {
 
     @Autowired
-    private ISysUserService sysUserService;
-    @Autowired
     private ISysMenuService sysMenuService;
 
     @RequestMapping("list")
-    public String listPage(){
+    public String listPage(Model model){
+        model.addAttribute("menuTypes", SysMenuTypeEnum.values());
         return "system/sysMenu/list";
     }
 
     @GetMapping("getMenuList")
     @ResponseBody
-    public JSONArray getMenuList1(){
+    public JSONArray getMenuList(){
         Long id = SysUserUtils.getCurrentUser().getId();
         List<SysMenuDto> allMenus = sysMenuService.getAllMenus(id);
         JSONArray arrs = JSONArray.parseArray(JSONObject.toJSONString(allMenus));
@@ -55,6 +52,20 @@ public class SysMenuController extends BaseController {
         model.addAttribute("menuTypes", SysMenuTypeEnum.values());
         model.addAttribute("sysMenu", dto);
         return "system/sysMenu/form";
+    }
+
+    @PostMapping("saveOrUpdate")
+    @ResponseBody
+    public ResultData saveOrUpdate(@RequestBody SysMenuDto dto){
+        ResultData resultData = sysMenuService.saveOrUpdate(dto);
+        return resultData;
+    }
+
+    @PostMapping("update")
+    @ResponseBody
+    public ResultData update(SysMenuDto dto){
+        sysMenuService.updateSysMenu(dto);
+        return ResultData.ok();
     }
 
 }

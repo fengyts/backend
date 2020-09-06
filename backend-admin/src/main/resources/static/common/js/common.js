@@ -2,6 +2,7 @@ $(function () {
 
     formRequired();
     formEditReadonly();
+    closeLayerOpen();
 
     // 设置表单必填项 ‘*’ 样式
     function formRequired() {
@@ -14,7 +15,24 @@ $(function () {
         $(".form-readonly").addClass('layui-disabled');
     }
 
+    // layer弹窗的取消按钮 - 关闭layer弹窗
+    function closeLayerOpen(index){
+        $('.cancelBtn').on('click', function (w) {
+            closePage();
+        });
+    }
+
 });
+
+function layuiSwitch(filter){
+    filter = filter ? filter : 'switchStatu';
+    // 监听switch事件, 处理switch切换时赋值和提交获取值
+    form.on('switch(' + filter + ')', function (obj) {
+        // var c = obj.elem.checked; // 获取开关状态
+        // $(this).val(c ? 1 : 0);
+        $(this).attr('type', 'hidden').val(this.checked ? 1 : 0);
+    });
+}
 
 var layConfig = {};
 
@@ -22,10 +40,13 @@ function openWindow(layConfig){
     var _type = layConfig.type,
         _title = layConfig.title,
         _area = layConfig.area,
-        _url = layConfig.url
+        _url = layConfig.url,
+        _scrollbar = layConfig.scrollbar
     ;
     _type = _type ? _type : 2;
     _area = _area ? _area : ['770px', '450px'];
+    // 这里scrollbar要设置为true, 解决关闭弹窗时父页面因为垂直滚动条宽度导致页面抖动
+    _scrollbar = _scrollbar ? _scrollbar : false;
     let index = layer.open({
         type: _type ? _type : 2,
         title: _title,
@@ -34,7 +55,7 @@ function openWindow(layConfig){
         shadeClose: false,
         shade: [0.3, '#000'],
         maxmin: true,
-        scrollbar: false,
+        scrollbar: _scrollbar,
         area: _area,
         content: _url
     });

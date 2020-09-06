@@ -1,7 +1,11 @@
 package com.backend.system.service;
 
+import com.backend.common.ResultData;
+import com.backend.system.dto.SysRoleDto;
 import com.backend.system.entity.SysRole;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>
@@ -12,5 +16,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2020-08-01
  */
 public interface ISysRoleService extends IService<SysRole> {
+
+    List<SysRoleDto> listRoles();
+
+    SysRoleDto selectById(Long id);
+
+    ResultData saveOrUpdate(SysRoleDto dto);
 
 }

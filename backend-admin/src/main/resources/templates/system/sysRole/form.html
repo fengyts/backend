@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!--    <title>Title</title>-->
+    <meta th:include="/common/common_header :: header('', ~{}, ~{})">
+</head>
+<body>
+
+<div class="form-container layui-container">
+    <form class="layui-form" id="formId">
+        <!-- 隐藏数据区域 -->
+        <div class="layui-hide">
+            <input type="hidden" name="id" th:value="${sysRole?.id}">
+        </div>
+        <div class="layui-form-item layui-row">
+            <div class="layui-col-xs10">
+                <label class="layui-form-label form-required">角色名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="roleName" placeholder="请输入角色名称" lay-verify="required" autocomplete="off"
+                           class="layui-input" th:value="${sysRole}?${sysRole.roleName}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-row">
+            <div class="layui-col-xs10">
+                <label class="layui-form-label">角色代码&nbsp;&nbsp;</label>
+                <div class="layui-input-block">
+                    <input type="text" name="roleCode" placeholder="请输入角色代码" autocomplete="off"
+                           class="layui-input" th:value="${sysRole?.roleCode}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-row">
+            <div class="layui-col-xs10">
+                <label class="layui-form-label">角色描述&nbsp;&nbsp;</label>
+                <div class="layui-input-block">
+                    <input type="text" name="description" placeholder="请输入角色描述" autocomplete="off"
+                           class="layui-input" th:value="${sysRole?.description}">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item layui-row">
+            <div class="layui-col-xs10">
+                <label class="layui-form-label">是否启用</label>
+                <div class="layui-input-block">
+                    <input type="checkbox" name="status" lay-skin="switch" lay-filter="switchStatu"
+                           value="1" lay-text="启用|关闭" th:checked="${sysRole}?${sysRole?.status==1}:true">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-row">
+            <div class="layui-btn-container layui-col-xs6 layui-col-xs-offset4">
+                <button type="button" class="layui-btn saveBtn" lay-submit lay-filter="formSubmit">保存</button>
+                <button type="button" class="layui-btn layui-btn-primary cancelBtn">取消</button>
+                <button type="reset" class="layui-btn layui-btn-normal" th:unless="${sysRole?.id}">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- 引入js模板 -->
+<div th:replace="common/common_js :: common_js(~{::script})">
+    <script th:inline="javascript" th:src="@{sysRole.js}" charset="utf-8"></script>
+</div>
+</body>
+</html>

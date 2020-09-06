@@ -14,7 +14,7 @@ import lombok.EqualsAndHashCode;
  * </p>
  *
  * @author fengyts
- * @since 2020-08-01
+ * @since 2020-09-05
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -32,9 +32,19 @@ public class SysRole extends BaseDO {
     private String roleName;
 
     /**
+     * 角色代码
+     */
+    private String roleCode;
+
+    /**
      * 角色描述
      */
     private String description;
+
+    /**
+     * 角色状态(是否可用): 1-可用；0-不可用
+     */
+    private Integer status;
 
 
 }
