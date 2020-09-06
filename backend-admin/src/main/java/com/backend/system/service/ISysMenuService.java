@@ -1,5 +1,6 @@
 package com.backend.system.service;
 
+import com.backend.common.ResultData;
 import com.backend.system.dto.SysMenuDto;
 import com.backend.system.entity.SysMenu;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -24,5 +25,9 @@ public interface ISysMenuService extends IService<SysMenu> {
 
     /* 根据id获取菜单详情 */
     SysMenuDto getMenuById(Long id);
+
+    ResultData saveOrUpdate(SysMenuDto dto);
+
+    boolean updateSysMenu(SysMenuDto dto);
 
 }

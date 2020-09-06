@@ -2,8 +2,8 @@ package com.backend.system.converter;
 
 import com.backend.common.Constants;
 import com.backend.common.EntityConverter;
-import com.backend.system.dto.SysMenuDto;
-import com.backend.system.entity.SysMenu;
+import com.backend.system.dto.SysRoleDto;
+import com.backend.system.entity.SysRole;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -12,22 +12,20 @@ import org.mapstruct.Mappings;
  * @author
  */
 @Mapper(componentModel = "spring")
-public interface SysMenuConverter extends EntityConverter<SysMenu, SysMenuDto> {
+public interface SysRoleConverter extends EntityConverter<SysRole, SysRoleDto> {
 
     @Mappings({
             @Mapping(source = "modifyTime", target = "modifyTime", ignore = true),
             @Mapping(source = "createTime", target = "createTime", ignore = true),
-            @Mapping(source = "menuName", target = "name"),
     })
     @Override
-    SysMenu toEntity(SysMenuDto dto);
+    SysRole toEntity(SysRoleDto dto);
 
     @Mappings({
             @Mapping(target = "modifyTime", source = "modifyTime", dateFormat = Constants.DATE_FORMAT_MILLI_SECONDS),
             @Mapping(target = "createTime", source = "createTime", dateFormat = Constants.DATE_FORMAT_SECONDS),
-            @Mapping(target = "menuName", source = "name"),
     })
     @Override
-    SysMenuDto toEntityDto(SysMenu entity);
+    SysRoleDto toEntityDto(SysRole entity);
 
 }

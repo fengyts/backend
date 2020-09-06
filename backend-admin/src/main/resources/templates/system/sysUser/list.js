@@ -6,7 +6,6 @@ layui.use(['table', 'form', 'layer'], function () {
     /**列表初始化**/
     var tableList = table.render({
         elem: '#list',
-        // url: contextPath + "merger/queryRecord",
         url: "/system/sysUser/queryPageList",
         method: 'post',
         cellMinWidth: 80,
