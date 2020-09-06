@@ -85,13 +85,13 @@ layui.use(['table', 'form', 'layer'], function () {
             shade: [0.3, '#000'],
             maxmin: true,
             scrollbar: false,
-            area: ['770px', '450px'],
+            area: ['770px', '420px'],
             content: '/system/sysUser/add'
         });
     });
 
-    // 关闭弹窗
-    $(".closeBtn").on('click', function () {
+    // 弹窗取消按钮 - 关闭弹窗
+    $(".cancelBtn").on('click', function () {
         closePage();
     });
 
@@ -150,7 +150,7 @@ layui.use(['table', 'form', 'layer'], function () {
             shade: [0.3, '#000'],
             maxmin: true,
             scrollbar: false,
-            area: ['770px', '450px'],
+            area: ['770px', '420px'],
             content: '/system/sysUser/edit?userId=' + id
         });
     }
