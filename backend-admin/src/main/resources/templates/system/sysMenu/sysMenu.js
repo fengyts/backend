@@ -1,6 +1,6 @@
 $(function (d) {
     layui.extend({
-        treeTable: '/plugins/layui-treetable/treeTable'
+        treeTable: '/plugins/layui-extend/treeTable'
     }).use(['treeTable', 'layer', 'code', 'form'], function () {
         var o = layui.$,
             form = layui.form,

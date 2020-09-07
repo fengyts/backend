@@ -82,10 +82,10 @@
         </div>
         <table id="list" lay-filter="list"></table>
     </div>
-    <div class="vertical-hr"></div><!-- 垂直分割线 -->
+    <div class="vertical-hr"></div><!-- 垂直分割线 - 分栏之间的灰色空白区 -->
     <div class="role-menu-box content" id="role_menu_associate">
-        menu box
-        menu box
+<!--        <div th:replace="/system/sysRole/roleMenu"></div>-->
+        <div th:replace="system/sysRole/roleMenu.html"></div>
     </div>
 </div>
 <!-- 引入js模板 -->

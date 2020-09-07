@@ -136,7 +136,7 @@ layui.use(['table', 'form', 'layer'], function () {
 
     // 右边角色关联菜单权限栏目
     function associate(id){
-        $("#role_menu_associate").append(id);
+        $("#role_menu_associate").append(id).append("啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊");
     }
 
     function openPage(id, _eve) {
