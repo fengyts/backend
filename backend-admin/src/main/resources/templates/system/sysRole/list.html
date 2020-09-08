@@ -85,8 +85,11 @@
     </div>
     <div class="vertical-hr"></div><!-- 垂直分割线 - 分栏之间的灰色空白区 -->
     <div class="role-menu-box content" id="role_menu_associate">
-<!--        <div th:replace="/system/sysRole/roleMenu"></div>-->
-<!--        <div th:replace="system/sysRole/roleMenu.html"></div>-->
+        <div class="layui-btn layui-btn-sm getChecked">获取选中</div>
+        <div class="layui-btn layui-btn-sm checkedAll">
+            全选/反选
+            <input type="hidden" value="0" id="checkedAllFlag">
+        </div>
         <div class="eleTree ele" lay-filter="eleTreeData"></div>
     </div>
 </div>
