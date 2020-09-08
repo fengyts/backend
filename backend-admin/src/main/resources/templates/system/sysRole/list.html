@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/common/common_header :: header('', ~{}, ~{::style})">
+<head th:replace="/common/common_header :: header('', ~{::link}, ~{::style})">
+    <link rel="stylesheet" th:href="@{/plugins/layui-extend/eleTree.css}" charset="UTF-8"/>
     <!--
         切换滚动条样式，参考下面<style>中的样式修改
         1. 整个页面只显示右侧一个垂直滚动条
@@ -85,12 +86,14 @@
     <div class="vertical-hr"></div><!-- 垂直分割线 - 分栏之间的灰色空白区 -->
     <div class="role-menu-box content" id="role_menu_associate">
 <!--        <div th:replace="/system/sysRole/roleMenu"></div>-->
-        <div th:replace="system/sysRole/roleMenu.html"></div>
+<!--        <div th:replace="system/sysRole/roleMenu.html"></div>-->
+        <div class="eleTree ele" lay-filter="eleTreeData"></div>
     </div>
 </div>
 <!-- 引入js模板 -->
 <div th:replace="common/common_js :: common_js(~{::script})">
     <script th:inline="javascript" th:src="@{sysRole.js}" charset="utf-8"></script>
+    <script th:inline="javascript" th:src="@{sysRoleMenu.js}" charset="utf-8"></script>
 </div>
 </body>
 </html>
