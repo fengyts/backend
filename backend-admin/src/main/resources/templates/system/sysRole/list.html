@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="/common/common_header :: header('', ~{::link}, ~{::style})">
-    <link rel="stylesheet" th:href="@{/plugins/layui-extend/eleTree.css}" charset="UTF-8"/>
+    <link rel="stylesheet" th:href="@{/plugins/layui-extend/eleTree/dist/css/icon.css}" charset="UTF-8"/>
+<!--    <link rel="stylesheet" href="//eletreejs.surge.sh/css/icon.css">-->
     <!--
         切换滚动条样式，参考下面<style>中的样式修改
         1. 整个页面只显示右侧一个垂直滚动条
@@ -90,7 +91,7 @@
             全选/反选
             <input type="hidden" value="0" id="checkedAllFlag">
         </div>
-        <div class="eleTree ele" lay-filter="eleTreeData"></div>
+        <div class="eleTree"></div>
     </div>
 </div>
 <!-- 引入js模板 -->
