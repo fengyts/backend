@@ -2,6 +2,7 @@ package com.backend.system.service;
 
 import com.backend.common.ResultData;
 import com.backend.system.dto.SysRoleDto;
+import com.backend.system.dto.SysRoleMenuDto;
 import com.backend.system.entity.SysRole;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -22,5 +23,9 @@ public interface ISysRoleService extends IService<SysRole> {
     SysRoleDto selectById(Long id);
 
     ResultData saveOrUpdate(SysRoleDto dto);
+
+    List<SysRoleMenuDto> getSysRoleMenus(Long roleId);
+
+    ResultData associateRoleMenu(Long roleId, List<String> menus);
 
 }

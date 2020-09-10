@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="/common/common_header :: header('', ~{::link}, ~{::style})">
     <link rel="stylesheet" th:href="@{/plugins/layui-extend/eleTree/dist/css/icon.css}" charset="UTF-8"/>
-<!--    <link rel="stylesheet" href="//eletreejs.surge.sh/css/icon.css">-->
+    <!--    <link rel="stylesheet" href="//eletreejs.surge.sh/css/icon.css">-->
     <!--
         切换滚动条样式，参考下面<style>中的样式修改
         1. 整个页面只显示右侧一个垂直滚动条
@@ -28,11 +28,13 @@
         .layui-table-grid-down {
             display: none !important;
         }
-        .layui-table-tool{
+
+        .layui-table-tool {
             min-height: 20px !important;
             /*line-height: normal !important;*/
             line-height: 10px !important;
         }
+
         /* layui 样式重写结束 */
 
         .container-box {
@@ -80,24 +82,28 @@
                     <i class="layui-icon">&#xe608;</i> 添加
                 </button>
             </div>
-<!--            <table id="list" lay-filter="list"></table>-->
         </div>
         <table id="list" lay-filter="list"></table>
     </div>
     <div class="vertical-hr"></div><!-- 垂直分割线 - 分栏之间的灰色空白区 -->
     <div class="role-menu-box content" id="role_menu_associate">
-        <div class="layui-btn layui-btn-sm getChecked">获取选中</div>
         <div class="layui-btn layui-btn-sm checkedAll">
             全选/反选
             <input type="hidden" value="0" id="checkedAllFlag">
         </div>
-        <div class="eleTree"></div>
+        <div class="layui-btn layui-btn-sm" id="associateRoleMenu">
+            保存角色权限
+            <input type="hidden" name="roleId" id="associateRoleId" value=""/>
+        </div>
+        <div class="role-menu-content">
+            <div class="eleTree"></div>
+        </div>
     </div>
 </div>
 <!-- 引入js模板 -->
 <div th:replace="common/common_js :: common_js(~{::script})">
     <script th:inline="javascript" th:src="@{sysRole.js}" charset="utf-8"></script>
-    <script th:inline="javascript" th:src="@{sysRoleMenu.js}" charset="utf-8"></script>
+<!--    <script th:inline="javascript" th:src="@{sysRoleMenu.js}" charset="utf-8"></script>-->
 </div>
 </body>
 </html>

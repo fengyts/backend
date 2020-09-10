@@ -96,7 +96,7 @@ $(function () {
             }
         ]
 
-        var eleT = eleTree({
+        let eleT = eleTree({
             el: '.eleTree',
             data: data,
             showCheckbox: true,
@@ -124,4 +124,10 @@ $(function () {
             }
         });
     });
+
 });
+
+// 右边角色关联菜单权限栏目
+function associate(roleId){
+    $("#associateRoleId").val(roleId);
+}
