@@ -3,7 +3,6 @@ package com.backend.system.service.impl;
 import com.backend.common.ResultData;
 import com.backend.enums.SysMenuShowStatusEnum;
 import com.backend.system.converter.SysRoleConverter;
-import com.backend.system.dto.SysMenuDto;
 import com.backend.system.dto.SysRoleDto;
 import com.backend.system.dto.SysRoleMenuDto;
 import com.backend.system.entity.SysMenu;
@@ -86,8 +85,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
         List<SysRoleMenuDto> sysRoleMenus = Lists.newArrayList();
         LambdaQueryWrapper<SysMenu> lqw = Wrappers.lambdaQuery();
         lqw.eq(SysMenu::getIsShow, SysMenuShowStatusEnum.VALID.getCode());
-//        List<SysMenu> menuList = sysMenuService.list(lqw);
-        List<SysMenuDto> menuList = sysMenuService.getAllMenusByTier(1L);
+        List<SysMenu> menuList = sysMenuService.list(lqw);
 
         LambdaQueryWrapper<SysRoleMenu> lqwRM = Wrappers.lambdaQuery();
         lqwRM.eq(SysRoleMenu::getRoleId, roleId);
