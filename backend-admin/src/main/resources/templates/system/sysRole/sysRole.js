@@ -281,6 +281,12 @@ layui.extend({
             statusCode: '0',
             dataName: "data"
         },
+        request: {
+            name: "label",
+            checked: "checked",
+            id: "id",
+            parentId: "pid"
+        }
     });
     eleT.on('checkbox', function (data) {
         // console.log(this)
