@@ -12,6 +12,7 @@
 
     <modules>
         <module>backend-admin</module>
+        <module>backend-flowable</module>
     </modules>
 
     <properties>
