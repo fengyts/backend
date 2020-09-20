@@ -181,11 +181,11 @@
         </dependency>
 
         <!-- flowable工作流 -->
-        <dependency>
-            <groupId>org.flowable</groupId>
-            <artifactId>flowable-spring-boot-starter-basic</artifactId>
-            <version>${flowable-spring-boot.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.flowable</groupId>-->
+<!--            <artifactId>flowable-spring-boot-starter-basic</artifactId>-->
+<!--            <version>${flowable-spring-boot.version}</version>-->
+<!--        </dependency>-->
 
     </dependencies>
 

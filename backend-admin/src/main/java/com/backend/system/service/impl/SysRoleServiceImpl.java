@@ -1,37 +1,27 @@
 package com.backend.system.service.impl;
 
 import com.backend.common.ResultData;
-import com.backend.enums.SysMenuShowStatusEnum;
 import com.backend.system.converter.SysRoleConverter;
 import com.backend.system.dto.SysRoleDto;
 import com.backend.system.dto.SysRoleMenuDto;
-import com.backend.system.entity.SysMenu;
 import com.backend.system.entity.SysRole;
 import com.backend.system.entity.SysRoleMenu;
 import com.backend.system.mapper.SysRoleMapper;
 import com.backend.system.service.ISysMenuService;
 import com.backend.system.service.ISysRoleMenuService;
 import com.backend.system.service.ISysRoleService;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.data.redis.support.atomic.RedisAtomicInteger;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.Resource;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -52,11 +42,6 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     @Autowired
     private ISysRoleMenuService sysRoleMenuService;
 
-//    @Autowired
-//    private RedisTemplate redisTemplate;
-//    @Resource(name = "redisTemplate")
-//    private ValueOperations valueOperations;
-
     @Override
     public List<SysRoleDto> listRoles() {
         List<SysRole> roles = this.list();
@@ -72,6 +57,7 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
     }
 
     @Override
+    @Transactional
     public ResultData saveOrUpdate(SysRoleDto dto) {
         Long id = dto.getId();
         String roleName = dto.getRoleName();
@@ -94,51 +80,48 @@ public class SysRoleServiceImpl extends ServiceImpl<SysRoleMapper, SysRole> impl
 
     @Override
     public List<SysRoleMenuDto> getSysRoleMenus(Long roleId) {
-        List<SysRoleMenuDto> sysRoleMenus = Lists.newArrayList();
-        LambdaQueryWrapper<SysMenu> lqw = Wrappers.lambdaQuery();
-        lqw.eq(SysMenu::getIsShow, SysMenuShowStatusEnum.VALID.getCode());
-        List<SysMenu> menuList = sysMenuService.list(lqw);
+        List<SysRoleMenuDto> sysRoleMenus = sysMenuService.getAllMenusByTier();
 
         LambdaQueryWrapper<SysRoleMenu> lqwRM = Wrappers.lambdaQuery();
         lqwRM.eq(SysRoleMenu::getRoleId, roleId);
         List<SysRoleMenu> roleMenus = sysRoleMenuService.list(lqwRM);
 
-        if (CollectionUtils.isEmpty(roleMenus)) {
-            sysRoleMenus = menuList.stream().map(temp -> {
-                SysRoleMenuDto dto = new SysRoleMenuDto();
-                BeanUtils.copyProperties(temp, dto);
-                return dto;
-            }).collect(Collectors.toList());
-        } else {
-            sysRoleMenus = menuList.stream().map(temp -> {
-                SysRoleMenuDto dto = new SysRoleMenuDto();
-                BeanUtils.copyProperties(temp, dto);
-
-                Long menuId = temp.getId();
-                roleMenus.forEach(rm -> {
-                    Long mid = rm.getMenuId();
-                    if (menuId.longValue() == mid.longValue()) {
-                        dto.setChecked(true);
-                        return;
-                    }
-                });
-                return dto;
-            }).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(roleMenus)) {
+            List<Long> roleMenuIds = roleMenus.stream().map(SysRoleMenu::getMenuId).collect(Collectors.toList());
+            setRoleBoundedMenu(sysRoleMenus, roleMenuIds);
         }
+
         return sysRoleMenus;
     }
 
+    private List<SysRoleMenuDto> setRoleBoundedMenu(List<SysRoleMenuDto> sysRoleMenus, List<Long> roleMenuIds) {
+        List<SysRoleMenuDto> temp = sysRoleMenus.stream().peek(sm -> {
+            List<SysRoleMenuDto> subRoleMenus = sm.getSubRoleMenus();
+            if (CollectionUtils.isNotEmpty(subRoleMenus)) {
+                setRoleBoundedMenu(subRoleMenus, roleMenuIds);
+                // eleTree的坑：如果存在子节点，父节点checked状态不能设置为true，否则子节点都会是选中状态
+                sm.setChecked(false);
+                sm.setIsLeaf(false);
+            } else {
+                sm.setChecked(roleMenuIds.contains(sm.getId()));
+                sm.setIsLeaf(true);
+            }
+        }).collect(Collectors.toList());
+        return temp;
+    }
+
     @Override
-    public ResultData associateRoleMenu(Long roleId, List<String> menus) {
+    @Transactional
+    public ResultData associateRoleMenu(Long roleId, List<Long> menuIds) {
         LambdaQueryWrapper<SysRoleMenu> lwq = Wrappers.lambdaQuery();
         lwq.eq(SysRoleMenu::getRoleId, roleId);
-        sysRoleMenuService.remove(lwq);
-        List<SysRoleMenu> records = menus.stream().map(m -> {
+        List<SysRoleMenu> records = menuIds.stream().map(id -> {
             SysRoleMenu record = new SysRoleMenu();
             record.setRoleId(roleId);
-            record.setMenuId(Long.valueOf(m));
+            record.setMenuId(id);
             return record;
         }).collect(Collectors.toList());
+        sysRoleMenuService.remove(lwq); // 删除roleId下所有关联菜单，然后重新关联
         sysRoleMenuService.saveBatch(records);
         return ResultData.ok();
     }

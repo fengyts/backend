@@ -1,9 +1,12 @@
 package com.backend.system.service.impl;
 
 import com.backend.common.ResultData;
+import com.backend.enums.DeleteStatusEnum;
+import com.backend.enums.SysMenuShowStatusEnum;
 import com.backend.enums.SysMenuTypeEnum;
 import com.backend.system.converter.SysMenuConverter;
 import com.backend.system.dto.SysMenuDto;
+import com.backend.system.dto.SysRoleMenuDto;
 import com.backend.system.entity.SysMenu;
 import com.backend.system.mapper.SysMenuMapper;
 import com.backend.system.service.ISysMenuService;
@@ -12,12 +15,18 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import org.apache.commons.collections.CollectionUtils;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -38,6 +47,46 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 //        List<SysMenuDto> menuList = generateStaticTestMenus();
         List<SysMenuDto> menuList = baseMapper.selectAllMenusByTier(userId);
         return menuList;
+    }
+
+    @Override
+    public List<SysRoleMenuDto> getAllMenusByTier() {
+        LambdaQueryWrapper<SysMenu> qwl = Wrappers.lambdaQuery();
+        qwl.eq(SysMenu::getIsDelete, DeleteStatusEnum.DELETE_FALSE.getCode())
+                .eq(SysMenu::getIsShow, SysMenuShowStatusEnum.VALID.getCode());
+        List<SysMenu> sysMenuList = this.list(qwl);
+
+        List<SysRoleMenuDto> menuList = sysMenuList.stream().map(sm -> {
+            SysRoleMenuDto dto = new SysRoleMenuDto();
+            BeanUtils.copyProperties(sm, dto);
+            dto.setMenuName(sm.getName());
+            dto.setIsLeaf(false);
+            dto.setChecked(false);
+            return dto;
+        }).collect(Collectors.toList());
+
+        List<SysRoleMenuDto> roleMenuList = buildMenuTree(menuList, 0L);
+        return roleMenuList;
+    }
+
+    /**
+     * 递归构建菜单树
+     *
+     * @param menuList
+     * @param pid
+     * @return
+     */
+    private List<SysRoleMenuDto> buildMenuTree(List<SysRoleMenuDto> menuList, Long pid) {
+        List<SysRoleMenuDto> treeList = Lists.newArrayList();
+        menuList.forEach(menu -> {
+            if (pid.longValue() == menu.getParentId()) {
+                List<SysRoleMenuDto> subRoleMenus = buildMenuTree(menuList, menu.getId());
+                menu.setSubRoleMenus(subRoleMenus);
+                menu.setIsLeaf(CollectionUtils.isEmpty(subRoleMenus));
+                treeList.add(menu);
+            }
+        });
+        return treeList;
     }
 
     @Override
@@ -77,7 +126,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
                     return ResultData.err("存在同名菜单");
                 }
             }
-            if (type != sysMenuDb.getType()){ //菜单类型有修改
+            if (type != sysMenuDb.getType()) { //菜单类型有修改
                 Integer level = getLevel(type, parentId);
                 dto.setLevel(level);
             }
@@ -87,9 +136,9 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         return ResultData.ok();
     }
 
-    private int getLevel(int type, Long id){
+    private int getLevel(int type, Long id) {
         Integer level;
-        if(SysMenuTypeEnum.DIRECTORY.getCode() == type){
+        if (SysMenuTypeEnum.DIRECTORY.getCode() == type) {
             level = 0;
         } else if (SysMenuTypeEnum.BUTTON.getCode() == type) {
             level = 9;

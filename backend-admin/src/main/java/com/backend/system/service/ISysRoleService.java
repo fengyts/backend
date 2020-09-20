@@ -26,6 +26,6 @@ public interface ISysRoleService extends IService<SysRole> {
 
     List<SysRoleMenuDto> getSysRoleMenus(Long roleId);
 
-    ResultData associateRoleMenu(Long roleId, List<String> menus);
+    ResultData associateRoleMenu(Long roleId, List<Long> menuIds);
 
 }

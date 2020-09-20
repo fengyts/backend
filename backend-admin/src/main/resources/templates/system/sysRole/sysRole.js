@@ -13,7 +13,7 @@ layui.extend({
         method: 'get',
         // cellMinWidth: 80,
         // height: 'full-80',
-        toolbar: '<div><span style="height: 10px; color: indianred; font-size: 12px;">(点击角色名称获取菜单权限)</span></div>',
+        toolbar: '<div><span style="height: 10px; color: indianred; font-size: 12px;">(点击角色名称查看菜单权限)</span></div>',
         defaultToolbar: [],
         cols: [
             [
@@ -67,7 +67,7 @@ layui.extend({
     });
 
     // 监听表单的 switch事件, 处理switch切换时赋值和提交获取值
-    layuiSwitch('switchStatu');
+    layuiSwitch('switchStatuForm');
 
     //监听list列表页面的 switch开关
     form.on('switch(switchStatu)', function (data) {
@@ -130,7 +130,7 @@ layui.extend({
                 openPage(rowData.id, obj.event);
                 return;
             case 'associate': // 角色关联菜单权限事件
-                associate(rowData.id);
+                associate(rowData);
                 return;
             default:
                 return;
@@ -178,6 +178,7 @@ layui.extend({
     });
 
 // 角色菜单关联操作-------------------------------------------------------------------------
+    // 测试静态数据
     var data = [
         {
             "label": "安徽省",
@@ -196,7 +197,8 @@ layui.extend({
                         {
                             "label": "花山区",
                             "id": "001002001",
-                            "isOpen": true,
+                            // "isOpen": true,
+                            "isOpen": false,
                             "children": [
                                 {
                                     "label": "霍里街道",
@@ -207,6 +209,7 @@ layui.extend({
                                 },
                                 {
                                     "label": "桃源路",
+                                    "checked": false,
                                     "id": "001002002002"
                                 },
                                 {
@@ -270,27 +273,35 @@ layui.extend({
             ]
         }
     ]
-    let eleT = eleTree({
-        el: '.eleTree',
-        url: '/system/sysRole/getAllMenus',
-        // data: data,
-        showCheckbox: true,
-        highlightCurrent: true,
-        response: {
-            statusName: "code",
-            statusCode: '0',
-            dataName: "data"
-        },
-    });
-    eleT.on('checkbox', function (data) {
-        // console.log(this)
-        console.log(data)
-    });
-    // 获取选中的值
-    $('.getChecked').click(function () {
-        var c = eleT.getChecked(false, true);
-        console.log(c);
-    });
+
+    let getConfig = function (roleId) {
+        let _eleTreeConfig = {
+            el: '.eleTree',
+            url: '/system/sysRole/getAllMenus?roleId=' + roleId,
+            method: 'get',
+            defaultExpandAll: true,
+            showCheckbox: true,
+            highlightCurrent: true,
+            response: {
+                statusName: "code",
+                statusCode: '0',
+                dataName: "data"
+            },
+            request: { // 对于后台数据重新定义名字
+                name: "menuName",
+                key: "id",
+                children: "subRoleMenus",
+                checked: "checked",
+                // isOpen: "isOpen",
+                isLeaf: "isLeaf",
+                pid: "parentId",
+            },
+        };
+        return _eleTreeConfig;
+    };
+
+    let eleT = eleTree(getConfig(0)); // 初始化 eleTree
+
     // 全选/反选
     $(".checkedAll").click(function () {
         eleT.setAllChecked();
@@ -305,9 +316,55 @@ layui.extend({
     });
 
     // 右边角色关联菜单权限栏目
-    function associate(roleId) {
+    function associate(rowData) {
+        let roleId = rowData.id;
         $("#associateRoleId").val(roleId);
+        $(".role-name-box").text(rowData.roleName);
+
+        let _cfg = getConfig(roleId);
+        eleT.reload(_cfg);
     }
+
+    function getRoleId() {
+        return $("#associateRoleId").val();
+    }
+
+    // 保存关联信息
+    $("#associateRoleMenu").click(function () {
+        let _roleId = getRoleId(), // 获取角色id
+            _checked = eleT.getChecked(false, true), // 获取选中
+            _ids = [],
+            _data; // 传给后台的数据
+        if(undefined == _roleId || '' == _roleId){
+            layer.msg('请选择角色', {icon: 2, time: 1500});
+            return;
+        }
+        /*
+        // 全不选表示删除所有权限
+        if(undefined == _checked || _checked.length < 1){
+            layer.msg('请选择菜单', {icon: 2, time: 1500});
+            return;
+        }*/
+        $.each(_checked, function (i, n) {
+            _ids.push(n.id);
+        });
+        _data = JSON.stringify(_ids);
+        $.ajax({
+            url: '/system/sysRole/associateRoleMenu?roleId=' + _roleId,
+            type: 'POST',
+            data: _data,
+            contentType: 'application/json;charset=UTF-8',
+            dataType: 'json',
+            success: function (res) {
+                layer.msg('保存成功', {time: 1500});
+                eleT.reload(getConfig(_roleId));
+                return;
+            },
+            error: function (res) {
+                layer.msg('系统异常', {icon: 2, time: 1500})
+            }
+        });
+    });
 
 
 });
