@@ -1,10 +1,12 @@
 package com.backend.controller;
 
 import com.backend.common.BaseController;
+import com.backend.common.ResultData;
 import com.backend.entity.ProcessDefinitionDto;
 import com.backend.entity.ProcessInstanceDto;
 import com.backend.entity.TaskInfoDto;
 import com.backend.util.WorkflowConverterUtil;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.flowable.engine.ProcessEngine;
 import org.flowable.engine.RepositoryService;
@@ -40,18 +42,6 @@ public class HolidayController extends BaseController {
     @Autowired
     private TaskService taskService;
 
-//    private ProcessEngine getProcessEngineDefault() {
-//        ProcessEngine processEngine = ProcessEngines.getDefaultProcessEngine();
-//        return processEngine;
-//    }
-//    private ProcessEngine getProcessEngine(String processEngineName) {
-//        if(StringUtils.isBlank(processEngineName)){
-//            return getProcessEngineDefault();
-//        }
-//        ProcessEngine processEngine = ProcessEngines.getProcessEngine(processEngineName);
-//        return processEngine;
-//    }
-
     @RequestMapping("/index")
     public String index() {
         return "/index";
@@ -59,38 +49,39 @@ public class HolidayController extends BaseController {
 
     @PostMapping("deployProcess")
     @ResponseBody
-    public String deployProcess(String processEngineName) {
-//        ProcessEngine processEngine = getProcessEngineDefault();
+    public ResultData deployProcess(String processEngineName) {
         RepositoryService repositoryService = processEngine.getRepositoryService();
         Deployment deployment = repositoryService.createDeployment()
                 .addClasspathResource("process/holiday-request.bpmn20.xml")
                 .deploy();
-        return deployment.getId();
+        return ResultData.ok(deployment.getId());
     }
 
     @GetMapping("queryProcessDefinition")
     @ResponseBody
-    public ProcessDefinitionDto queryProcessDefinition(String deploymentId){
+    public ResultData queryProcessDefinition(String deploymentId){
         ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
                 .deploymentId(deploymentId)
                 .singleResult();
         if (Objects.isNull(processDefinition)) {
-            return new ProcessDefinitionDto();
+            return ResultData.err("processDefinition 查询为空");
         }
         System.out.println("Found process definition : " + processDefinition.getName());
         ProcessDefinitionDto dto = WorkflowConverterUtil.toProcessDefinitionDto(processDefinition);
-        return dto;
+        List<ProcessDefinitionDto> results = Lists.newArrayListWithCapacity(1);
+        results.add(dto);
+        return ResultData.ok(results);
     }
 
     @PostMapping("startProcess")
     @ResponseBody
-    public ProcessInstanceDto startProcess(String processEngineName, String processDefinitionKey, Map<String, Object> variables) {
+    public ResultData startProcess(String processEngineName, String processDefinitionKey, Map<String, Object> variables) {
         RuntimeService runtimeService = processEngine.getRuntimeService();
         // processDefinitionKey="holidayRequest";
         variables = initVariables();
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processDefinitionKey, variables);
         ProcessInstanceDto dto = WorkflowConverterUtil.toProcessInstanceDto(processInstance);
-        return dto;
+        return ResultData.ok(dto);
     }
 
     private Map<String, Object> initVariables() {
@@ -106,17 +97,17 @@ public class HolidayController extends BaseController {
 
     @PostMapping("approve")
     @ResponseBody
-    public Boolean approve(String taskId, String approveFlag){
+    public ResultData approve(String taskId, String approveFlag){
         boolean approved = approveFlag.equals("y");
         Map<String, Object> variables = Maps.newHashMap();
         variables.put("approved", approved);
         taskService.complete(taskId, variables);
-        return true;
+        return ResultData.ok();
     }
 
     @GetMapping("queryTask")
     @ResponseBody
-    public List<TaskInfoDto> queryTask() {
+    public ResultData queryTask() {
         List<Task> tasks = taskService.createTaskQuery().taskCandidateGroup("managers").list();
         System.out.println("You have " + tasks.size() + " tasks:");
         for (int i = 0; i < tasks.size(); i++) {
@@ -126,7 +117,7 @@ public class HolidayController extends BaseController {
             TaskInfoDto e = WorkflowConverterUtil.toTaskDto(t);
             return e;
         }).collect(Collectors.toList());
-        return results;
+        return ResultData.ok(results);
     }
 
 }

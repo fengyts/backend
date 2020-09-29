@@ -15,22 +15,10 @@
     <button type="button" class="layui-btn" id="viewTask">查看任务</button>
 </div>
 <div>
-    <table>
-        <thead>
-        <tr>
-            <th></th>
-            <th></th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        </tbody>
-    </table>
+    <div>
+        <table id="queryProcessList" lay-filter="queryProcessList"></table>
+        <table id="viewTaskList" lay-filter="viewTaskList"></table>
+    </div>
 </div>
 
 <script th:src="@{/plugins/jquery/jquery-3.5.1.min.js}" charset="utf-8"></script>

@@ -14,6 +14,7 @@ import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
 
 import java.util.Map;
+import org.flowable.task.service.impl.persistence.entity.TaskEntityImpl;
 
 /**
  * @author DELL
@@ -105,14 +106,12 @@ public class WorkflowConverterUtil {
 
     public static TaskInfoDto toTaskDto(Task task) {
         TaskInfoDto dto;
-//        if(task instanceof TaskEntityImpl){
-        if(task instanceof Entity){
-//            TaskEntityImpl entity = (TaskEntityImpl) task;
-            Entity entity = (Entity) task;
-            Map<String, Object> persistentState = (Map<String, Object>) entity.getPersistentState();
-            dto = BeanUtils.mapToBean(persistentState, TaskInfoDto.class);
-            return dto;
-        }
+//        if(task instanceof Entity){
+//            Entity entity = (Entity) task;
+//            Map<String, Object> persistentState = (Map<String, Object>) entity.getPersistentState();
+//            dto = BeanUtils.mapToBean(persistentState, TaskInfoDto.class);
+//            return dto;
+//        }
 
         dto = new TaskInfoDto();
 
@@ -142,7 +141,7 @@ public class WorkflowConverterUtil {
         dto.setProcessVariables(task.getProcessVariables());
         dto.setDelegationState(task.getDelegationState());
 
-        dto.setIdentityLinks(task.getIdentityLinks());
+//        dto.setIdentityLinks(task.getIdentityLinks());
 
         return dto;
     }
