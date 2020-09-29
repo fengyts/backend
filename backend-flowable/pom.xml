@@ -19,6 +19,7 @@
         <junit.version>4.12</junit.version>
         <slf4j.version>1.7.30</slf4j.version>
         <freemarker.version>2.3.30</freemarker.version>
+        <cglib.version>3.3.0</cglib.version>
         <commons-lang3.version>3.10</commons-lang3.version>
         <commons-codec.version>1.14</commons-codec.version>
         <commons-collections.version>4.4</commons-collections.version>
@@ -68,6 +69,11 @@
             <version>${spring-boot-mail.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib</artifactId>
+            <version>${cglib.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>

@@ -4,6 +4,12 @@ server:
     #指定basedir，解决：sprinboot运行一段时间后出现：ClassNotFoundException
     basedir: ./tomcat-tmp
 
+flowable:
+  database-schema-update: true
+  db-history-used: true
+  history-level: audit
+#  async-history-executor-activate: true
+
 spring:
   mail:
     host: smtp.163.com
@@ -32,3 +38,4 @@ spring:
     suffix: .html
     mode: HTML5
     cache: false
+
