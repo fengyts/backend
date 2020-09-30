@@ -6,17 +6,21 @@ layui.use(['form', 'table', 'layer'], function () {
     var deploymentId = "ad988821-01f2-11eb-b48a-52234379a457";
     var queryProcessList = table.render({
         elem: '#queryProcessList',
-        url: "/holiday/queryProcessDefinition?deploymentId=" + deploymentId,
+        // url: "/holiday/queryProcessDefinition?deploymentId=" + deploymentId,
+        url: "/holiday/queryProcessDefinitionList",
         method: 'get',
         // cellMinWidth: 80,
         // height: 'full-130',
+        // toolbar: '<div><span style="height:10px">流程列表</span></div>',
+        toolbar: '<div><span style="height: 10px; font-size: 12px;">流程列表</span></div>',
+        defaultToolbar: [],
         cols: [
             [
                 // {type: 'radio', width: 30, fixed: 'left'},
                 {field: 'id', title: 'id', minWidth: 410, align: 'center'},
                 {field: 'deploymentId', title: 'deploymentId', minWidth: 300, align: 'center'},
                 {field: 'name', title: '名称', minWidth: 150, align: 'center'},
-                {field: 'key', title: 'key',minWidth: 150, align: 'center'},
+                {field: 'key', title: 'key', minWidth: 150, align: 'center'},
                 {field: 'resourceName', title: '流程图', minWidth: 300, align: 'center'},
             ]
         ],
@@ -37,19 +41,28 @@ layui.use(['form', 'table', 'layer'], function () {
         method: 'get',
         // cellMinWidth: 80,
         // height: 'full-130',
+        toolbar: '<div><span style="height: 10px;font-size: 12px;">待处理列表</span></div>',
+        defaultToolbar: [],
         cols: [
             [
-                // {type: 'radio', width: 30, fixed: 'left'},
-                {field: 'id', title: 'id',minWidth: 290, align: 'center'},
+                {
+                    title: '操作', width: 110, fixed: 'left', templet: rowData => {
+                        return '<span class="layui-btn layui-btn-xs" lay-event="pass">通过</span>' +
+                            '<span class="layui-btn layui-btn-xs" lay-event="reject">驳回</span>';
+                    }
+                },
+                {field: 'id', title: 'id', minWidth: 300, align: 'center'},
                 {field: 'executionId', title: 'executionId', minWidth: 300, align: 'center'},
-                {field: 'deploymentId', title: 'deploymentId', minWidth: 100, align: 'center'},
+                // {field: 'deploymentId', title: 'deploymentId', minWidth: 100, align: 'center'},
                 {field: 'name', title: '名称', minWidth: 200, align: 'center'},
                 {field: 'processDefinitionId', title: 'processDefinitionId', width: 415, align: 'center'},
-                {field: 'processInstanceId', title: 'processInstanceId', minWidth: 290, align: 'center'},
-                {field: 'taskDefinitionKey', title: 'taskDefinitionKey', minWidth: 150, align: 'center'},
-                {field: 'createTime', title: '创建时间', minWidth: 200, align: 'center',templet:(rowData)=>{
-                       return util.toDateString(rowData.createTime,'yyyy-MM-dd HH:mm:ss');
-                    }},
+                {field: 'processInstanceId', title: 'processInstanceId', minWidth: 300, align: 'center'},
+                {field: 'taskDefinitionKey', title: 'taskDefinitionKey', minWidth: 200, align: 'center'},
+                {
+                    field: 'createTime', title: '创建时间', minWidth: 200, align: 'center', templet: (rowData) => {
+                        return util.toDateString(rowData.createTime, 'yyyy-MM-dd HH:mm:ss');
+                    }
+                },
             ]
         ],
         page: false,
@@ -61,6 +74,22 @@ layui.use(['form', 'table', 'layer'], function () {
                 // "count": res.total,
                 "data": res.data
             };
+        }
+    });
+
+    // 监听事件
+    table.on('tool(viewTaskList)', function (obj) {
+        let rowData = obj.data;
+        let taskId = rowData.id;
+        switch (obj.event) {
+            case 'pass':
+                approved(taskId, "y");
+                return;
+            case 'reject':
+                approved(taskId, "n");
+                return;
+            default:
+                return;
         }
     });
 
@@ -90,7 +119,25 @@ layui.use(['form', 'table', 'layer'], function () {
         let approveFlag = "y";
         $.post("/holiday/approve", {"taskId": taskId, "approveFlag": approveFlag}, function (res) {
             console.log(res);
-        }, 'text');
+        }, 'json');
+    });
+
+    function approved(taskId, approveFlag) {
+        $.post("/holiday/approve", {"taskId": taskId, "approveFlag": approveFlag}, function (res) {
+            console.log(res);
+            if ("0" === res.code) {
+                layer.msg("操作成功", {time: 1500});
+            } else {
+                layer.msg(res.msg, {icon: 1, time: 1500});
+            }
+        }, 'json');
+    }
+
+    $("#viewMyReqTask").click(function () {
+        let assignee = "zhangsan";
+        $.get("/holiday/queryTaskByAssignee?assignee=" + assignee, function (res) {
+            console.log(res);
+        }, 'json');
     });
 
     $("#viewTask").click(function () {
@@ -98,6 +145,15 @@ layui.use(['form', 'table', 'layer'], function () {
         // $.get("/holiday/queryTask", function (res) {
         //     console.log(res);
         // }, 'json');
+    });
+
+    $("#viewProcess").click(function () {
+        let processInstanceId = $("input[name='processInstanceId']").val();
+        layer.open({
+            title: '流程图',
+            type: 2,
+            content: '/holiday/getProcessDiagram?processInstanceId=' + processInstanceId
+        });
     });
 
 });

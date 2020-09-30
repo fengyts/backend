@@ -5,14 +5,39 @@
     <title>Title</title>
 
     <link rel="stylesheet" th:href="@{/plugins/layui/css/layui.css}" charset="UTF-8"/>
+    <style>
+        .layui-table-tool {
+            min-height: 20px !important;
+            line-height: 10px !important;
+        }
+    </style>
 </head>
 <body>
 <div>
-    <button type="button" class="layui-btn" id="deployProcess">部署流程</button>
-    <button type="button" class="layui-btn" id="queryProcessDefinition">查看流程</button>
-    <button type="button" class="layui-btn" id="startProcess">开始流程</button>
-    <button type="button" class="layui-btn" id="approve">审批</button>
-    <button type="button" class="layui-btn" id="viewTask">查看任务</button>
+    <div class="layui-container" style="margin-left: 0;">
+        <div class="layui-row" style="margin: 10px 0;">
+            <div class="layui-col-xs10">
+                <button type="button" class="layui-btn" id="deployProcess">部署流程</button>
+                <button type="button" class="layui-btn" id="queryProcessDefinition">查看流程</button>
+                <button type="button" class="layui-btn" id="startProcess">开始流程</button>
+                <!--    <button type="button" class="layui-btn" id="approve">审批</button>-->
+                <button type="button" class="layui-btn" id="viewTask">查看待处理任务</button>
+                <button type="button" class="layui-btn" id="viewMyReqTask">查看我发起的任务</button>
+            </div>
+        </div>
+        <div class="layui-row">
+            <div class="layui-input-block layui-col-xs5" style="left: 0; margin-left:0; padding-left: 0;">
+                <input type="text" name="processInstanceId" placeholder="请输入processInstanceId" autocomplete="off"
+                       class="layui-input">
+            </div>
+            <button type="button" class="layui-btn layui-col-xs2" id="viewProcess">查看流程图</button>
+            <div class="layui-input-block layui-col-xs3" style="margin-left:0; padding-left: 30px;">
+                <input type="text" name="processInstanceId" placeholder="请输入用户名" autocomplete="off"
+                       class="layui-input">
+            </div>
+            <button type="button" class="layui-btn layui-col-xs2" id="viewProcess1">查看我发起的任务</button>
+        </div>
+    </div>
 </div>
 <div>
     <div>

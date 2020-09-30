@@ -31,7 +31,7 @@ public class HolidayRequest {
         // deployProcess
         RepositoryService repositoryService = processEngine.getRepositoryService();
         Deployment deployment = repositoryService.createDeployment()
-                .addClasspathResource("process/holiday-request.bpmn20.xml")
+                .addClasspathResource("processes/holiday-request.bpmn20.xml")
                 .deploy();
 
         // query processDefinition
