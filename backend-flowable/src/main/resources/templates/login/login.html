@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" th:href="@{/plugins/layui/css/layui.css}" charset="UTF-8"/>
+    <style>
+        .layui-container {
+            margin-top: calc(100vh / 3 - 50px);
+        }
+
+        /*.bk-kaptcha {
+            max-height: 38px;
+        }*/
+
+        .bk-kaptcha > div {
+            display: inline-block;
+        }
+
+        .bk-kaptcha-render, .bk-sms-render {
+            float: right;
+            margin: 0;
+            padding-top: 0px !important;
+            /*max-height: 38px;*/
+        }
+
+        .bk-sms-render {
+            width: 130px;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-container">
+    <div class="layui-row">
+        <form class="layui-form" action="">
+            <div class="layui-col-md5 layui-col-md-offset3">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="loginName" required lay-verify="required-custom" placeholder="请输入用户名"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">密码</label>
+                    <div class="layui-input-block">
+                        <input type="password" name="passwd" required lay-verify="required-custom" placeholder="请输入密码"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item" th:if="${smsSwitch}">
+                    <label class="layui-form-label">短信验证码</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="smsCode" required lay-verify="required-custom" placeholder="请输入短信验证码"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux bk-sms-render">
+                        <button type="button" class="layui-btn layui-btn-normal" id="sms-code-btn">获取短信</button>
+                    </div>
+                </div>
+                <div class="layui-form-item bk-kaptcha" th:if="${kaptchaSwitch}">
+                    <label class="layui-form-label">验证码</label>
+                    <div class="layui-input-inline bk-kaptcha-input">
+                        <input type="text" name="kaptcha" required lay-verify="required-custom" placeholder="请输入验证码"
+                               autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux bk-kaptcha-render">
+                        <img id="kaptcha_img" alt="点击更换" title="点击更换" onclick="javascript:void(0);"
+                             src="/kaptcha/render"/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">记住我</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" name="rememberMe" lay-skin="switch" lay-text="ON|OFF">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="login-form">登录</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script th:src="@{/plugins/jquery/jquery-3.5.1.min.js}" charset="utf-8"></script>
+<script th:src="@{/plugins/layui/layui.js}" charset="utf-8"></script>
+<script th:inline="javascript">
+    layui.use(['form'], function () {
+        var form = layui.form;
+        form.on('submit(login-form)', function (data) {
+            let _paramS = data.field;
+            $.ajax({
+                url: '/login/doLogin',
+                type: 'POST',
+                dataType: 'json',
+                cache: false,
+                contentType: 'application/json',
+                data: JSON.stringify(_paramS),
+                success: function (res) {
+                    if ("0" === res.code) {
+                        window.location.href = "/index";
+                    } else {
+                        layer.msg(res.msg, {time: 2000});
+                        return false;
+                    }
+                },
+                error: function (res) {
+                    layer.msg(res.msg);
+                }
+            });
+            return false;
+        });
+    });
+
+    // iframe页面出现登录页的解决方案
+    iframeLoginPage();
+
+    // iframe页面出现登录页的解决方案
+    function iframeLoginPage() {
+        // 这种方案也可以实现
+        // if(top.location != location) {
+        //     top.location.href = location.href;
+        // }
+        if (window.top != window.self) {
+            top.location.href = location.href;
+        }
+    }
+</script>
+</body>
+</html>

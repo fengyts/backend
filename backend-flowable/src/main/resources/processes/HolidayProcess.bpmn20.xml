@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.flowable.org/processdef">
+  <process id="HolidayProcess" name="员工请假流程" isExecutable="true">
+    <documentation>请假申请流程</documentation>
+    <startEvent id="start" name="开始" flowable:formFieldValidation="true"></startEvent>
+    <userTask id="fillTask" name="请假申请" flowable:assignee="${reqUser}" flowable:formFieldValidation="true">
+      <extensionElements>
+        <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
+      </extensionElements>
+    </userTask>
+    <exclusiveGateway id="out3day" name="是否超过3天"></exclusiveGateway>
+    <userTask id="approveManagerDept" name="部门经理" flowable:assignee="${deptManagerUser}" flowable:formFieldValidation="true">
+      <extensionElements>
+        <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
+      </extensionElements>
+    </userTask>
+    <userTask id="approveManagerCompany" name="总经理" flowable:assignee="${componyManagerUser}" flowable:formFieldValidation="true">
+      <extensionElements>
+        <modeler:initiator-can-complete xmlns:modeler="http://flowable.org/modeler"><![CDATA[false]]></modeler:initiator-can-complete>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="out3dayNo" name="不超过3天" sourceRef="out3day" targetRef="approveManagerDept">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${day<=3}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="flow1" sourceRef="start" targetRef="fillTask"></sequenceFlow>
+    <sequenceFlow id="flow2" sourceRef="fillTask" targetRef="out3day"></sequenceFlow>
+    <sequenceFlow id="out3dayYes" name="超过3天" sourceRef="out3day" targetRef="approveManagerCompany">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${day>3}]]></conditionExpression>
+    </sequenceFlow>
+    <intermediateThrowEvent id="end" name="审核通过，结束"></intermediateThrowEvent>
+    <sequenceFlow id="approvePassDm" name="通过" sourceRef="approveManagerDept" targetRef="end">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${approve=='pass'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="approvePassCm" name="通过" sourceRef="approveManagerCompany" targetRef="end">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${approve=='pass'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="approveRejectDm" name="驳回" sourceRef="approveManagerDept" targetRef="fillTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${approve=='reject'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="approveRejectCm" name="驳回" sourceRef="approveManagerCompany" targetRef="fillTask">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${approve=='reject'}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_HolidayProcess">
+    <bpmndi:BPMNPlane bpmnElement="HolidayProcess" id="BPMNPlane_HolidayProcess">
+      <bpmndi:BPMNShape bpmnElement="start" id="BPMNShape_start">
+        <omgdc:Bounds height="30.0" width="30.0" x="75.0" y="163.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="fillTask" id="BPMNShape_fillTask">
+        <omgdc:Bounds height="80.0" width="100.0" x="175.0" y="138.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="out3day" id="BPMNShape_out3day">
+        <omgdc:Bounds height="40.0" width="40.0" x="375.0" y="158.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="approveManagerDept" id="BPMNShape_approveManagerDept">
+        <omgdc:Bounds height="80.0" width="100.0" x="540.0" y="138.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="approveManagerCompany" id="BPMNShape_approveManagerCompany">
+        <omgdc:Bounds height="80.0" width="100.0" x="345.0" y="270.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="end" id="BPMNShape_end">
+        <omgdc:Bounds height="30.0" width="30.0" x="575.0" y="295.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="flow1" id="BPMNEdge_flow1">
+        <omgdi:waypoint x="104.94999899727567" y="178.0"></omgdi:waypoint>
+        <omgdi:waypoint x="174.99999999997203" y="178.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flow2" id="BPMNEdge_flow2">
+        <omgdi:waypoint x="274.94999999999584" y="178.14648093841643"></omgdi:waypoint>
+        <omgdi:waypoint x="375.4411764705871" y="178.44117647058823"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="approveRejectCm" id="BPMNEdge_approveRejectCm">
+        <omgdi:waypoint x="344.99999999992366" y="310.0"></omgdi:waypoint>
+        <omgdi:waypoint x="225.0" y="310.0"></omgdi:waypoint>
+        <omgdi:waypoint x="225.0" y="217.95000000000002"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="approvePassCm" id="BPMNEdge_approvePassCm">
+        <omgdi:waypoint x="444.95000000000005" y="310.0"></omgdi:waypoint>
+        <omgdi:waypoint x="575.0" y="310.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="out3dayNo" id="BPMNEdge_out3dayNo">
+        <omgdi:waypoint x="414.4939335394023" y="178.45103092783506"></omgdi:waypoint>
+        <omgdi:waypoint x="539.999999999999" y="178.12840616966582"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="approveRejectDm" id="BPMNEdge_approveRejectDm">
+        <omgdi:waypoint x="590.0" y="138.0"></omgdi:waypoint>
+        <omgdi:waypoint x="590.0" y="90.0"></omgdi:waypoint>
+        <omgdi:waypoint x="225.0" y="90.0"></omgdi:waypoint>
+        <omgdi:waypoint x="225.0" y="138.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="out3dayYes" id="BPMNEdge_out3dayYes">
+        <omgdi:waypoint x="395.4274809160305" y="197.51504576659042"></omgdi:waypoint>
+        <omgdi:waypoint x="395.1519011406844" y="270.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="approvePassDm" id="BPMNEdge_approvePassDm">
+        <omgdi:waypoint x="590.0" y="217.95000000000002"></omgdi:waypoint>
+        <omgdi:waypoint x="590.0" y="295.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

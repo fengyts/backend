@@ -1,0 +1,44 @@
+server:
+  port: 8082
+  tomcat:
+    #指定basedir，解决：sprinboot运行一段时间后出现：ClassNotFoundException
+    basedir: ./tomcat-tmp
+
+flowable:
+  database-schema-update: true
+  db-history-used: true
+  history-level: audit
+#  async-history-executor-activate: true
+  common:
+    app:
+      idm-url: ${bath.path}/idm
+
+spring:
+  mail:
+    host: smtp.163.com
+    username: yangguangshequ2018@163.com
+    password: Zhanyi88
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://47.94.199.26:3306/bk_admin_flowable?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&autoReconnect=true
+    username: chadmin
+    password: 8-#xgC%p(t85X
+
+    hikari:
+      max-lifetime: 50000
+
+  # 静态文件请求匹配方式
+  #  mvc:
+  #    static-path-pattern: /**
+  # 修改默认的静态寻址资源目录, 这里在默认的基础上添加了 '/templates/' 也为静态资源目录
+  resources:
+    static-locations: classpath:/templates/,classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/
+
+  # thymeleaf 配置
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    cache: false
+

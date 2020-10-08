@@ -10,7 +10,7 @@ target/
 ### mvn ###
 .mvn/
 mvnw
-*.cmd
+.cmd
 
 ### STS ###
 .apt_generated
@@ -23,9 +23,10 @@ mvnw
 
 ### IntelliJ IDEA ###
 .idea
-*.iws
+.iml
+.iws
+.ipr
 *.iml
-*.ipr
 
 ### NetBeans ###
 /nbproject/private/

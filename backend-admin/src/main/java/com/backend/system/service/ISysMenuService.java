@@ -2,6 +2,7 @@ package com.backend.system.service;
 
 import com.backend.common.ResultData;
 import com.backend.system.dto.SysMenuDto;
+import com.backend.system.dto.SysRoleMenuDto;
 import com.backend.system.entity.SysMenu;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -19,6 +20,9 @@ public interface ISysMenuService extends IService<SysMenu> {
 
     /* 首页获取菜单信息, 父子嵌套层级结构 */
     List<SysMenuDto> getAllMenusByTier(Long userId);
+
+    /** 角色绑定菜单权限 -> 菜单树形结构 */
+    List<SysRoleMenuDto> getAllMenusByTier();
 
     /* 系统菜单列表页 */
     List<SysMenuDto> getAllMenus(Long userId);
