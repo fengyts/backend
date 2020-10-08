@@ -1,9 +1,9 @@
-package com.backend.entity;
+package com.backend.model.dto.flowable;
 
+import com.backend.model.dto.CommonDto;
 import lombok.Data;
 import org.flowable.common.engine.api.repository.EngineResource;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
@@ -11,7 +11,7 @@ import java.util.Map;
  * @author DELL
  */
 @Data
-public class DeploymentDto implements Serializable {
+public class DeploymentDto extends CommonDto {
     private static final long serialVersionUID = 1L;
 
     private String parentDeploymentId;

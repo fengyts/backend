@@ -6,8 +6,8 @@ layui.use(['form', 'table', 'layer'], function () {
     var deploymentId = "ad988821-01f2-11eb-b48a-52234379a457";
     var queryProcessList = table.render({
         elem: '#queryProcessList',
-        // url: "/holiday/queryProcessDefinition?deploymentId=" + deploymentId,
-        url: "/holiday/queryProcessDefinitionList",
+        // url: "/holidayTest/queryProcessDefinition?deploymentId=" + deploymentId,
+        url: "/holidayTest/queryProcessDefinitionList",
         method: 'get',
         // cellMinWidth: 80,
         // height: 'full-130',
@@ -37,7 +37,7 @@ layui.use(['form', 'table', 'layer'], function () {
     });
     var viewTaskList = table.render({
         elem: '#viewTaskList',
-        url: "/holiday/queryTask",
+        url: "/holidayTest/queryTask",
         method: 'get',
         // cellMinWidth: 80,
         // height: 'full-130',
@@ -51,7 +51,7 @@ layui.use(['form', 'table', 'layer'], function () {
                             '<span class="layui-btn layui-btn-xs" lay-event="reject">驳回</span>';
                     }
                 },
-                {field: 'id', title: 'id', minWidth: 300, align: 'center'},
+                {field: 'id', title: 'taskId', minWidth: 300, align: 'center'},
                 {field: 'executionId', title: 'executionId', minWidth: 300, align: 'center'},
                 // {field: 'deploymentId', title: 'deploymentId', minWidth: 100, align: 'center'},
                 {field: 'name', title: '名称', minWidth: 200, align: 'center'},
@@ -94,7 +94,7 @@ layui.use(['form', 'table', 'layer'], function () {
     });
 
     $("#deployProcess").click(function () {
-        $.post("/holiday/deployProcess", function (res) {
+        $.post("/holidayTest/deployProcess", function (res) {
             console.log(res);
         }, 'text')
     });
@@ -103,13 +103,13 @@ layui.use(['form', 'table', 'layer'], function () {
         queryProcessList.reload();
         // let deploymentId = "holidayRequest:1:adb8e163-01f2-11eb-b48a-52234379a457";
         // let deploymentId = "ad988821-01f2-11eb-b48a-52234379a457";
-        // $.get("/holiday/queryProcessDefinition?deploymentId=" + deploymentId, function (res) {
+        // $.get("/holidayTest/queryProcessDefinition?deploymentId=" + deploymentId, function (res) {
         //     console.log(res);
         // }, 'json');
     });
 
     $("#startProcess").click(function () {
-        $.post("/holiday/startProcess", {"processDefinitionKey": "holidayRequest"}, function (res) {
+        $.post("/holidayTest/startProcess", {"processDefinitionKey": "holidayRequest"}, function (res) {
 
         }, 'json');
     });
@@ -117,13 +117,13 @@ layui.use(['form', 'table', 'layer'], function () {
     $("#approve").click(function () {
         let taskId = "e212b21b-022a-11eb-9874-52234379a457";
         let approveFlag = "y";
-        $.post("/holiday/approve", {"taskId": taskId, "approveFlag": approveFlag}, function (res) {
+        $.post("/holidayTest/approve", {"taskId": taskId, "approveFlag": approveFlag}, function (res) {
             console.log(res);
         }, 'json');
     });
 
     function approved(taskId, approveFlag) {
-        $.post("/holiday/approve", {"taskId": taskId, "approveFlag": approveFlag}, function (res) {
+        $.post("/holidayTest/approve", {"taskId": taskId, "approveFlag": approveFlag}, function (res) {
             console.log(res);
             if ("0" === res.code) {
                 layer.msg("操作成功", {time: 1500});
@@ -134,15 +134,16 @@ layui.use(['form', 'table', 'layer'], function () {
     }
 
     $("#viewMyReqTask").click(function () {
-        let assignee = "zhangsan";
-        $.get("/holiday/queryTaskByAssignee?assignee=" + assignee, function (res) {
+        // let assignee = "zhangsan";
+        let assignee = $("input[name='assignee']").val();
+        $.get("/holidayTest/queryTaskByAssignee?assignee=" + assignee, function (res) {
             console.log(res);
         }, 'json');
     });
 
     $("#viewTask").click(function () {
         viewTaskList.reload();
-        // $.get("/holiday/queryTask", function (res) {
+        // $.get("/holidayTest/queryTask", function (res) {
         //     console.log(res);
         // }, 'json');
     });
@@ -152,7 +153,20 @@ layui.use(['form', 'table', 'layer'], function () {
         layer.open({
             title: '流程图',
             type: 2,
-            content: '/holiday/getProcessDiagram?processInstanceId=' + processInstanceId
+            area: ['800px','450px'],
+            // content: '/holidayTest/getProcessDiagram?processInstanceId=' + processInstanceId
+            content: '/holidayTest/generateProcessImg?processInstanceId=' + processInstanceId
+        });
+    });
+
+    $("#viewProcessByTaskId").click(function () {
+        let taskId = $("input[name='taskId']").val();
+        console.log(taskId);
+        layer.open({
+            title: '流程图',
+            type: 2,
+            area: ['800px','450px'],
+            content: '/holidayTest/getProcessDiagramByTaskId?taskId=' + taskId
         });
     });
 

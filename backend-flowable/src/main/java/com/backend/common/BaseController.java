@@ -1,11 +1,17 @@
 package com.backend.common;
 
-import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
+import com.backend.model.entity.SysUserEntity;
+import com.backend.util.SysUserHandler;
+import org.springframework.ui.Model;
 
-@Slf4j
 public abstract class BaseController {
 
-    protected Logger logger = log;
+    protected SysUserEntity getCurrentLoginUser(){
+        return SysUserHandler.getCurrentUser();
+    }
+
+    protected void setCurrentUser(Model model) {
+        model.addAttribute("sysUser", getCurrentLoginUser());
+    }
 
 }

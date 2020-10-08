@@ -9,6 +9,9 @@ flowable:
   db-history-used: true
   history-level: audit
 #  async-history-executor-activate: true
+  common:
+    app:
+      idm-url: ${bath.path}/idm
 
 spring:
   mail:

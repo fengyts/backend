@@ -1,0 +1,23 @@
+.nav-tabs-box {
+    height: calc(100vh - 155px) !important;
+}
+
+iframe {
+    height: 100%;
+    /*width: 100%;*/
+}
+
+.nav-tab-p {
+    padding: 0 !important;
+    /*height: calc(100vh - 155px) !important;*/
+    height: 100%;
+    /*width: 100%;*/
+}
+
+.nav-tab-p > .layui-tab-item {
+    margin: 0;
+    padding: 0 0 0 10px;
+    height: 100%;
+    /*width: 100%;*/
+    /*overflow-y: auto;*/
+}

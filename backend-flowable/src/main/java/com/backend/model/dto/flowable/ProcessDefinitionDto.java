@@ -1,14 +1,13 @@
-package com.backend.entity;
+package com.backend.model.dto.flowable;
 
+import com.backend.model.dto.CommonDto;
 import lombok.Data;
-
-import java.io.Serializable;
 
 /**
  * @author DELL
  */
 @Data
-public class ProcessDefinitionDto implements Serializable {
+public class ProcessDefinitionDto extends CommonDto {
     private static final long serialVersionUID = 1L;
 
     private String id;

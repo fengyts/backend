@@ -1,0 +1,28 @@
+1. pom:添加ui依赖：
+    <!-- flowable UI集成 -->
+    <dependency>
+        <groupId>org.flowable</groupId>
+        <artifactId>flowable-ui-common</artifactId>
+        <exclusions>
+            <exclusion>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-log4j2</artifactId>
+            </exclusion>
+        </exclusions>
+        <version>${flowable-ui.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.flowable</groupId>
+        <artifactId>flowable-ui-modeler-rest</artifactId>
+        <version>${flowable-ui.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.flowable</groupId>
+        <artifactId>flowable-ui-modeler-conf</artifactId>
+        <version>${flowable-ui.version}</version>
+    </dependency>
+
+2.config包下打开配置：ApplicationConfiguration
+3.PrecessImgGenerator生成流程图组件：
+    ModelService依赖注入
+    注释方法：generateProcessDiagramByModelId()
