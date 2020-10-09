@@ -13,6 +13,7 @@
     <modules>
         <module>backend-admin</module>
         <module>backend-flowable</module>
+        <module>backend-flowable-modeler</module>
     </modules>
 
     <properties>
