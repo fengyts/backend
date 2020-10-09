@@ -38,9 +38,4 @@ public class BackendFlowableModelerApplication {
         SpringApplication.run(BackendFlowableModelerApplication.class, args);
     }
 
-//    @Bean
-//    public FlowableModelerAppProperties flowableModelerAppProperties(){
-//        FlowableModelerAppProperties flowableModelerAppProperties = new FlowableModelerAppProperties();
-//        return flowableModelerAppProperties;
-//    }
 }

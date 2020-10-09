@@ -27,18 +27,12 @@ import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.Properties;
 
-/**
- * @ClassName ZhuangzProcessEngine
- * @Description TODO 构造流程引擎配置类
- * @Author gblfy
- * @Date 2019/11/17 20:12
- */
-//@Configuration
+@Configuration
 public class GblfyProcessEngine {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GblfyProcessEngine.class);
 
-    //TODO 解决创建流程时报act_re_model找不到
+    //TODO 解决创建流程时报act_de_model找不到
     protected static final String LIQUIBASE_CHANGELOG_PREFIX = "ACT_DE_";
 
     @Autowired
@@ -64,7 +58,7 @@ public class GblfyProcessEngine {
         return springProcessEngineConfiguration;
     }
 
-    @Bean
+    /*@Bean
     public SqlSessionFactory sqlSessionFactory(DataSource dataSource) {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
@@ -90,7 +84,7 @@ public class GblfyProcessEngine {
             throw new FlowableException("Could not create sqlSessionFactory", e);
         }
 
-    }
+    }*/
 
     protected String initDatabaseType(DataSource dataSource) {
         String databaseType = null;
@@ -141,7 +135,7 @@ public class GblfyProcessEngine {
         try {
             DatabaseConnection connection = new JdbcConnection(dataSource.getConnection());
             Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(connection);
-            //TODO 解决创建流程时报act_re_model找不到
+            //TODO 解决创建流程时报act_de_model找不到
             database.setDatabaseChangeLogTableName(LIQUIBASE_CHANGELOG_PREFIX + database.getDatabaseChangeLogTableName());
             database.setDatabaseChangeLogLockTableName(LIQUIBASE_CHANGELOG_PREFIX + database.getDatabaseChangeLogLockTableName());
 
