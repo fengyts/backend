@@ -4,6 +4,13 @@ server:
     #指定basedir，解决：sprinboot运行一段时间后出现：ClassNotFoundException
     basedir: ./tomcat-tmp
 
+mybatis:
+  mapper-locations: classpath:/META-INF/modeler-mybatis-mappings/*.xml
+  configuration-properties:
+    prefix:
+    blobType: BLOB
+    boolValue: TRUE
+
 flowable:
   database-schema-update: true
   db-history-used: true
@@ -11,7 +18,7 @@ flowable:
 #  async-history-executor-activate: true
   common:
     app:
-      idm-url: ${bath.path}/idm
+      idm-url: ${bath.path}/flowable-idm
 
 spring:
   mail:

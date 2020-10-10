@@ -42,9 +42,9 @@ public class AdminRemoteAccountController {
 
     @RequestMapping(value = "/rest/account", method = RequestMethod.GET, produces = "application/json")
     public UserRepresentation getAccount() {
-        // 初始化一个用户
-        User user = initUser();
-        SecurityUtils.assumeUser(user);
+        // 初始化一个登陆用户
+        User assumeUser = initUser();
+        SecurityUtils.assumeUser(assumeUser);
         // 初始化一个用户
         UserRepresentation userRepresentation = initUserRepresentation();
         // 初始化一个用户组

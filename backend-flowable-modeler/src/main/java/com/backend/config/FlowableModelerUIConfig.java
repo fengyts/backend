@@ -1,5 +1,7 @@
 package com.backend.config;
 
+import java.util.Properties;
+import javax.sql.DataSource;
 import liquibase.Liquibase;
 import liquibase.database.Database;
 import liquibase.database.DatabaseConnection;
@@ -7,34 +9,20 @@ import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.DatabaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.flowable.common.engine.api.FlowableException;
-import org.flowable.spring.SpringProcessEngineConfiguration;
 import org.flowable.ui.common.service.exception.InternalServerErrorException;
-import org.mybatis.spring.SqlSessionFactoryBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.core.io.support.ResourcePatternUtils;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.SQLException;
-import java.util.Properties;
 
 @Configuration
-public class GblfyProcessEngine {
+public class FlowableModelerUIConfig {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(GblfyProcessEngine.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FlowableModelerUIConfig.class);
 
     //TODO 解决创建流程时报act_de_model找不到
     protected static final String LIQUIBASE_CHANGELOG_PREFIX = "ACT_DE_";
-
+/*
     @Autowired
     private DataSource dataSource;
 
@@ -58,33 +46,31 @@ public class GblfyProcessEngine {
         return springProcessEngineConfiguration;
     }
 
-    /*@Bean
-    public SqlSessionFactory sqlSessionFactory(DataSource dataSource) {
-        SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
-        sqlSessionFactoryBean.setDataSource(dataSource);
-        String databaseType = initDatabaseType(dataSource);
-        if (databaseType == null) {
-            throw new FlowableException("couldn't deduct database type");
-        }
-
-        try {
-            Properties properties = new Properties();
-            properties.put("prefix", "");
-            properties.put("blobType", "BLOB");
-            properties.put("boolValue", "TRUE");
-
-            properties.load(this.getClass().getClassLoader().getResourceAsStream("properties/" + databaseType + ".properties"));
-
-            sqlSessionFactoryBean.setConfigurationProperties(properties);
-            sqlSessionFactoryBean
-                    .setMapperLocations(ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources("classpath:/META-INF/modeler-mybatis-mappings/*.xml"));
-            sqlSessionFactoryBean.afterPropertiesSet();
-            return sqlSessionFactoryBean.getObject();
-        } catch (Exception e) {
-            throw new FlowableException("Could not create sqlSessionFactory", e);
-        }
-
-    }*/
+//    @Bean
+//    public SqlSessionFactory sqlSessionFactory(DataSource dataSource) {
+//        SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
+//        sqlSessionFactoryBean.setDataSource(dataSource);
+//        String databaseType = initDatabaseType(dataSource);
+//        if (databaseType == null) {
+//            throw new FlowableException("couldn't deduct database type");
+//        }
+//        try {
+//            Properties properties = new Properties();
+//            properties.put("prefix", "");
+//            properties.put("blobType", "BLOB");
+//            properties.put("boolValue", "TRUE");
+//
+//            properties.load(this.getClass().getClassLoader().getResourceAsStream("properties/" + databaseType + ".properties"));
+//
+//            sqlSessionFactoryBean.setConfigurationProperties(properties);
+//            sqlSessionFactoryBean
+//                    .setMapperLocations(ResourcePatternUtils.getResourcePatternResolver(resourceLoader).getResources("classpath:/META-INF/modeler-mybatis-mappings/*.xml"));
+//            sqlSessionFactoryBean.afterPropertiesSet();
+//            return sqlSessionFactoryBean.getObject();
+//        } catch (Exception e) {
+//            throw new FlowableException("Could not create sqlSessionFactory", e);
+//        }
+//    }
 
     protected String initDatabaseType(DataSource dataSource) {
         String databaseType = null;
@@ -114,6 +100,8 @@ public class GblfyProcessEngine {
 
         return databaseType;
     }
+*/
+
 
     protected static Properties databaseTypeMappings = getDefaultDatabaseTypeMappings();
 

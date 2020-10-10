@@ -32,3 +32,4 @@ https://blog.csdn.net/xljx_1/article/details/105320252
 集成flowable-modeler-ui 出现的bug:
 https://blog.csdn.net/houyj1986/article/details/85546680
 https://www.freesion.com/article/6758560212/
+https://blog.csdn.net/sinat_28690417/article/details/79524566
