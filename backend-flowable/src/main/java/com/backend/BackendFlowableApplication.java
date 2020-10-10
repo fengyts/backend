@@ -1,5 +1,7 @@
 package com.backend;
 
+import com.backend.config.AppDispatcherServletConfiguration;
+import com.backend.config.ApplicationConfiguration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import lombok.extern.slf4j.Slf4j;
@@ -9,9 +11,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+/**
+ * @author DELL
+ */
+@Import({
+        ApplicationConfiguration.class,
+        AppDispatcherServletConfiguration.class
+})
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 @EnableTransactionManagement
 @Slf4j
