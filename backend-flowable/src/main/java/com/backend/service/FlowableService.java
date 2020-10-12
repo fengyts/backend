@@ -1,12 +1,15 @@
 package com.backend.service;
 
+import com.backend.common.ResultData;
 import com.backend.model.dto.flowable.ActivityInstanceDto;
 import com.backend.model.dto.flowable.DeploymentDto;
+import com.backend.model.dto.flowable.HiCommentDto;
 import com.backend.model.dto.flowable.ProcessDefinitionDto;
 import com.backend.model.dto.flowable.ProcessInstanceDto;
 import com.backend.model.dto.flowable.TaskInfoDto;
 import java.util.List;
 import java.util.Map;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface FlowableService {
 
@@ -24,6 +27,12 @@ public interface FlowableService {
      */
     List<ActivityInstanceDto> listRuntimeTask(String assigne);
 
+    /**
+     * 开启流程任务
+     * @param processKey
+     * @param variables
+     * @return
+     */
     ProcessInstanceDto startProcess(String processKey, Map<String, Object> variables);
 
     TaskInfoDto getTaskByProcessInstanceId(String processInstanceId);
@@ -36,6 +45,30 @@ public interface FlowableService {
 
     void completeTask(String taskId, String variableKey, Object variableValue);
 
+    /**
+     * 添加任务备注信息
+     * @param userId
+     * @param taskId
+     * @param processInstanceId
+     * @param type
+     * @param msg
+     */
     void addComment(String userId, String taskId, String processInstanceId, String type, String msg);
+
+    public void updateCommentById(HiCommentDto comment);
+
+    /**
+     * 导入流程模型
+     * @param file
+     * @return
+     */
+    ResultData importProcessModel(MultipartFile file);
+
+    /**
+     * 获取流程xml文件
+     * @param modelId
+     * @return
+     */
+    byte[] getModelBpmnXML(String modelId);
 
 }

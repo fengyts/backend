@@ -1,6 +1,7 @@
 package com.backend.service.impl;
 
 import com.backend.common.FlowableConstant;
+import com.backend.common.ResultData;
 import com.backend.enums.CommentTypeEnum;
 import com.backend.enums.StatusAuditEnum;
 import com.backend.model.dto.flowable.ActivityInstanceDto;
@@ -14,13 +15,24 @@ import com.backend.model.dto.flowable.TaskInfoDto;
 import com.backend.service.FlowableService;
 import com.backend.util.SysUserHandler;
 import com.backend.util.WorkflowConverterUtil;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.collect.Maps;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamReader;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.flowable.bpmn.BpmnAutoLayout;
 import org.flowable.bpmn.constants.BpmnXMLConstants;
+import org.flowable.bpmn.converter.BpmnXMLConverter;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.bpmn.model.EndEvent;
 import org.flowable.bpmn.model.ExclusiveGateway;
@@ -30,6 +42,7 @@ import org.flowable.bpmn.model.SequenceFlow;
 import org.flowable.bpmn.model.UserTask;
 import org.flowable.common.engine.impl.identity.Authentication;
 import org.flowable.common.engine.impl.interceptor.Command;
+import org.flowable.editor.language.json.converter.BpmnJsonConverter;
 import org.flowable.engine.HistoryService;
 import org.flowable.engine.ManagementService;
 import org.flowable.engine.ProcessEngine;
@@ -47,12 +60,25 @@ import org.flowable.engine.runtime.Execution;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.engine.task.Comment;
 import org.flowable.engine.task.Event;
+import org.flowable.idm.api.User;
 import org.flowable.task.api.Task;
 import org.flowable.task.api.history.HistoricTaskInstance;
+import org.flowable.ui.common.security.SecurityUtils;
+import org.flowable.ui.common.service.exception.BadRequestException;
+import org.flowable.ui.common.util.XmlUtil;
+import org.flowable.ui.modeler.domain.AbstractModel;
+import org.flowable.ui.modeler.domain.Model;
+import org.flowable.ui.modeler.repository.ModelRepository;
+import org.flowable.ui.modeler.serviceapi.ModelService;
+import org.flowable.validation.ProcessValidator;
+import org.flowable.validation.ProcessValidatorFactory;
+import org.flowable.validation.ValidationError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
+@Slf4j
 public class FlowableServiceImpl implements FlowableService {
 
     @Autowired
@@ -65,36 +91,121 @@ public class FlowableServiceImpl implements FlowableService {
     protected TaskService taskService;
     @Autowired
     protected HistoryService historyService;
-//    @Autowired
+    //    @Autowired
 //    protected DynamicBpmnService dynamicBpmnService;
     @Autowired
     protected ManagementService managementService;
+    @Autowired
+    protected ModelRepository modelRepository;
+    @Autowired
+    protected ModelService modelService;
 
-    private String generateDefaultId(){
+    private static final BpmnXMLConverter bpmnXmlConverter = new BpmnXMLConverter();
+    private static final BpmnJsonConverter bpmnJsonConverter = new BpmnJsonConverter();
+
+    private String generateDefaultId() {
         String nextId = processEngine.getProcessEngineConfiguration().getIdGenerator().getNextId();
         return nextId;
     }
 
     @Override
     public void addComment(String userId, String taskId, String processInstanceId, String type, String msg) {
-//        Command addCommentCmd = new AddCommentCmd(taskId, processInstanceId, type, msg);
-        HiCommentDto comment = new HiCommentDto();
-        comment.setId(generateDefaultId());
-        comment.setUserId(userId);
-        comment.setType(type);
-        comment.setTaskId(taskId);
-        comment.setProcessInstanceId(processInstanceId);
-        comment.setAction(Event.ACTION_ADD_COMMENT);
-        comment.setTime(new Date());
-        comment.setMessage(msg);
-        comment.setFullMessage(msg);
-        Command commentUpdate = new SaveCommentCmd(comment);
-//        managementService.executeCommand(commentUpdate);
-
 //        Command commentCmdAdd = new AddCommentCmd(taskId, processInstanceId, type, msg);
 //        managementService.executeCommand(commentCmdAdd);
-
         taskService.addComment(taskId, processInstanceId, type, msg);
+    }
+
+    @Override
+    public void updateCommentById(HiCommentDto comment) {
+//        HiCommentDto comment = new HiCommentDto();
+//        comment.setId(commentId);
+//        comment.setUserId(userId);
+//        comment.setType(type);
+//        comment.setTaskId(taskId);
+//        comment.setProcessInstanceId(processInstanceId);
+//        comment.setAction(Event.ACTION_ADD_COMMENT);
+//        comment.setTime(new Date());
+//        comment.setMessage(msg);
+//        comment.setFullMessage(msg);
+
+        Command commentUpdate = new SaveCommentCmd(comment);
+        managementService.executeCommand(commentUpdate);
+    }
+
+    @Override
+    public ResultData importProcessModel(MultipartFile file) {
+        String fileName = file.getOriginalFilename();
+        if (fileName != null && (fileName.endsWith(".bpmn") || fileName.endsWith(".bpmn20.xml"))) {
+            try {
+                InputStream inputStream = file.getInputStream();
+                return this.saveModel(inputStream);
+            } catch (IOException e) {
+                return ResultData.err("读取文件出错");
+            }
+        } else {
+            return ResultData.err("Invalid file name, only .bpmn and .bpmn20.xml files are supported not " + fileName);
+        }
+    }
+
+    @Override
+    public byte[] getModelBpmnXML(String modelId) {
+        Model model = modelService.getModel(modelId);
+        byte[] xmlBytes = modelService.getBpmnXML(model);
+        return xmlBytes;
+    }
+
+    private ResultData saveModel(InputStream inputStream) {
+        try {
+            XMLInputFactory xif = XmlUtil.createSafeXmlInputFactory();
+            InputStreamReader xmlIn = new InputStreamReader(inputStream, "UTF-8");
+            XMLStreamReader xtr = xif.createXMLStreamReader(xmlIn);
+            BpmnModel bpmnModel = bpmnXmlConverter.convertToBpmnModel(xtr);
+            //模板验证
+            ProcessValidator validator = new ProcessValidatorFactory().createDefaultProcessValidator();
+            List<ValidationError> errors = validator.validate(bpmnModel);
+            if (org.flowable.editor.language.json.converter.util.CollectionUtils.isNotEmpty(errors)) {
+                StringBuffer es = new StringBuffer();
+                errors.forEach(ve -> es.append(ve.toString()).append("/n"));
+                return ResultData.err("模板验证失败，原因: " + es.toString());
+            }
+            String fileName = bpmnModel.getMainProcess().getName();
+            if (org.flowable.editor.language.json.converter.util.CollectionUtils.isEmpty(bpmnModel.getProcesses())) {
+                return ResultData.err("No process found in definition " + fileName);
+            }
+            if (bpmnModel.getLocationMap().size() == 0) {
+                BpmnAutoLayout bpmnLayout = new BpmnAutoLayout(bpmnModel);
+                bpmnLayout.execute();
+            }
+            ObjectNode modelNode = bpmnJsonConverter.convertToJson(bpmnModel);
+            org.flowable.bpmn.model.Process process = bpmnModel.getMainProcess();
+            String name = process.getId();
+            if (StringUtils.isNotEmpty(process.getName())) {
+                name = process.getName();
+            }
+            String description = process.getDocumentation();
+            User createdBy = SecurityUtils.getCurrentUserObject();
+            //查询是否已经存在流程模板
+            Model newModel = new Model();
+            List<Model> models = modelRepository.findByKeyAndType(process.getId(), AbstractModel.MODEL_TYPE_BPMN);
+            if (org.flowable.editor.language.json.converter.util.CollectionUtils.isNotEmpty(models)) {
+                Model updateModel = models.get(0);
+                newModel.setId(updateModel.getId());
+            }
+            newModel.setName(name);
+            newModel.setKey(process.getId());
+            newModel.setModelType(AbstractModel.MODEL_TYPE_BPMN);
+            newModel.setCreated(Calendar.getInstance().getTime());
+            newModel.setCreatedBy(createdBy.getId());
+            newModel.setDescription(description);
+            newModel.setModelEditorJson(modelNode.toString());
+            newModel.setLastUpdated(Calendar.getInstance().getTime());
+            newModel.setLastUpdatedBy(createdBy.getId());
+            modelService.createModel(newModel, SecurityUtils.getCurrentUserObject());
+            return ResultData.ok();
+        } catch (Exception e) {
+            log.error("Import failed for {}", e);
+            return ResultData.err("Import failed for , error message : {}", e.getMessage());
+        }
     }
 
     @Override
@@ -307,7 +418,7 @@ public class FlowableServiceImpl implements FlowableService {
         BpmnModel bpmnModel = repositoryService.getBpmnModel(task.getProcessDefinitionId());
         FlowNode flowNode = (FlowNode) bpmnModel.getFlowElement(crruentActivityId);
         // 节点的来源节点
-        List<SequenceFlow> incomingFlows = flowNode.getIncomingFlows();
+//        List<SequenceFlow> incomingFlows = flowNode.getIncomingFlows();
         // 节点的目标节点
         List<SequenceFlow> outFlows = flowNode.getOutgoingFlows();
         for (SequenceFlow sequenceFlow : outFlows) {
