@@ -54,6 +54,7 @@ import org.flowable.engine.impl.cmd.AddCommentCmd;
 import org.flowable.engine.impl.cmd.SaveCommentCmd;
 import org.flowable.engine.impl.util.CommandContextUtil;
 import org.flowable.engine.repository.Deployment;
+import org.flowable.engine.repository.DeploymentBuilder;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.runtime.ActivityInstance;
 import org.flowable.engine.runtime.Execution;
@@ -117,17 +118,6 @@ public class FlowableServiceImpl implements FlowableService {
 
     @Override
     public void updateCommentById(HiCommentDto comment) {
-//        HiCommentDto comment = new HiCommentDto();
-//        comment.setId(commentId);
-//        comment.setUserId(userId);
-//        comment.setType(type);
-//        comment.setTaskId(taskId);
-//        comment.setProcessInstanceId(processInstanceId);
-//        comment.setAction(Event.ACTION_ADD_COMMENT);
-//        comment.setTime(new Date());
-//        comment.setMessage(msg);
-//        comment.setFullMessage(msg);
-
         Command commentUpdate = new SaveCommentCmd(comment);
         managementService.executeCommand(commentUpdate);
     }
@@ -442,6 +432,15 @@ public class FlowableServiceImpl implements FlowableService {
             }
             System.out.println("下一个节点类型：" + targetFlow.getClass().getName());
         }
+    }
+
+    @Override
+    public boolean existModel(String processKey) {
+        return false;
+    }
+
+    private void deployment(){
+        DeploymentBuilder deployment = repositoryService.createDeployment();
     }
 
 }

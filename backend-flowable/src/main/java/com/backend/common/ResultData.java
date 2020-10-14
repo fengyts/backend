@@ -1,7 +1,10 @@
 package com.backend.common;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Maps;
 import java.io.Serializable;
+import java.util.Map;
+import java.util.Objects;
 import lombok.Getter;
 
 
@@ -40,7 +43,7 @@ public class ResultData<T> implements Serializable {
     /**
      * 响应主体
      */
-    private final JSONObject jsonObject = new JSONObject();
+//    private final JSONObject jsonObject = new JSONObject();
 
     private ResultData() {
     }
@@ -53,23 +56,24 @@ public class ResultData<T> implements Serializable {
         this.code = code;
         this.msg = msg;
         this.data = data;
-
-        setResponseSubject(code, msg, data);
     }
 
-    /**
-     * 设置响应主体
-     *
-     * @param code
-     * @param msg
-     * @param data
-     */
-    private void setResponseSubject(String code, String msg, T data) {
-        jsonObject.put("code", code);
-        jsonObject.put("msg", msg);
-        if (null != data) {
-            jsonObject.put("data", data);
+    public static ResultData okOfMapData(){
+        Map<String, Object> mapData = Maps.newHashMapWithExpectedSize(2);
+        return ok(mapData);
+    }
+
+    public ResultData extendMapData(String key, Object value){
+        if (Objects.isNull(this.data)) {
+            Map<String, Object> mapData = Maps.newHashMapWithExpectedSize(2);
+            mapData.put(key, value);
+            this.data = (T) mapData;
+        } else {
+            if(data instanceof Map){
+                ((Map<String, Object>) data).put(key, value);
+            }
         }
+        return this;
     }
 
     public static ResultData ok() {
@@ -109,7 +113,13 @@ public class ResultData<T> implements Serializable {
     }
 
     public String toJsonString() {
-        return this.jsonObject.toJSONString();
+//        return this.jsonObject.toJSONString();
+        return JSONObject.toJSONString(this);
+    }
+
+    @Override
+    public String toString(){
+        return toJsonString();
     }
 
 }

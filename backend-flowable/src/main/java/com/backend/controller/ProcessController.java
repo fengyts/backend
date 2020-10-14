@@ -8,9 +8,7 @@ import java.util.List;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +28,7 @@ public class ProcessController extends FlowableBaseController {
 
     @RequestMapping("/processList")
     public String processList() {
-        return "/holiday/processList";
+        return "/process/processList";
     }
 
     /**
@@ -57,8 +55,8 @@ public class ProcessController extends FlowableBaseController {
         return ResultData.ok(definitionListList);
     }
 
-    @GetMapping(value = "/loadPngByModelId/{modelId}")
-    public void loadPngByModelId(@PathVariable String modelId, HttpServletResponse response) {
+    @GetMapping(value = "/loadImgByModelId/{modelId}")
+    public void loadImgByModelId(@PathVariable String modelId, HttpServletResponse response) {
         response.setHeader("Content-Type", "image/png");
         generator.generateProcessDiagramByModelId(response, modelId);
     }
@@ -80,7 +78,6 @@ public class ProcessController extends FlowableBaseController {
             outputStream.flush();
         } catch (Exception e) {
             log.error("ApiFlowableModelResource-loadXmlByModelId:" + e);
-            e.printStackTrace();
         }
     }
 

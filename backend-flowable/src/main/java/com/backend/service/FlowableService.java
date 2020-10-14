@@ -71,4 +71,11 @@ public interface FlowableService {
      */
     byte[] getModelBpmnXML(String modelId);
 
+    /**
+     * 流程是否存在
+     * @param processKey 流程定义中的 process的id
+     * @return
+     */
+    boolean existModel(String processKey);
+
 }

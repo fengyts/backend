@@ -26,3 +26,20 @@
 3.PrecessImgGenerator生成流程图组件：
     ModelService依赖注入
     注释方法：generateProcessDiagramByModelId()
+4.flowable-modeler-ui 登陆超时跳转配置
+    1.) com.backend.interceptor.AuthorityInterceptor 类中配置 /app/rest/account或者/app/rest/models特殊拦截处理
+    2.) flowable-modeler/scripts/app.js 文件中做如下修改(在第329行，getAccountUrl() 函数调用中增加error()处理)：
+    $http.get(FLOWABLE.APP_URL.getAccountUrl())
+        .success(function (data, status, headers, config) {
+            $rootScope.account = data;
+            $rootScope.invalidCredentials = false;
+            $rootScope.authenticated = true;
+        }).error(function (res, status, headers, config) {
+            if (res.code === '0') {
+                let data = res.data;
+                if (401 === status) {
+                    // $window.location.href = "/login";
+                    $window.location.href = data['redirectToLogin'];
+                }
+            }
+    });
