@@ -136,6 +136,11 @@
                         // "count": res.total,
                         "data": res.data
                     };
+                },
+                // 解决页面无数据时表头显示不全, 希望出现水平滚动条
+                done: function (res, curr, count) {
+                    count || this.elem.next('.layui-table-view').find('.layui-table-header').css('display', 'inline-block');
+                    count || this.elem.next('.layui-table-view').find('.layui-table-box').css('overflow', 'auto');
                 }
             });
         // 已办列表
@@ -208,6 +213,11 @@
                     // "count": res.total,
                     "data": res.data
                 };
+            },
+            // 解决页面无数据时表头显示不全, 希望出现水平滚动条
+            done: function (res, curr, count) {
+                count || this.elem.next('.layui-table-view').find('.layui-table-header').css('display', 'inline-block');
+                count || this.elem.next('.layui-table-view').find('.layui-table-box').css('overflow', 'auto');
             }
         });
         // 我发起的任务
@@ -266,6 +276,11 @@
                     // "count": res.total,
                     "data": res.data
                 };
+            },
+            // 解决页面无数据时表头显示不全, 希望出现水平滚动条
+            done: function (res, curr, count) {
+                count || this.elem.next('.layui-table-view').find('.layui-table-header').css('display', 'inline-block');
+                count || this.elem.next('.layui-table-view').find('.layui-table-box').css('overflow', 'auto');
             }
         });
 
