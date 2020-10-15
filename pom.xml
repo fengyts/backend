@@ -14,7 +14,7 @@
         <module>backend-admin</module>
         <module>backend-flowable</module>
         <module>backend-flowable-modeler</module>
-        <module>backend-flowable-mui-integrate</module>
+        <module>backend-common</module>
     </modules>
 
     <properties>
