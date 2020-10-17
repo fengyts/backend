@@ -12,6 +12,7 @@ import com.backend.model.dto.flowable.HistoricTaskInstanceDto;
 import com.backend.model.dto.flowable.ProcessDefinitionDto;
 import com.backend.model.dto.flowable.ProcessInstanceDto;
 import com.backend.model.dto.flowable.TaskInfoDto;
+import com.backend.model.entity.SysUserEntity;
 import com.backend.service.FlowableService;
 import com.backend.util.SysUserHandler;
 import com.backend.util.WorkflowConverterUtil;
@@ -128,7 +129,7 @@ public class FlowableServiceImpl implements FlowableService {
         if (fileName != null && (fileName.endsWith(".bpmn") || fileName.endsWith(".bpmn20.xml"))) {
             try {
                 InputStream inputStream = file.getInputStream();
-                return this.saveModel(inputStream);
+                return this.saveModel(inputStream, SysUserHandler.getCurrentUser());
             } catch (IOException e) {
                 return ResultData.err("读取文件出错");
             }
@@ -144,7 +145,7 @@ public class FlowableServiceImpl implements FlowableService {
         return xmlBytes;
     }
 
-    private ResultData saveModel(InputStream inputStream) {
+    private ResultData saveModel(InputStream inputStream, SysUserEntity currentUser) {
         try {
             XMLInputFactory xif = XmlUtil.createSafeXmlInputFactory();
             InputStreamReader xmlIn = new InputStreamReader(inputStream, "UTF-8");
@@ -174,6 +175,7 @@ public class FlowableServiceImpl implements FlowableService {
             }
             String description = process.getDocumentation();
             User createdBy = SecurityUtils.getCurrentUserObject();
+            String createByUserId = currentUser.getId();
             //查询是否已经存在流程模板
             Model newModel = new Model();
             List<Model> models = modelRepository.findByKeyAndType(process.getId(), AbstractModel.MODEL_TYPE_BPMN);
@@ -185,11 +187,11 @@ public class FlowableServiceImpl implements FlowableService {
             newModel.setKey(process.getId());
             newModel.setModelType(AbstractModel.MODEL_TYPE_BPMN);
             newModel.setCreated(Calendar.getInstance().getTime());
-            newModel.setCreatedBy(createdBy.getId());
+            newModel.setCreatedBy(createByUserId);
             newModel.setDescription(description);
             newModel.setModelEditorJson(modelNode.toString());
             newModel.setLastUpdated(Calendar.getInstance().getTime());
-            newModel.setLastUpdatedBy(createdBy.getId());
+            newModel.setLastUpdatedBy(createByUserId);
             modelService.createModel(newModel, SecurityUtils.getCurrentUserObject());
             return ResultData.ok();
         } catch (Exception e) {

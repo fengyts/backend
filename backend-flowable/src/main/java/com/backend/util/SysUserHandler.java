@@ -37,6 +37,8 @@ public class SysUserHandler {
             throw new IllegalArgumentException(LOGIN_MSG);
         }
         getHttpSession(Boolean.TRUE).setAttribute(SYS_USER_SESSION_KEY_PREFIX, sysUser);
+        //登陆时 处理flowable-modeler-ui的用户登陆
+        ModelerUISecurityUtil.initAssumeUser();
     }
 
     /**

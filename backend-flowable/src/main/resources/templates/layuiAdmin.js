@@ -56,7 +56,7 @@ $(function () {
         var _dl1 = '<dl class="layui-nav-child">' +
             '<dd><a href="javascript:;" lay-href="process/processList">流程管理</a></dd>' +
             '<dd><a href="javascript:;" lay-href="holidayTask/list">任务列表</a></dd>' +
-            '<dd><a href="javascript:;" lay-href="holiday/applyList">我发起的申请</a></dd>' +
+            '<dd><a href="javascript:;" lay-href="holiday/applyList">发起流程</a></dd>' +
             // '<dd><a href="javascript:;" lay-href="/holiday/auditList">待我审批的申请</a></dd>' +
             '</dl>';
         $(_li1).append(_dl1);

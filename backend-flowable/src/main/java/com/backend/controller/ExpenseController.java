@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * 报销demoController
+ * 报销Controller
  *
  * @author puhaiyang
  * @date 2018/12/19

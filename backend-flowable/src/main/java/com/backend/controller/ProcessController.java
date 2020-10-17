@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+/**
+ * 流程管理controller
+ */
 @Controller
 @RequestMapping("/process")
 @Slf4j
@@ -62,6 +65,7 @@ public class ProcessController extends FlowableBaseController {
     }
 
     @PostMapping("importProcessModel")
+    @ResponseBody
     public ResultData importProcessModel(@RequestParam("file") MultipartFile file){
         ResultData resultData = flowableService.importProcessModel(file);
         return resultData;

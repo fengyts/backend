@@ -22,8 +22,9 @@
 </head>
 <body>
 <div>
-    <div>
+    <div style="padding-top: 10px;">
         <button type="button" class="layui-btn" id="applyHoliday">申请请假</button>
+        <button type="button" class="layui-btn" id="applyExpense">申请审批</button>
         <script type="text/html" id="applyListToolBar">
             <div style="height: 40px;display:flex;">
                 <span style="height: 40px; font-size: 12px; line-height: 40px; vertical-align: middle;display: inline-block;">
@@ -119,6 +120,11 @@
                         // "count": res.total,
                         "data": res.data
                     };
+                },
+                // 解决页面无数据时表头显示不全, 希望出现水平滚动条
+                done: function (res, curr, count) {
+                    count || this.elem.next('.layui-table-view').find('.layui-table-header').css('display', 'inline-block');
+                    count || this.elem.next('.layui-table-view').find('.layui-table-box').css('overflow', 'auto');
                 }
             };
             return _cfg;

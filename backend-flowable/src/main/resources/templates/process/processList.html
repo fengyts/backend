@@ -37,8 +37,11 @@
 </div>
 <div>
     <div style="margin-top: 10px;">
-        <button type="button" class="layui-btn layui-icon layui-icon-engine" id="processDesign" onclick="javascript: window.open('/');">新建流程模型</button>
-        <button type="button" class="layui-btn layui-icon layui-icon-upload-drag" id="importProcessModel">导入流程模型</button>
+        <button type="button" class="layui-btn layui-icon layui-icon-engine" id="processDesign"
+                onclick="javascript: window.open('/');">设计流程图
+        </button>
+        <button type="button" class="layui-btn layui-icon layui-icon-upload-drag" id="importProcessModel">导入流程模型
+        </button>
     </div>
     <table id="deploymentList" lay-filter="deploymentList"></table>
     <table id="definitionList" lay-filter="definitionList"></table>
@@ -51,4 +54,18 @@
 
 </script>
 </body>
+
+<!-- 上传模型模态框 -->
+<div id="uploadProcessModelFormLtl" style="display: none; padding: 10px;">
+    <form class="layui-form" lay-filter="uploadProcessModelForm" id="uploadProcessModelForm" action="">
+        <div class="layui-upload">
+            <div style="color: red;">仅支持*.bpmn和*.bpmn20.xml格式的文件</div>
+            <button type="button" class="layui-btn layui-btn-normal" id="selectUploadFile">选择文件</button>
+        </div>
+        <div style="margin-top: 30px;">
+            <button type="button" class="layui-btn" id="doUploadFile">开始上传</button>
+        </div>
+    </form>
+</div>
+
 </html>
