@@ -12,8 +12,20 @@
     <link rel="stylesheet" th:href="@{/plugins/layui/css/layui.css}" charset="UTF-8"/>
     <link rel="stylesheet" th:href="@{/layuiAdmin.css}" charset="UTF-8">
 
-    <th:block th:replace="${links}" />
-    <th:block th:replace="${styles}" />
+    <th:block th:replace="${links}"/>
+    <th:block th:replace="${styles}"/>
+
+    <style type="text/css">
+        body {
+            padding: 0 10px 0 10px;
+        }
+    </style>
+
+    <!-- 加载全局变量 -->
+    <script th:inline="javascript">
+        const sysUser = '[(${sysUser})]';
+        console.log(sysUser);
+    </script>
 
 </head>
 </html>

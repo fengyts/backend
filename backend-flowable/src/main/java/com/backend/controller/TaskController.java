@@ -5,7 +5,6 @@ import com.backend.model.dto.flowable.HistoricProcessInstanceDto;
 import com.backend.model.dto.flowable.HistoricTaskInstanceDto;
 import com.backend.model.dto.flowable.TaskInfoDto;
 import com.backend.service.IHolidayService;
-import com.backend.util.SysUserHandler;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,8 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * 任务列表controller
  */
 @Controller
-@RequestMapping("/holidayTask")
-public class HolidayTaskController extends FlowableBaseController {
+@RequestMapping("/task")
+public class TaskController extends FlowableBaseController {
 
     @Autowired
     private IHolidayService holidayService;
@@ -27,7 +26,7 @@ public class HolidayTaskController extends FlowableBaseController {
     @GetMapping("/list")
     public String taskList(Model model){
         setCurrentUser(model);
-        return "/holiday/taskList";
+        return "/task/taskList";
     }
 
     /**

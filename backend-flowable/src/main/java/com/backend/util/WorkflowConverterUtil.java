@@ -108,6 +108,8 @@ public class WorkflowConverterUtil {
         try {
             setPersistentState(processInstance, dto);
 
+            dto.setExecutionId(processInstance.getId());
+
             dto.setProcessDefinitionId(processInstance.getProcessDefinitionId());
             dto.setProcessDefinitionName(processInstance.getProcessDefinitionName());
             dto.setProcessDefinitionKey(processInstance.getProcessDefinitionKey());

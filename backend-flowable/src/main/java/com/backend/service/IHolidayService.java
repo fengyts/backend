@@ -2,8 +2,10 @@ package com.backend.service;
 
 import com.backend.model.dto.flowable.HistoricProcessInstanceDto;
 import com.backend.model.dto.flowable.HistoricTaskInstanceDto;
+import com.backend.model.dto.flowable.ProcessInstanceDto;
 import com.backend.model.dto.flowable.TaskInfoDto;
 import com.backend.model.entity.SysUserEntity;
+import com.backend.model.form.HolidayApplyForm;
 import java.util.List;
 
 public interface IHolidayService {
@@ -32,5 +34,8 @@ public interface IHolidayService {
      */
     List<HistoricProcessInstanceDto> listMyInitiateTask(SysUserEntity sysUser);
 
+    ProcessInstanceDto saveApply(HolidayApplyForm applyForm);
+
+    void submitApply(String processInstanceId);
 
 }

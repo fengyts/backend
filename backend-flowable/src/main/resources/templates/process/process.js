@@ -31,11 +31,6 @@ layui.use(['table', 'util', 'upload'], function () {
                 // "count": res.total,
                 "data": res.data
             };
-        },
-        // 解决页面无数据时表头显示不全, 希望出现水平滚动条
-        done: function (res, curr, count) {
-            count || this.elem.next('.layui-table-view').find('.layui-table-header').css('display', 'inline-block');
-            count || this.elem.next('.layui-table-view').find('.layui-table-box').css('overflow', 'auto');
         }
     });
     var definitionList = table.render({
@@ -48,8 +43,8 @@ layui.use(['table', 'util', 'upload'], function () {
         cols: [
             [
                 {
-                    title: '操作', minWidth: 220, align: 'center', fixed: 'left', templet: rowData => {
-                        let _html = '<span class="layui-btn layui-btn-xs" lay-event="viewProcessDiagram">查看流程图</span>',
+                    title: '操作', minWidth: 200, align: 'center', fixed: 'left', templet: rowData => {
+                        let _html = '<span class="layui-btn layui-btn-xs" lay-event="viewProcessDiagram">流程图</span>',
                             _deployment = '<span class="layui-btn layui-btn-xs" lay-event="deployment">部署</span>',
                             _edit = '<span class="layui-btn layui-btn-xs" lay-event="viewProcessXml">查看XML</span>';
                         return _html + _deployment + _edit;
@@ -74,11 +69,6 @@ layui.use(['table', 'util', 'upload'], function () {
                 "data": res.data
             };
         },
-        // 解决页面无数据时表头显示不全, 希望出现水平滚动条
-        done: function (res, curr, count) {
-            count || this.elem.next('.layui-table-view').find('.layui-table-header').css('display', 'inline-block');
-            count || this.elem.next('.layui-table-view').find('.layui-table-box').css('overflow', 'auto');
-        }
     });
 
     // 列表刷新操作

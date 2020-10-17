@@ -13,12 +13,14 @@ import lombok.Data;
 public class HolidayApplyForm implements Serializable {
     private static final long serialVersionUID = 1L;
 
-//    private Long userId;
-//    private String userName;
-    private HolidayTypeEnum holidayType;
+    private Long userId;
+    private Integer holidayType;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Integer day;
-    private Long nextNodeUserId;
+    private String reason;
+    private Long approveUser;
+
+    private String processInstanceId;
 
 }

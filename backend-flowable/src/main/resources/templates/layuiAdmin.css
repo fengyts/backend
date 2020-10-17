@@ -1,5 +1,16 @@
+/** 重写layui样式 */
+.layui-header{
+    height: 40px !important;
+}
+.layui-logo, .layui-nav-item {
+    line-height: 40px !important;
+}
+.layui-side, .layui-body {
+    top: 40px !important;
+}
+
 .nav-tabs-box {
-    height: calc(100vh - 155px) !important;
+    height: calc(100vh - 125px) !important;
 }
 
 iframe {
@@ -9,14 +20,14 @@ iframe {
 
 .nav-tab-p {
     padding: 0 !important;
-    /*height: calc(100vh - 155px) !important;*/
+    /*height: calc(100vh - 125px) !important;*/
     height: 100%;
     /*width: 100%;*/
 }
 
 .nav-tab-p > .layui-tab-item {
     margin: 0;
-    padding: 0 0 0 10px;
+    /*padding: 0 0 0 10px;*/
     height: 100%;
     /*width: 100%;*/
     /*overflow-y: auto;*/

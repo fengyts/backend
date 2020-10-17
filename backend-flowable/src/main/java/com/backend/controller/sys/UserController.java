@@ -21,7 +21,7 @@ public class UserController extends BaseController {
     @Autowired
     private IUserService userService;
 
-    @GetMapping("/list")
+    @GetMapping("/listAllUsers")
     @ResponseBody
     public ResultData getUserList(){
         List<SysUserEntity> users = userService.listAllUsers();

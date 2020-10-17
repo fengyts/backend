@@ -55,6 +55,7 @@ import sun.misc.BASE64Encoder;
  */
 @Controller
 @RequestMapping("/holidayTest")
+@Deprecated
 public class HolidayTestController extends BaseController {
 
     @Autowired

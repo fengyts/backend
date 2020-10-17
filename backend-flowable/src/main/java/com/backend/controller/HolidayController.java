@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/holiday")
+@Deprecated
 public class HolidayController extends FlowableBaseController {
 
     @Autowired

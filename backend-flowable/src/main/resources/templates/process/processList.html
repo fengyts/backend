@@ -1,16 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<head th:replace="/common/common_header :: header('', ~{}, ~{::style})">
 
-    <link rel="stylesheet" th:href="@{/plugins/layui/css/layui.css}" charset="UTF-8"/>
-    <link rel="stylesheet" th:href="@{/templates/layuiAdmin.css}" charset="UTF-8">
     <style>
-        body {
-            padding-right: 10px;
-        }
-
         /* 重写 layui-css的 toolbar 样式*/
         .layui-table-tool {
             min-height: 35px !important;
@@ -19,6 +11,9 @@
             padding: 0 10px !important;
         }
     </style>
+    <script th:inline="javascript">
+        console.log("affdsafdsa 发起流程");
+    </script>
 </head>
 <body>
 <div>
@@ -40,7 +35,7 @@
         <button type="button" class="layui-btn layui-icon layui-icon-engine" id="processDesign"
                 onclick="javascript: window.open('/');">设计流程图
         </button>
-        <button type="button" class="layui-btn layui-icon layui-icon-upload-drag" id="importProcessModel">导入流程模型
+        <button type="button" class="layui-btn layui-icon layui-icon-upload-drag" id="importProcessModel">导入流程
         </button>
     </div>
     <table id="deploymentList" lay-filter="deploymentList"></table>
@@ -59,10 +54,10 @@
 <div id="uploadProcessModelFormLtl" style="display: none; padding: 10px;">
     <form class="layui-form" lay-filter="uploadProcessModelForm" id="uploadProcessModelForm" action="">
         <div class="layui-upload">
-            <div style="color: red;">仅支持*.bpmn和*.bpmn20.xml格式的文件</div>
+            <div style="color: red;margin-bottom: 5px;">仅支持*.bpmn和*.bpmn20.xml格式的文件</div>
             <button type="button" class="layui-btn layui-btn-normal" id="selectUploadFile">选择文件</button>
         </div>
-        <div style="margin-top: 30px;">
+        <div style="margin-top: 20px;">
             <button type="button" class="layui-btn" id="doUploadFile">开始上传</button>
         </div>
     </form>
