@@ -18,6 +18,10 @@ iframe {
     /*width: 100%;*/
 }
 
+.iframe-body {
+    padding: 0 10px 0 10px;
+}
+
 .nav-tab-p {
     padding: 0 !important;
     /*height: calc(100vh - 125px) !important;*/

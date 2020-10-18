@@ -24,8 +24,7 @@ public class TaskController extends FlowableBaseController {
     private IHolidayService holidayService;
 
     @GetMapping("/list")
-    public String taskList(Model model){
-        setCurrentUser(model);
+    public String taskList(){
         return "/task/taskList";
     }
 

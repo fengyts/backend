@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>OA办公</title>
-
-    <link rel="stylesheet" th:href="@{/plugins/layui/css/layui.css}" charset="UTF-8"/>
-    <link rel="stylesheet" th:href="@{/layuiAdmin.css}" charset="UTF-8">
+<head th:replace="/common/common_header :: header('OA办公', ~{}, ~{::style})">
     <style>
         .nav-tabs-box {
             margin: 0;
@@ -63,7 +57,7 @@
             <li class="layui-nav-item">
                 <a href="javascript:;">
                     <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                    <span th:text="${sysUser.realName}"></span>
+                    <span th:text="${sysUser?.realName}"></span>
                 </a>
                 <dl class="layui-nav-child">
                     <dd><a href="">基本资料</a></dd>
@@ -100,16 +94,18 @@
     </div>
 </div>
 
-<script th:src="@{/plugins/jquery/jquery-3.5.1.min.js}" charset="utf-8"></script>
-<script th:src="@{/plugins/layui/layui.js}" charset="utf-8"></script>
-<script th:inline="javascript" th:src="@{/layuiAdmin.js}" charset="utf-8"></script>
-<script th:inline="javascript">
-    var userRealName = [[${sysUser.realName}]];
-    //JavaScript代码区域
-    layui.use('element', function(){
-        var element = layui.element;
+<!-- 引入js模板 -->
+<div th:replace="common/common_js :: common_js(~{::script})">
+    <script th:inline="javascript" th:src="@{/js/index.js}" charset="utf-8"></script>
 
-    });
-</script>
+    <script th:inline="javascript">
+        var userRealName = [[${sysUser.realName}]];
+        //JavaScript代码区域
+        layui.use('element', function(){
+            var element = layui.element;
+
+        });
+    </script>
+</div>
 </body>
 </html>

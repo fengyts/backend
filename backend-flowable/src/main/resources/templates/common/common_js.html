@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="common_js(scripts)">
+    <script th:src="@{/plugins/jquery/jquery-3.5.1.min.js}" charset="utf-8"></script>
+    <script th:src="@{/plugins/layui/layui.js}" charset="utf-8"></script>
+
+    <script type="text/javascript">
+        var form;
+        layui.use(['form'], function () {
+            form = layui.form;
+        });
+    </script>
+
+<!--    <script th:src="@{/js/index.js}" charset="utf-8" type="module"></script>-->
+
+    <th:block th:replace="${scripts}" />
+
+</div>

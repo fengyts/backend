@@ -42,13 +42,4 @@ public class BackendFlowableApplication {
         };
     }
 
-    /**
-     * viewResolver赋值给 SysUserHandler, 用于登陆时设置thymeleaf全局登陆用户变量
-     * @param viewResolver
-     */
-    @Resource
-    private void configureThymeleafStaticVars(ThymeleafViewResolver viewResolver) {
-        SysUserHandler.initThymeleafViewResolver(viewResolver);
-    }
-
 }

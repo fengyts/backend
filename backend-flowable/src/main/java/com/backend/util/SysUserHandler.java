@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
 /**
  * 系统登陆, 当前用户会话上下文
@@ -28,19 +27,14 @@ public class SysUserHandler {
      */
     private static final int SESSION_EXPIRES = 60 * 30;
 
-    private static ThymeleafViewResolver viewResolver;
-
-    /**
-     *  thymeleaf 前端登陆用户全局变量key值
-     */
-    private static final String THYMELEAF_SYSUSER_KEY = "sysUser";
+    /*private static ThymeleafViewResolver viewResolver;
 
     public static void initThymeleafViewResolver(ThymeleafViewResolver viewResolver) {
         SysUserHandler.viewResolver = viewResolver;
-    }
+    }*/
 
     public static SysUserEntity getCurrentUser() {
-        SysUserEntity sysUserEntity = (SysUserEntity) getHttpSession(true).getAttribute(SYS_USER_SESSION_KEY_PREFIX);
+        SysUserEntity sysUserEntity = (SysUserEntity) getHttpSession(Boolean.TRUE).getAttribute(SYS_USER_SESSION_KEY_PREFIX);
         log.info("current login user: {}", sysUserEntity);
         return sysUserEntity;
     }
@@ -59,10 +53,6 @@ public class SysUserHandler {
 
         // 登陆时 处理flowable-modeler-ui的用户登陆
         ModelerUISecurityUtil.initAssumeUser();
-
-        // 给thymeleaf 模板设置全局登陆用户的变量,
-        // 在 common/common_header.html中的script中接收为全局变量
-        configureThymeleafStaticVars(sysUser);
     }
 
     /**
@@ -86,10 +76,5 @@ public class SysUserHandler {
         HttpServletRequest request = servletReqAttr.getRequest();
         return request;
     }
-
-    private static void configureThymeleafStaticVars(SysUserEntity sysUser) {
-        viewResolver.addStaticVariable(THYMELEAF_SYSUSER_KEY, sysUser);
-    }
-
 
 }

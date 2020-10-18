@@ -21,7 +21,7 @@
         }
     </style>
 </head>
-<body>
+<body class="iframe-body">
 <div>
 </div>
 <div class="container">
@@ -45,10 +45,10 @@
     </div>
 </div>
 
-
-<script th:src="@{/plugins/jquery/jquery-3.5.1.min.js}" charset="utf-8"></script>
-<script th:src="@{/plugins/layui/layui.js}" charset="utf-8"></script>
-<script th:src="@{task.js}" charset="utf-8"></script>
+<!-- 引入js模板 -->
+<div th:replace="common/common_js :: common_js(~{::script})">
+    <script th:inline="javascript" th:src="@{task.js}" charset="utf-8"></script>
+</div>
 </body>
 
 <!-- 审核表单 -->

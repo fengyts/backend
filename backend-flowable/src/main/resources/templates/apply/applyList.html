@@ -11,7 +11,7 @@
         }
     </style>
 </head>
-<body>
+<body class="iframe-body">
 <div>
     <div style="padding-top: 10px;">
         <button type="button" class="layui-btn" id="applyHoliday">申请请假</button>
@@ -22,9 +22,10 @@
     </div>
 </div>
 
-<script th:src="@{/plugins/jquery/jquery-3.5.1.min.js}" charset="utf-8"></script>
-<script th:src="@{/plugins/layui/layui.js}" charset="utf-8"></script>
-<script th:inline="javascript" th:src="@{apply.js}" charset="utf-8"></script>
+<!-- 引入js模板 -->
+<div th:replace="common/common_js :: common_js(~{::script})">
+    <script th:inline="javascript" th:src="@{apply.js}" charset="utf-8"></script>
+</div>
 </body>
 
 <!-- 申请请假表单 -->
