@@ -61,8 +61,10 @@ layui.use(['element', 'form', 'table', 'util'], function () {
             },
             // 解决页面无数据时表头显示不全, 希望出现水平滚动条
             done: function (res, curr, count) {
-                count || this.elem.next('.layui-table-view').find('.layui-table-header').css('display', 'inline-block');
-                count || this.elem.next('.layui-table-view').find('.layui-table-box').css('overflow', 'auto');
+                if (res.data && res.data.length == 0) {
+                    count || this.elem.next('.layui-table-view').find('.layui-table-header').css('display', 'inline-block');
+                    count || this.elem.next('.layui-table-view').find('.layui-table-box').css('overflow', 'auto');
+                }
             }
         });
     // 已办列表
@@ -81,8 +83,6 @@ layui.use(['element', 'form', 'table', 'util'], function () {
                         let _status = rowData.statusAudit;
                         if ("REJECTED" === _status) {
                             _html += _submit;
-                        } else if ("UNDER_REVIEW" === _status) {
-                            _html += _audit;
                         }
                         return _html;
                     }
@@ -138,8 +138,10 @@ layui.use(['element', 'form', 'table', 'util'], function () {
         },
         // 解决页面无数据时表头显示不全, 希望出现水平滚动条
         done: function (res, curr, count) {
-            count || this.elem.next('.layui-table-view').find('.layui-table-header').css('display', 'inline-block');
-            count || this.elem.next('.layui-table-view').find('.layui-table-box').css('overflow', 'auto');
+            if (res.data && res.data.length == 0) {
+                count || this.elem.next('.layui-table-view').find('.layui-table-header').css('display', 'inline-block');
+                count || this.elem.next('.layui-table-view').find('.layui-table-box').css('overflow', 'auto');
+            }
         }
     });
     // 我发起的任务
@@ -153,38 +155,48 @@ layui.use(['element', 'form', 'table', 'util'], function () {
         cols: [
             [
                 {
-                    title: '操作', minWidth: 150, align: 'center', fixed: 'left', templet: rowData => {
+                    title: '操作', minWidth: 170, align: 'center', fixed: 'left', templet: rowData => {
                         let _html = '<span class="layui-btn layui-btn-xs" lay-event="viewProcessDiagram">流程图</span>',
-                            _audit = '<span class="layui-btn layui-btn-xs" lay-event="approve">审核</span>',
-                            _submit = '<span class="layui-btn layui-btn-xs" lay-event="reSubmit">提交</span>';
-                        let _status = rowData.statusAudit;
-                        if ("REJECTED" === _status) {
-                            _html += _submit;
-                        } else if ("UNDER_REVIEW" === _status) {
-                            _html += _audit;
+                            _modify = '<span class="layui-btn layui-btn-xs" lay-event="applyModify">修改</span>',
+                            _submit = '<span class="layui-btn layui-btn-xs" lay-event="applySubmit">提交</span>';
+                        if ("UNCOMMITTED" == rowData.status) {
+                            _html += _modify + _submit;
+                            // _html += _submit;
                         }
                         return _html;
                     }
                 },
-                {field: 'id', title: '任务ID', minWidth: 290, align: 'center'},
-                {field: 'processInstanceId', title: '流程实例ID', minWidth: 290, align: 'center'},
-                {field: 'assignee', title: '姓名', minWidth: 90, align: 'center'},
-                {field: 'activityName', title: '当前节点', minWidth: 90, align: 'center'},
                 {
-                    field: 'statusAudit', title: '状态', minWidth: 90, align: 'center', templet: rowData => {
-                        return rowData.statusPairValue[rowData.statusAudit];
+                    field: 'id', title: '任务ID', minWidth: 290, align: 'center', templet: rowData => {
+                        return rowData['myInitiate'].id;
+                    }
+                },
+                {
+                    field: 'processInstanceId', title: '流程实例ID', minWidth: 290, align: 'center', templet: rowData => {
+                        return rowData['myInitiate'].processInstanceId;
+                    }
+                },
+                {
+                    field: 'activityName', title: '当前节点', minWidth: 60, align: 'center', templet: rowData => {
+                        // return rowData['myInitiate'].activityName;
+                        return rowData['currentNodeHandler'];
+                    }
+                },
+                {
+                    field: 'statusAudit', title: '状态', minWidth: 50, align: 'center', templet: rowData => {
+                        return rowData['statusDesc'];
                     }
                 },
                 {
                     field: 'deploymentTime', title: '发起时间', minWidth: 160, align: 'center',
                     templet: rowData => {
-                        return util.toDateString(rowData.createTime, 'yyyy-MM-dd HH:mm:ss');
+                        return util.toDateString(rowData['myInitiate'].createTime, 'yyyy-MM-dd HH:mm:ss');
                     }
                 },
                 {
-                    field: 'deploymentTime', title: '结束时间', minWidth: 160, align: 'center',
+                    field: 'deploymentTime', title: '结束时间', minWidth: 165, align: 'center',
                     templet: rowData => {
-                        return util.toDateString(rowData.createTime, 'yyyy-MM-dd HH:mm:ss');
+                        return util.toDateString(rowData['myInitiate'].endTime, 'yyyy-MM-dd HH:mm:ss');
                     }
                 }
             ]
@@ -201,8 +213,10 @@ layui.use(['element', 'form', 'table', 'util'], function () {
         },
         // 解决页面无数据时表头显示不全, 希望出现水平滚动条
         done: function (res, curr, count) {
-            count || this.elem.next('.layui-table-view').find('.layui-table-header').css('display', 'inline-block');
-            count || this.elem.next('.layui-table-view').find('.layui-table-box').css('overflow', 'auto');
+            if (res.data && res.data.length == 0) {
+                count || this.elem.next('.layui-table-view').find('.layui-table-header').css('display', 'inline-block');
+                count || this.elem.next('.layui-table-view').find('.layui-table-box').css('overflow', 'auto');
+            }
         }
     });
 
@@ -226,7 +240,7 @@ layui.use(['element', 'form', 'table', 'util'], function () {
      * 表格数据行tool操作栏监听事件
      */
     table.on('tool(historyTaskList)', function (obj) {
-        let _rowData = obj.data;
+        let _rowData = obj.data.myInitiate;
         switch (obj.event) {
             case 'viewProcessDiagram': // 查看流程图
                 layer.open({
@@ -251,7 +265,7 @@ layui.use(['element', 'form', 'table', 'util'], function () {
         }
     });
     table.on('tool(todoTask)', function (obj) {
-        let _rowData = obj.data;
+        let _rowData = obj.data.myInitiate;
         switch (obj.event) {
             case 'viewProcessDiagram': // 查看流程图
                 layer.open({
@@ -276,7 +290,7 @@ layui.use(['element', 'form', 'table', 'util'], function () {
         }
     });
     table.on('tool(myInitiateList)', function (obj) {
-        let _rowData = obj.data;
+        let _rowData = obj.data.myInitiate;
         switch (obj.event) {
             case 'viewProcessDiagram': // 查看流程图
                 layer.open({
@@ -286,15 +300,15 @@ layui.use(['element', 'form', 'table', 'util'], function () {
                     content: '/holiday/processDiagram?processInstanceId=' + _rowData.processInstanceId
                 })
                 return;
-            case 'approve': // 审核
-                _modal = layer.open({
-                    type: 1,
-                    area: ['550px', '250px'],
-                    content: $('#approveFormLtl'),
-                    success: function (index) {
-                        $("#approveForm input[name='taskId']").val(_rowData.taskId);
+            case 'applySubmit': // 提交
+                $.post("/apply/submitApply", {"processInstanceId": _rowData.processInstanceId}, function (res) {
+                    if ("0" == res.code) {
+                        layer.msg("操作成功", {icon: 1, time: 1500});
+                        myInitiateList.reload();
+                    } else {
+                        layer.msg(res.msg, {icon: 2, time: 1500});
                     }
-                });
+                }, "json");
                 return;
             default:
                 return;

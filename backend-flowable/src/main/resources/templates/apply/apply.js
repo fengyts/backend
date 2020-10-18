@@ -10,25 +10,47 @@ layui.use(['form', 'table', 'util'], function () {
     $("#applyHoliday").click(function () {
         _modal = layer.open({
             type: 1,
-            area: ['550px', '420px'],
+            title: '请假表单--[' + sysUser.realName + ']',
+            area: ['550px', '410px'],
             content: $('#applyFormLtl')
         });
     });
 
-    $("#applyExpense").click(function(){
+    $("#applyExpense").click(function () {
         layer.tips("功能未开发!", "#applyExpense", {tips: 2, time: 1500});
     });
 
     /**
-     * 提交申请
+     * 申请-保存
+     */
+    form.on('submit(applyFormSave)', function (data) {
+        let _param = data.field;
+        // console.log(_param);
+        // return false; // 调试时打开，console.log才会有输出
+        $.post("/apply/saveApply", _param, function (res) {
+            if ("0" == res.code) {
+                layer.msg("操作成功", {icon: 1, time: 1500});
+            } else {
+                layer.msg(res.msg, {icon: 2, time: 1500});
+            }
+            layer.close(_modal);
+        }, 'json');
+    });
+
+    /**
+     * 申请-提交
      */
     form.on('submit(applyFormSubmit)', function (data) {
         let _param = data.field;
         // console.log(_param);
         // return false; // 调试时打开，console.log才会有输出
-        $.post("/holiday/apply", _param, function (res) {
+        $.post("/apply/submitApply", _param, function (res) {
+            if ("0" == res.code) {
+                layer.msg("操作成功", {icon: 1, time: 1500});
+            } else {
+                layer.msg(res.msg, {icon: 2, time: 1500});
+            }
             layer.close(_modal);
-            applyList.reload();
         }, 'json');
     });
 

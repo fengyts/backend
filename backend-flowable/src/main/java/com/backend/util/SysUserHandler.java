@@ -35,7 +35,6 @@ public class SysUserHandler {
 
     public static SysUserEntity getCurrentUser() {
         SysUserEntity sysUserEntity = (SysUserEntity) getHttpSession(Boolean.TRUE).getAttribute(SYS_USER_SESSION_KEY_PREFIX);
-        log.info("current login user: {}", sysUserEntity);
         return sysUserEntity;
     }
 

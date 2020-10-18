@@ -4,7 +4,7 @@
     <style>
         /** 下拉框太长, 限制高度, 显示滚动条 */
         .layui-form-select dl {
-            height: 250px;
+            height: 230px;
         }
         .layui-textarea {
             min-height: 70px !important;
@@ -31,15 +31,26 @@
 <!-- 申请请假表单 -->
 <div id="applyFormLtl" style="display: none; padding: 10px 20px 0 0;">
     <form class="layui-form" lay-filter="applyForm" id="applyForm" action="">
-        <div class="layui-form-item">
+        <!--<div class="layui-form-item">
             <label class="layui-form-label">用户名</label>
             <div class="layui-input-block">
                 <input type="text" name="realName" lay-verify="required" autocomplete="off" placeholder="请输入用户名"
                        class="layui-input layui-disabled" readonly th:value="${sysUser?.realName}">
             </div>
+        </div>-->
+        <div class="layui-form-item">
+            <label class="layui-form-label">审批人<span class="form-required-star">*</span></label>
+            <div class="layui-input-block">
+                <select name="approveUser" lay-verify="required">
+                    <option value="0">--请选择审批人--</option>
+                    <option th:each="user:${approveUsers}"
+                            th:value="${user.id}" th:text="${user.realName}">
+                    </option>
+                </select>
+            </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">请假类型</label>
+            <label class="layui-form-label">请假类型<span class="form-required-star">*</span></label>
             <div class="layui-input-block">
                 <select name="holidayType" lay-verify="required">
                     <option value="0">--请选择请假类型--</option>
@@ -50,30 +61,20 @@
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">请假天数</label>
+            <label class="layui-form-label">请假天数<span class="form-required-star">*</span></label>
             <div class="layui-input-block">
                 <input type="text" name="day" lay-verify="required|number" autocomplete="off" placeholder="请输入天数"
                        class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">请假原因</label>
+            <label class="layui-form-label">请假原因<span class="form-required-star">*</span></label>
             <div class="layui-input-block">
                 <textarea name="reason" placeholder="请输入请假原因" lay-verify="required" class="layui-textarea"></textarea>
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">审批人</label>
-            <div class="layui-input-block">
-                <select name="approveUser" lay-verify="required">
-                    <option value="0">--请选择审批人--</option>
-                    <option th:each="user:${approveUsers}"
-                            th:value="${user.id}" th:text="${user.realName}">
-                    </option>
-                </select>
-            </div>
-        </div>
-        <div class="layui-form-item" style="padding-left: 45%;">
+        <div class="layui-form-item" style="padding-left: 40%;">
+            <button type="submit" class="layui-btn" lay-submit lay-filter="applyFormSave">保存</button>
             <button type="submit" class="layui-btn" lay-submit lay-filter="applyFormSubmit">提交</button>
         </div>
     </form>

@@ -18,7 +18,9 @@
 
     <!-- 加载全局变量 -->
     <script th:inline="javascript">
-        const sysUser = '[(${sysUser})]';
+        // const sysUserStr = '[(${sysUser})]'; // 这里获取的是 toString格式化字符串输出
+        // const sysUserJsonStr = '[[${sysUser}]]'; // 加上单引号后获取的是json字符串
+        const sysUser = [[${sysUser}]]; // 这里才是获取的对象
         // console.log(sysUser);
     </script>
 

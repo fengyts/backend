@@ -1,6 +1,7 @@
 package com.backend.controller;
 
 import com.backend.common.ResultData;
+import com.backend.model.dto.MyInitiateTaskDto;
 import com.backend.model.dto.flowable.HistoricProcessInstanceDto;
 import com.backend.model.dto.flowable.HistoricTaskInstanceDto;
 import com.backend.model.dto.flowable.TaskInfoDto;
@@ -59,7 +60,7 @@ public class TaskController extends FlowableBaseController {
     @GetMapping("getMyInitiateTask")
     @ResponseBody
     public ResultData listMyInitiateTask(){
-        List<HistoricProcessInstanceDto> myInitiateTask = holidayService.listMyInitiateTask(getCurrentLoginUser());
+        List<MyInitiateTaskDto> myInitiateTask = holidayService.listMyInitiateTask(getCurrentLoginUser());
         return ResultData.ok(myInitiateTask);
     }
 

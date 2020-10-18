@@ -72,6 +72,9 @@ public class AuthorityInterceptor implements HandlerInterceptor {
                 return false;
             } else {
                 SysUserHandler.renewSessionExpires();
+                if (SysConstant.URI_INDEX.equals(requestURI)) {
+                    log.info("current login user: {}", currentUser);
+                }
                 return true;
             }
         }
@@ -139,7 +142,7 @@ public class AuthorityInterceptor implements HandlerInterceptor {
             }
             ModelMap modelMap = modelAndView.getModelMap();
             Object obj = modelMap.getAttribute(SysConstant.THYMELEAF_SYSUSER_KEY);
-            if(null == obj){
+            if (null == obj) {
                 modelAndView.addObject(SysConstant.THYMELEAF_SYSUSER_KEY, currentUser);
                 return;
             }

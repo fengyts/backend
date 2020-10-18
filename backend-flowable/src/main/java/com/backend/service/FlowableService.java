@@ -55,7 +55,9 @@ public interface FlowableService {
      */
     void addComment(String userId, String taskId, String processInstanceId, String type, String msg);
 
-    public void updateCommentById(HiCommentDto comment);
+    void addComment(String taskId, String type, String msg);
+
+    void updateCommentById(HiCommentDto comment);
 
     /**
      * 导入流程模型

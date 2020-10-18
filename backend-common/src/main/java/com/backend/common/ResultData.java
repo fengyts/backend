@@ -46,7 +46,6 @@ public class ResultData<T> implements Serializable {
      * 响应主体
      */
 //    private final JSONObject jsonObject = new JSONObject();
-
     private ResultData() {
     }
 
@@ -60,12 +59,16 @@ public class ResultData<T> implements Serializable {
         this.data = data;
     }
 
-    public static ResultData okOfMapData(){
+    public boolean isSuccess() {
+        return SUCCESS_FLAG.equals(this.getCode());
+    }
+
+    public static ResultData okOfMapData() {
         Map<String, Object> mapData = Maps.newHashMapWithExpectedSize(2);
         return ok(mapData);
     }
 
-    public ResultData extendMapData(String key, Object value){
+    public ResultData extendMapData(String key, Object value) {
         if (Objects.isNull(this.data)) {
             Map<String, Object> mapData = Maps.newHashMapWithExpectedSize(2);
             mapData.put(key, value);
@@ -122,7 +125,7 @@ public class ResultData<T> implements Serializable {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return toJsonString();
     }
 

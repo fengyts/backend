@@ -36,3 +36,8 @@ iframe {
     /*width: 100%;*/
     /*overflow-y: auto;*/
 }
+
+.form-required-star {
+    color: red;
+    font-size: 14px;
+}

@@ -39,6 +39,7 @@ import org.flowable.bpmn.model.EndEvent;
 import org.flowable.bpmn.model.ExclusiveGateway;
 import org.flowable.bpmn.model.FlowElement;
 import org.flowable.bpmn.model.FlowNode;
+import org.flowable.bpmn.model.Process;
 import org.flowable.bpmn.model.SequenceFlow;
 import org.flowable.bpmn.model.UserTask;
 import org.flowable.common.engine.impl.identity.Authentication;
@@ -51,22 +52,17 @@ import org.flowable.engine.RepositoryService;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
 import org.flowable.engine.history.HistoricActivityInstance;
-import org.flowable.engine.impl.cmd.AddCommentCmd;
 import org.flowable.engine.impl.cmd.SaveCommentCmd;
-import org.flowable.engine.impl.util.CommandContextUtil;
 import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.DeploymentBuilder;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.runtime.ActivityInstance;
 import org.flowable.engine.runtime.Execution;
 import org.flowable.engine.runtime.ProcessInstance;
-import org.flowable.engine.task.Comment;
-import org.flowable.engine.task.Event;
 import org.flowable.idm.api.User;
 import org.flowable.task.api.Task;
 import org.flowable.task.api.history.HistoricTaskInstance;
 import org.flowable.ui.common.security.SecurityUtils;
-import org.flowable.ui.common.service.exception.BadRequestException;
 import org.flowable.ui.common.util.XmlUtil;
 import org.flowable.ui.modeler.domain.AbstractModel;
 import org.flowable.ui.modeler.domain.Model;
@@ -76,6 +72,7 @@ import org.flowable.validation.ProcessValidator;
 import org.flowable.validation.ProcessValidatorFactory;
 import org.flowable.validation.ValidationError;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -83,6 +80,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 public class FlowableServiceImpl implements FlowableService {
 
+    @Qualifier("processEngine")
     @Autowired
     protected ProcessEngine processEngine;
     @Autowired
@@ -115,6 +113,12 @@ public class FlowableServiceImpl implements FlowableService {
 //        Command commentCmdAdd = new AddCommentCmd(taskId, processInstanceId, type, msg);
 //        managementService.executeCommand(commentCmdAdd);
         taskService.addComment(taskId, processInstanceId, type, msg);
+    }
+
+    @Override
+    public void addComment(String taskId, String type, String msg){
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        this.addComment(null, taskId, task.getProcessInstanceId(), type, msg);
     }
 
     @Override
@@ -168,7 +172,7 @@ public class FlowableServiceImpl implements FlowableService {
                 bpmnLayout.execute();
             }
             ObjectNode modelNode = bpmnJsonConverter.convertToJson(bpmnModel);
-            org.flowable.bpmn.model.Process process = bpmnModel.getMainProcess();
+            Process process = bpmnModel.getMainProcess();
             String name = process.getId();
             if (StringUtils.isNotEmpty(process.getName())) {
                 name = process.getName();
@@ -385,6 +389,7 @@ public class FlowableServiceImpl implements FlowableService {
     @Override
     public void completeTask(String taskId, Map<String, Object> variables) {
         taskService.complete(taskId, variables);
+        this.addComment(taskId, CommentTypeEnum.SP.getDesc(), "请假审批");
     }
 
     @Override

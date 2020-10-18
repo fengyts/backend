@@ -149,6 +149,8 @@ public class WorkflowConverterUtil {
         try {
             setPersistentState(task, dto);
 
+            dto.setTaskId(task.getId());
+
             dto.setId(task.getId());
             dto.setName(task.getName());
             dto.setDescription(task.getDescription());

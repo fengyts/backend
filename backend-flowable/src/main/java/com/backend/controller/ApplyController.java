@@ -62,12 +62,17 @@ public class ApplyController extends FlowableBaseController {
      */
     @PostMapping("/submitApply")
     @ResponseBody
-    public ResultData submitApply(String processInstanceId) {
+    public ResultData submitApply(HolidayApplyForm applyForm) {
+        // 参数校验
+        String processInstanceId = applyForm.getProcessInstanceId();
         if (StringUtils.isBlank(processInstanceId)) {
-            return ResultData.errParam();
+            boolean validate = validateParam(applyForm);
+            if (!validate) {
+                return ResultData.errParam();
+            }
         }
-        holidayService.submitApply(processInstanceId);
-        return ResultData.ok();
+        ResultData resultData = holidayService.submitApply(applyForm);
+        return resultData;
     }
 
     private boolean validateParam(HolidayApplyForm applyForm) {

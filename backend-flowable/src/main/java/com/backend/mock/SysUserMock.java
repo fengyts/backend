@@ -37,19 +37,6 @@ public class SysUserMock implements Serializable {
         boss.setEmail("boss@163.com");
         sysUsers.add(boss);
 
-        SysUserEntity admin = new SysUserEntity();
-        admin.setId("7");
-        admin.setLoginName("admin");
-        admin.setRealName("管理员");
-        admin.setSex(1);
-        admin.setAge(33);
-        admin.setPosition("管理员");
-        admin.setPasswd(PASSWORD);
-        admin.setDeptId("IT研发部");
-        admin.setGroupId("manager");
-        admin.setEmail("admin@163.com");
-        sysUsers.add(admin);
-
         SysUserEntity suAdmin = new SysUserEntity();
         suAdmin.setId("6");
         suAdmin.setLoginName("superAdmin");
@@ -62,6 +49,19 @@ public class SysUserMock implements Serializable {
         suAdmin.setGroupId("manager");
         suAdmin.setEmail("superadmin@163.com");
         sysUsers.add(suAdmin);
+
+        SysUserEntity admin = new SysUserEntity();
+        admin.setId("7");
+        admin.setLoginName("admin");
+        admin.setRealName("管理员");
+        admin.setSex(1);
+        admin.setAge(33);
+        admin.setPosition("管理员");
+        admin.setPasswd(PASSWORD);
+        admin.setDeptId("IT研发部");
+        admin.setGroupId("manager");
+        admin.setEmail("admin@163.com");
+        sysUsers.add(admin);
 
         SysUserEntity diaochan = new SysUserEntity();
         diaochan.setId("5");

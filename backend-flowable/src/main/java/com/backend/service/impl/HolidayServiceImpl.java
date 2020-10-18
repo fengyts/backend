@@ -1,5 +1,8 @@
 package com.backend.service.impl;
 
+import com.backend.common.ResultData;
+import com.backend.enums.StatusAuditEnum;
+import com.backend.model.dto.MyInitiateTaskDto;
 import com.backend.model.dto.flowable.HistoricProcessInstanceDto;
 import com.backend.model.dto.flowable.HistoricTaskInstanceDto;
 import com.backend.model.dto.flowable.ProcessInstanceDto;
@@ -20,6 +23,7 @@ import org.flowable.engine.HistoryService;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
 import org.flowable.engine.history.HistoricProcessInstance;
+import org.flowable.engine.runtime.Execution;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
 import org.flowable.task.api.history.HistoricTaskInstance;
@@ -40,6 +44,7 @@ public class HolidayServiceImpl implements IHolidayService {
     private FlowableService flowableService;
 
     private static final String PROCESS_KEY = "HolidayProcess";
+    private static final String HOLIDAY_APPLY_VARIABLE_KEY = "varApply";
 
     @Override
     public List<TaskInfoDto> listRunTimeTask(String assignee) {
@@ -64,15 +69,49 @@ public class HolidayServiceImpl implements IHolidayService {
     }
 
     @Override
-    public List<HistoricProcessInstanceDto> listMyInitiateTask(SysUserEntity sysUser) {
+    public List<MyInitiateTaskDto> listMyInitiateTask(SysUserEntity sysUser) {
         List<HistoricProcessInstance> myInitiates = historyService.createHistoricProcessInstanceQuery()
                 .startedBy(sysUser.getId()).list();
-        List<HistoricProcessInstanceDto> results = myInitiates.stream()
+        List<MyInitiateTaskDto> results = myInitiates.stream()
                 .map(hi -> {
+                    MyInitiateTaskDto resultDto = new MyInitiateTaskDto();
                     HistoricProcessInstanceDto dto = WorkflowConverterUtil.toHistoricProcessInstanceDto(hi);
-                    return dto;
+                    resultDto.setMyInitiate(dto);
+
+                    setMyInitiateStatus(resultDto, sysUser.getRealName(), dto.getProcessInstanceId());
+                    return resultDto;
                 }).collect(Collectors.toList());
         return results;
+    }
+
+    private void setMyInitiateStatus(MyInitiateTaskDto resultDto, String currentUser, String processInstanceId) {
+        ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
+        StatusAuditEnum status;
+        String currentNodeHandler = "";
+        if (null == pi) {
+            status = StatusAuditEnum.FINISHED;
+            currentNodeHandler = StatusAuditEnum.FINISHED.getDesc();
+        } else {
+            Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+            String assignee = task.getAssignee();
+            if (currentUser.equals(assignee)) {
+                status = StatusAuditEnum.UNCOMMITTED;
+                currentNodeHandler = currentUser;
+            } else {
+                status = StatusAuditEnum.UNDER_REVIEW;
+                currentNodeHandler = task.getAssignee();
+            }
+        }
+        resultDto.setStatus(status);
+        resultDto.setStatusDesc(status.getDesc());
+        resultDto.setCurrentNodeHandler(currentNodeHandler);
+    }
+
+    private void getCurrentNode(String executionId) {
+        Execution execution = runtimeService.createExecutionQuery().executionId(executionId).singleResult();
+        // 当前审批节点
+        String crruentActivityId = execution.getActivityId();
+        execution.isEnded();
     }
 
     @Override
@@ -81,11 +120,14 @@ public class HolidayServiceImpl implements IHolidayService {
         String processInstanceId = applyForm.getProcessInstanceId();
         Map<String, Object> variables = Maps.newHashMap();
         // 设置请假提交人变量
-        variables.put("reqUser", SysUserHandler.getCurrentUser().getLoginName());
-        variables.put("varApply", applyForm);
+        variables.put("reqUser", SysUserHandler.getCurrentUser().getRealName());
+        variables.put(HOLIDAY_APPLY_VARIABLE_KEY, applyForm);
+
         if (StringUtils.isBlank(processInstanceId)) { // 开启新流程
             // 启动流程
             dto = flowableService.startProcess(PROCESS_KEY, variables);
+            // 设置变量
+            runtimeService.setVariables(dto.getExecutionId(), variables);
             return dto;
         } else { // 更新变量
             ProcessInstance processInstance = runtimeService.createProcessInstanceQuery()
@@ -102,8 +144,38 @@ public class HolidayServiceImpl implements IHolidayService {
     }
 
     @Override
-    public void submitApply(String processInstanceId) {
+    public ResultData submitApply(HolidayApplyForm applyForm) {
+        String processInstanceId = applyForm.getProcessInstanceId();
+        ProcessInstanceDto processInstanceDto;
+        if (StringUtils.isBlank(processInstanceId)) {
+            processInstanceDto = this.saveApply(applyForm);
+            processInstanceId = processInstanceDto.getProcessInstanceId();
+        } else {
+            ProcessInstance processInstance = runtimeService.createProcessInstanceQuery()
+                    .processInstanceId(processInstanceId).singleResult();
+            processInstanceDto = WorkflowConverterUtil.toProcessInstanceDto(processInstance);
+        }
 
+        String executionId = processInstanceDto.getExecutionId();
+        Map<String, Object> variables = getRuntimeVariables(executionId);
+        HolidayApplyForm form = (HolidayApplyForm) variables.get(HOLIDAY_APPLY_VARIABLE_KEY);
+
+        // 过排他网关
+        TaskInfoDto taskInfoDto = flowableService.getTaskByProcessInstanceId(processInstanceId);
+        Map<String, Object> variablesTask = Maps.newHashMap();
+        variablesTask.put("day", form.getDay());
+        flowableService.completeTask(taskInfoDto.getTaskId(), variablesTask);
+
+        return ResultData.ok();
+    }
+
+    private void setRuntimeVariables(String executionId, Map<String, Object> vars) {
+        runtimeService.setVariables(executionId, vars);
+    }
+
+    private Map<String, Object> getRuntimeVariables(String executionId) {
+        Map<String, Object> variables = runtimeService.getVariables(executionId);
+        return variables;
     }
 
 
