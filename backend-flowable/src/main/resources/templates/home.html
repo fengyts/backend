@@ -98,14 +98,14 @@
 <div th:replace="common/common_js :: common_js(~{::script})">
     <script th:inline="javascript" th:src="@{/js/index.js}" charset="utf-8"></script>
 
-    <script th:inline="javascript">
+    <!--<script th:inline="javascript">
         var userRealName = [[${sysUser.realName}]];
         //JavaScript代码区域
         layui.use('element', function(){
             var element = layui.element;
 
         });
-    </script>
+    </script>-->
 </div>
 </body>
 </html>
