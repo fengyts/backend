@@ -9,4 +9,6 @@ public interface IUserService {
 
     List<SysUserEntity> listAllUsers();
 
+    SysUserEntity selectById(Long userId);
+
 }

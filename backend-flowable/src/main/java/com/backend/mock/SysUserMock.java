@@ -25,7 +25,7 @@ public class SysUserMock implements Serializable {
         sysUsers = Lists.newArrayList();
 
         SysUserEntity boss = new SysUserEntity();
-        boss.setId("8");
+        boss.setId(8L);
         boss.setLoginName("boss");
         boss.setRealName("霸道总裁");
         boss.setSex(1);
@@ -38,7 +38,7 @@ public class SysUserMock implements Serializable {
         sysUsers.add(boss);
 
         SysUserEntity suAdmin = new SysUserEntity();
-        suAdmin.setId("6");
+        suAdmin.setId(6L);
         suAdmin.setLoginName("superAdmin");
         suAdmin.setRealName("超级管理员");
         suAdmin.setAge(35);
@@ -51,7 +51,7 @@ public class SysUserMock implements Serializable {
         sysUsers.add(suAdmin);
 
         SysUserEntity admin = new SysUserEntity();
-        admin.setId("7");
+        admin.setId(7L);
         admin.setLoginName("admin");
         admin.setRealName("管理员");
         admin.setSex(1);
@@ -64,7 +64,7 @@ public class SysUserMock implements Serializable {
         sysUsers.add(admin);
 
         SysUserEntity diaochan = new SysUserEntity();
-        diaochan.setId("5");
+        diaochan.setId(5L);
         diaochan.setLoginName("diaochan");
         diaochan.setRealName("貂蝉");
         diaochan.setAge(20);
@@ -77,7 +77,7 @@ public class SysUserMock implements Serializable {
         sysUsers.add(diaochan);
 
         SysUserEntity zhangsan = new SysUserEntity();
-        zhangsan.setId("1");
+        zhangsan.setId(1L);
         zhangsan.setLoginName("zhangsan");
         zhangsan.setRealName("张三");
         zhangsan.setAge(22);
@@ -90,7 +90,7 @@ public class SysUserMock implements Serializable {
         sysUsers.add(zhangsan);
 
         SysUserEntity lisi = new SysUserEntity();
-        lisi.setId("2");
+        lisi.setId(2L);
         lisi.setLoginName("lisi");
         lisi.setRealName("李四");
         lisi.setAge(23);
@@ -103,7 +103,7 @@ public class SysUserMock implements Serializable {
         sysUsers.add(lisi);
 
         SysUserEntity wangwu = new SysUserEntity();
-        wangwu.setId("3");
+        wangwu.setId(3L);
         wangwu.setLoginName("wangwu");
         wangwu.setRealName("王五");
         wangwu.setAge(27);
@@ -116,7 +116,7 @@ public class SysUserMock implements Serializable {
         sysUsers.add(wangwu);
 
         SysUserEntity zhaoliu = new SysUserEntity();
-        zhaoliu.setId("4");
+        zhaoliu.setId(4L);
         zhaoliu.setLoginName("zhaoliu");
         zhaoliu.setRealName("赵六");
         zhaoliu.setAge(30);

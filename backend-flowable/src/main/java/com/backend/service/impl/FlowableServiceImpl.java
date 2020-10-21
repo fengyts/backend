@@ -42,6 +42,7 @@ import org.flowable.bpmn.model.FlowNode;
 import org.flowable.bpmn.model.Process;
 import org.flowable.bpmn.model.SequenceFlow;
 import org.flowable.bpmn.model.UserTask;
+import org.flowable.common.engine.impl.de.odysseus.el.tree.impl.ast.AstIdentifier;
 import org.flowable.common.engine.impl.identity.Authentication;
 import org.flowable.common.engine.impl.interceptor.Command;
 import org.flowable.editor.language.json.converter.BpmnJsonConverter;
@@ -179,7 +180,7 @@ public class FlowableServiceImpl implements FlowableService {
             }
             String description = process.getDocumentation();
             User createdBy = SecurityUtils.getCurrentUserObject();
-            String createByUserId = currentUser.getId();
+            String createByUserId = String.valueOf(currentUser.getId());
             //查询是否已经存在流程模板
             Model newModel = new Model();
             List<Model> models = modelRepository.findByKeyAndType(process.getId(), AbstractModel.MODEL_TYPE_BPMN);
@@ -359,11 +360,11 @@ public class FlowableServiceImpl implements FlowableService {
 
     @Override
     public ProcessInstanceDto startProcess(String processKey, Map<String, Object> variables) {
-        String userId = SysUserHandler.getCurrentUser().getId();
-        Authentication.setAuthenticatedUserId(userId);
+        Long userId = SysUserHandler.getCurrentUser().getId();
+        Authentication.setAuthenticatedUserId(String.valueOf(userId));
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processKey, variables);
         ProcessInstanceDto dto = WorkflowConverterUtil.toProcessInstanceDto(processInstance);
-        this.addComment(userId, dto.getTaskId(), dto.getProcessInstanceId(), CommentTypeEnum.TJ.getDesc(), "请假提交申请");
+        this.addComment(String.valueOf(userId), dto.getTaskId(), dto.getProcessInstanceId(), CommentTypeEnum.TJ.getDesc(), "请假提交申请");
         return dto;
     }
 

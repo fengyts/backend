@@ -11,6 +11,7 @@ import com.backend.model.entity.SysUserEntity;
 import com.backend.model.form.HolidayApplyForm;
 import com.backend.service.FlowableService;
 import com.backend.service.IHolidayService;
+import com.backend.service.IUserService;
 import com.backend.util.SysUserHandler;
 import com.backend.util.WorkflowConverterUtil;
 import com.google.common.collect.Maps;
@@ -26,6 +27,7 @@ import org.flowable.engine.history.HistoricProcessInstance;
 import org.flowable.engine.runtime.Execution;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
+import org.flowable.task.api.TaskQuery;
 import org.flowable.task.api.history.HistoricTaskInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +44,9 @@ public class HolidayServiceImpl implements IHolidayService {
     private HistoryService historyService;
     @Autowired
     private FlowableService flowableService;
+
+    @Autowired
+    private IUserService userService;
 
     private static final String PROCESS_KEY = "HolidayProcess";
     private static final String HOLIDAY_APPLY_VARIABLE_KEY = "varApply";
@@ -71,7 +76,7 @@ public class HolidayServiceImpl implements IHolidayService {
     @Override
     public List<MyInitiateTaskDto> listMyInitiateTask(SysUserEntity sysUser) {
         List<HistoricProcessInstance> myInitiates = historyService.createHistoricProcessInstanceQuery()
-                .startedBy(sysUser.getId()).list();
+                .startedBy(String.valueOf(sysUser.getId())).list();
         List<MyInitiateTaskDto> results = myInitiates.stream()
                 .map(hi -> {
                     MyInitiateTaskDto resultDto = new MyInitiateTaskDto();
@@ -155,8 +160,10 @@ public class HolidayServiceImpl implements IHolidayService {
                     .processInstanceId(processInstanceId).singleResult();
             processInstanceDto = WorkflowConverterUtil.toProcessInstanceDto(processInstance);
         }
+        Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+//        TaskInfoDto taskInfoDto = WorkflowConverterUtil.toTaskDto(task);
 
-        String executionId = processInstanceDto.getExecutionId();
+        String executionId = task.getExecutionId();
         Map<String, Object> variables = getRuntimeVariables(executionId);
         HolidayApplyForm form = (HolidayApplyForm) variables.get(HOLIDAY_APPLY_VARIABLE_KEY);
 
@@ -164,6 +171,8 @@ public class HolidayServiceImpl implements IHolidayService {
         TaskInfoDto taskInfoDto = flowableService.getTaskByProcessInstanceId(processInstanceId);
         Map<String, Object> variablesTask = Maps.newHashMap();
         variablesTask.put("day", form.getDay());
+        SysUserEntity deptManagerUser = userService.selectById(form.getApproveUser());
+        variablesTask.put("deptManagerUser", deptManagerUser.getRealName());
         flowableService.completeTask(taskInfoDto.getTaskId(), variablesTask);
 
         return ResultData.ok();

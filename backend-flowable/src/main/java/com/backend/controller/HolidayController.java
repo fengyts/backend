@@ -128,7 +128,7 @@ public class HolidayController extends FlowableBaseController {
 //        Long userId = applyForm.getUserId();
 //        String userName = applyForm.getUserName();
         SysUserEntity sysUser = getCurrentLoginUser();
-        String userId = sysUser.getId();
+        Long userId = sysUser.getId();
         String userName = sysUser.getLoginName();
         Integer day = applyForm.getDay();
         // 参数校验

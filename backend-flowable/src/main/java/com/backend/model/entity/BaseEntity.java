@@ -11,7 +11,7 @@ import lombok.Data;
 public class BaseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private String id;
+    private Long id;
     private String createUserId;
     private LocalDateTime createTime;
     private String modifyUserId;
