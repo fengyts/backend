@@ -74,4 +74,24 @@ layui.use(['form', 'table', 'util'], function () {
         }, 'json');
     });
 
+    $("#downloadFile").click(function(){
+        downloadFileByForm();
+        // $.get("/file/download/", function(res){
+        //     console.log(123);
+        //     console.log(res);
+        // });
+    });
+
+
+    // 模拟表单提交同步方式下载文件
+    // 能够弹出保存文件对话框
+    function downloadFileByForm() {
+        console.log("ajaxDownloadSynchronized");
+        var url = "/file/download/";
+        var fileName = "testAjaxDownload.docx";
+        var form = $("<form></form>").attr("action", url).attr("method", "get");
+        form.append($("<input></input>").attr("type", "hidden").attr("name", "fileName").attr("value", fileName));
+        form.appendTo('body').submit().remove();
+    }
+
 });
