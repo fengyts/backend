@@ -25,7 +25,7 @@ public class LoginController extends BaseController {
     @GetMapping
     @NonAutority
     public String login() {
-        return "/login/login";
+        return "login/login";
     }
 
     @PostMapping("/doLogin")

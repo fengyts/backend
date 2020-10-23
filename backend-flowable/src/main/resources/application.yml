@@ -51,7 +51,7 @@ spring:
 
   # thymeleaf 配置
   thymeleaf:
-    prefix: classpath:/templates/
+    prefix: classpath:templates/
     suffix: .html
     mode: HTML5
     cache: false

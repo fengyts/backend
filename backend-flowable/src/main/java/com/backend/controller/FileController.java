@@ -54,10 +54,10 @@ public class FileController extends BaseController {
             configuration.setDefaultEncoding("UTF-8");
             //ftl模板文件
             String templateDirPath = "template";
-            Resource resource = new ClassPathResource(templateDirPath);
-            File templateDir = resource.getFile();
-            configuration.setDirectoryForTemplateLoading(templateDir);
-//            configuration.setClassForTemplateLoading(this.getClass(), templateDirPath);
+//            Resource resource = new ClassPathResource(templateDirPath);
+//            File templateDir = resource.getFile();
+//            configuration.setDirectoryForTemplateLoading(templateDir);
+            configuration.setClassForTemplateLoading(this.getClass(), templateDirPath);
 
             //获取模板
             String templateName = "template.ftl";

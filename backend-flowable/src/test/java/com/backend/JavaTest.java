@@ -1,16 +1,11 @@
 package com.backend;
 
-import com.backend.common.ResultData;
-import com.google.common.collect.Lists;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 import lombok.Data;
 
 public class JavaTest {

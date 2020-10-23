@@ -21,7 +21,7 @@ public class IndexController extends BaseController {
     @RequestMapping({"/index"})
     public String index(){
 //        return "/index";
-        return "/home";
+        return "home";
     }
 
 }

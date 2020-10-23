@@ -5,12 +5,9 @@ import com.backend.enums.HolidayTypeEnum;
 import com.backend.model.dto.flowable.ProcessInstanceDto;
 import com.backend.model.entity.SysUserEntity;
 import com.backend.model.form.HolidayApplyForm;
-import com.backend.service.FlowableService;
 import com.backend.service.IHolidayService;
 import com.backend.service.IUserService;
-import com.google.common.collect.Maps;
 import java.util.List;
-import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,7 +30,7 @@ public class ApplyController extends FlowableBaseController {
         model.addAttribute("holidayTypes", HolidayTypeEnum.values());
         List<SysUserEntity> allUsers = userService.listAllUsers();
         model.addAttribute("approveUsers", allUsers);
-        return "/apply/applyList";
+        return "apply/applyList";
     }
 
     /**
@@ -57,7 +54,7 @@ public class ApplyController extends FlowableBaseController {
     /**
      * 请假申请-提交
      *
-     * @param processInstanceId
+     * @param
      * @return
      */
     @PostMapping("/submitApply")

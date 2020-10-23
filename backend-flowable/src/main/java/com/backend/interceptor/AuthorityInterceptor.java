@@ -7,7 +7,6 @@ import com.backend.common.SysConstant;
 import com.backend.model.entity.SysUserEntity;
 import com.backend.util.SysUserHandler;
 import com.google.common.collect.Sets;
-import java.util.Objects;
 import java.util.Set;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;

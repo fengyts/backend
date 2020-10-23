@@ -42,7 +42,6 @@ import org.flowable.bpmn.model.FlowNode;
 import org.flowable.bpmn.model.Process;
 import org.flowable.bpmn.model.SequenceFlow;
 import org.flowable.bpmn.model.UserTask;
-import org.flowable.common.engine.impl.de.odysseus.el.tree.impl.ast.AstIdentifier;
 import org.flowable.common.engine.impl.identity.Authentication;
 import org.flowable.common.engine.impl.interceptor.Command;
 import org.flowable.editor.language.json.converter.BpmnJsonConverter;
