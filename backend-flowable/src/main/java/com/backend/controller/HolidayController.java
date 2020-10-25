@@ -3,6 +3,7 @@ package com.backend.controller;
 import com.backend.common.FlowableConstant;
 import com.backend.common.ResultData;
 import com.backend.enums.AuditTypeEnum;
+import com.backend.enums.CommentTypeEnum;
 import com.backend.model.dto.flowable.ActivityInstanceDto;
 import com.backend.model.dto.flowable.ProcessInstanceDto;
 import com.backend.model.dto.flowable.TaskInfoDto;
@@ -112,14 +113,14 @@ public class HolidayController extends FlowableBaseController {
         }
         Map<String, Object> variablesTask = Maps.newHashMap();
         variablesTask.put("day", applyForm.getDay());
-        flowableService.completeTask(taskId, variablesTask);
+        flowableService.completeTask(taskInfoDto, variablesTask, CommentTypeEnum.TJ, "提交请假申请");
         return ResultData.ok(taskInfoDto);
     }
 
     /**
      * 请假申请
      *
-     * @param applyForm   用户id
+     * @param applyForm 用户id
      * @return
      */
     @PostMapping("apply")
@@ -154,7 +155,7 @@ public class HolidayController extends FlowableBaseController {
         TaskInfoDto taskInfoDto = flowableService.getTaskByProcessInstanceId(dto.getProcessInstanceId());
         Map<String, Object> variablesTask = Maps.newHashMap();
         variablesTask.put("day", day);
-        flowableService.completeTask(taskInfoDto.getId(), variablesTask);
+        flowableService.completeTask(taskInfoDto, variablesTask, CommentTypeEnum.TJ, "提交请假申请");
         return ResultData.ok(dto);
     }
 
@@ -190,16 +191,33 @@ public class HolidayController extends FlowableBaseController {
             return ResultData.errParam();
         }
         Map<String, Object> variables = Maps.newHashMap();
-        if(!approveFlag){
+        /*if(!approveFlag){
             if(StringUtils.isBlank(rejectReason)){
                 return ResultData.err("驳回时驳回原因必填!");
             }
             variables.put("rejectReason", rejectReason);
-        }
+        }*/
         // 通过或者驳回: 网关根据变量-outcom的值来判断通过/驳回
-        AuditTypeEnum auditType = approveFlag ? AuditTypeEnum.PASS : AuditTypeEnum.REJECT;
+        AuditTypeEnum auditType;
+        CommentTypeEnum commentType;
+        String commentMsg = "";
+        if (approveFlag) {
+            auditType = AuditTypeEnum.PASS;
+            commentType = CommentTypeEnum.SP;
+            commentMsg = StringUtils.isBlank(rejectReason) ? commentType.getDesc() : rejectReason;
+        } else {
+            if (StringUtils.isBlank(rejectReason)) {
+                return ResultData.err("驳回时驳回原因必填!");
+            }
+            variables.put("rejectReason", rejectReason);
+
+            auditType = AuditTypeEnum.REJECT;
+            commentType = CommentTypeEnum.BH;
+            commentMsg = rejectReason;
+        }
         variables.put(FlowableConstant.APPROVE, auditType.getCode());
-        flowableService.completeTask(taskId, variables);
+        TaskInfoDto taskInfoDto = flowableService.getTaskByTaskId(taskId);
+        flowableService.completeTask(taskInfoDto, variables, commentType, commentMsg);
         return ResultData.ok();
     }
 

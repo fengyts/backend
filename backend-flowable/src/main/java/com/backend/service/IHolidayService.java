@@ -1,7 +1,9 @@
 package com.backend.service;
 
 import com.backend.common.ResultData;
+import com.backend.model.dto.MyHistoryTaskDto;
 import com.backend.model.dto.MyInitiateTaskDto;
+import com.backend.model.dto.MyToDoTaskDto;
 import com.backend.model.dto.flowable.HistoricTaskInstanceDto;
 import com.backend.model.dto.flowable.ProcessInstanceDto;
 import com.backend.model.dto.flowable.TaskInfoDto;
@@ -14,18 +16,18 @@ public interface IHolidayService {
     /**
      * 获取待办
      *
-     * @param assignee 当前登陆用户名
+     * @param currentUser 当前登陆用户
      * @return
      */
-    List<TaskInfoDto> listRunTimeTask(String assignee);
+    List<MyToDoTaskDto> listRunTimeTask(SysUserEntity currentUser);
 
     /**
      * 获取我已办理的任务
      *
-     * @param assignee
+     * @param currentUser
      * @return
      */
-    List<HistoricTaskInstanceDto> listHistoryTask(String assignee);
+    List<MyHistoryTaskDto> listHistoryTask(SysUserEntity currentUser);
 
     /**
      * 获取我发起的任务

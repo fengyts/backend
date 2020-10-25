@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum CommentTypeEnum {
     SP("SP", "审批"),
-    BH("HB", "驳回"),
+    BH("BH", "驳回"),
     CH("CH", "撤回"),
     ZC("ZC", "暂存"),
     QS("QS", "签收"),

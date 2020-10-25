@@ -1,8 +1,12 @@
 package com.backend.service.impl;
 
 import com.backend.common.ResultData;
+import com.backend.enums.CommentTypeEnum;
 import com.backend.enums.StatusAuditEnum;
+import com.backend.model.dto.MyHistoryTaskDto;
 import com.backend.model.dto.MyInitiateTaskDto;
+import com.backend.model.dto.MyToDoTaskDto;
+import com.backend.model.dto.TaskListBaseDto;
 import com.backend.model.dto.flowable.HistoricProcessInstanceDto;
 import com.backend.model.dto.flowable.HistoricTaskInstanceDto;
 import com.backend.model.dto.flowable.ProcessInstanceDto;
@@ -14,6 +18,7 @@ import com.backend.service.IHolidayService;
 import com.backend.service.IUserService;
 import com.backend.util.SysUserHandler;
 import com.backend.util.WorkflowConverterUtil;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import java.util.List;
 import java.util.Map;
@@ -21,9 +26,11 @@ import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.flowable.engine.HistoryService;
+import org.flowable.engine.RepositoryService;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
 import org.flowable.engine.history.HistoricProcessInstance;
+import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.runtime.Execution;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
@@ -42,6 +49,8 @@ public class HolidayServiceImpl implements IHolidayService {
     @Autowired
     private HistoryService historyService;
     @Autowired
+    private RepositoryService repositoryService;
+    @Autowired
     private FlowableService flowableService;
 
     @Autowired
@@ -51,22 +60,40 @@ public class HolidayServiceImpl implements IHolidayService {
     private static final String HOLIDAY_APPLY_VARIABLE_KEY = "varApply";
 
     @Override
-    public List<TaskInfoDto> listRunTimeTask(String assignee) {
-        List<Task> tasks = taskService.createTaskQuery().taskAssignee(assignee).list();
-        List<TaskInfoDto> results = tasks.stream().map(t -> {
-            TaskInfoDto dto = WorkflowConverterUtil.toTaskDto(t);
-            return dto;
-        }).collect(Collectors.toList());
+    public List<MyToDoTaskDto> listRunTimeTask(SysUserEntity currentUser) {
+        String loginName = currentUser.getLoginName();
+        List<Task> tasks = taskService.createTaskQuery().taskAssignee(loginName).list();
+        List<MyToDoTaskDto> results = tasks.stream()
+                .filter(t -> !loginName.equals(t.getAssignee())) //当前用户登陆时过滤自己提交的
+                .map(t -> {
+                    MyToDoTaskDto dto = new MyToDoTaskDto();
+                    TaskInfoDto taskInfoDto = WorkflowConverterUtil.toTaskDto(t);
+                    dto.setTaskInfo(taskInfoDto);
+                    dto.setStatus(StatusAuditEnum.UNDER_REVIEW);
+                    dto.setStatusDesc(StatusAuditEnum.UNDER_REVIEW.getDesc());
+                    dto.setCurrentNodeHandler(userService.selectUserByLoginName(loginName).getRealName());
+
+                    setExtraData(dto, taskInfoDto.getProcessInstanceId());
+                    return dto;
+                }).collect(Collectors.toList());
         return results;
     }
 
     @Override
-    public List<HistoricTaskInstanceDto> listHistoryTask(String assignee) {
+    public List<MyHistoryTaskDto> listHistoryTask(SysUserEntity currentUser) {
+        String loginName = currentUser.getLoginName();
         List<HistoricTaskInstance> list = historyService.createHistoricTaskInstanceQuery()
-                .taskAssignee(assignee).finished().list();
-        List<HistoricTaskInstanceDto> results = list.stream()
+                .taskAssignee(loginName).finished().list();
+        List<MyHistoryTaskDto> results = list.stream()
+                .filter(t -> !loginName.equals(t.getAssignee())) //当前用户登陆时过滤自己提交的
                 .map(hti -> {
-                    HistoricTaskInstanceDto dto = WorkflowConverterUtil.toHistoricTaskInstanceDto(hti);
+                    MyHistoryTaskDto dto = new MyHistoryTaskDto();
+                    HistoricTaskInstanceDto htDto = WorkflowConverterUtil.toHistoricTaskInstanceDto(hti);
+                    dto.setHistoricTask(htDto);
+
+                    String processInstanceId = htDto.getProcessInstanceId();
+                    setTaskStatus(dto, SysUserHandler.getCurrentUser().getRealName(), processInstanceId);
+                    setExtraData(dto, processInstanceId);
                     return dto;
                 }).collect(Collectors.toList());
         return results;
@@ -74,48 +101,68 @@ public class HolidayServiceImpl implements IHolidayService {
 
     @Override
     public List<MyInitiateTaskDto> listMyInitiateTask(SysUserEntity sysUser) {
-        List<HistoricProcessInstance> myInitiates = historyService.createHistoricProcessInstanceQuery()
-                .startedBy(String.valueOf(sysUser.getId())).list();
+        List<HistoricProcessInstance> myInitiates = getHistoricProcessIns(sysUser.getId());
         List<MyInitiateTaskDto> results = myInitiates.stream()
                 .map(hi -> {
                     MyInitiateTaskDto resultDto = new MyInitiateTaskDto();
                     HistoricProcessInstanceDto dto = WorkflowConverterUtil.toHistoricProcessInstanceDto(hi);
                     resultDto.setMyInitiate(dto);
 
-                    setMyInitiateStatus(resultDto, sysUser.getRealName(), dto.getProcessInstanceId());
+                    setTaskStatus(resultDto, sysUser.getRealName(), dto.getProcessInstanceId());
+                    setExtraData(resultDto, dto.getProcessInstanceId());
                     return resultDto;
                 }).collect(Collectors.toList());
         return results;
     }
 
-    private void setMyInitiateStatus(MyInitiateTaskDto resultDto, String currentUser, String processInstanceId) {
+    private List<HistoricProcessInstance> getHistoricProcessIns(Long userId) {
+        List<HistoricProcessInstance> hps = historyService.createHistoricProcessInstanceQuery()
+                .startedBy(String.valueOf(userId)).list();
+        return hps;
+    }
+
+    private void setExtraData(TaskListBaseDto dto, String processInstanceId) {
+        HistoricProcessInstance historicProcessInstance = historyService.createHistoricProcessInstanceQuery()
+                .processInstanceId(processInstanceId).singleResult();
+        String startUserId = historicProcessInstance.getStartUserId();
+        Long userId = Long.valueOf(startUserId);
+        SysUserEntity sysUserEntity = userService.selectById(userId);
+        dto.setApplyUser(sysUserEntity.getRealName());
+
+        String processDefinitionId = historicProcessInstance.getProcessDefinitionId();
+        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+                .processDefinitionId(processDefinitionId).singleResult();
+        dto.setTaskType(processDefinition.getName());
+    }
+
+    private void setTaskStatus(TaskListBaseDto resultDto, String currentUserRealName, String processInstanceId) {
         ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(processInstanceId).singleResult();
         StatusAuditEnum status;
         String currentNodeHandler = "";
+        if (null == currentUserRealName) {
+            currentUserRealName = "";
+        }
         if (null == pi) {
             status = StatusAuditEnum.FINISHED;
-            currentNodeHandler = StatusAuditEnum.FINISHED.getDesc();
         } else {
             Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
             String assignee = task.getAssignee();
-            if (currentUser.equals(assignee)) {
+            String assigneeName = userService.selectUserByLoginName(assignee).getRealName();
+            if (currentUserRealName.equals(assigneeName)) {
                 status = StatusAuditEnum.UNCOMMITTED;
-                currentNodeHandler = currentUser;
+                currentNodeHandler = currentUserRealName;
             } else {
                 status = StatusAuditEnum.UNDER_REVIEW;
-                currentNodeHandler = task.getAssignee();
+                currentNodeHandler = assigneeName;
+            }
+            if (resultDto instanceof MyInitiateTaskDto) {
+                MyInitiateTaskDto myInitiateTaskDto = (MyInitiateTaskDto) resultDto;
+                myInitiateTaskDto.getMyInitiate().setName(task.getName());
             }
         }
         resultDto.setStatus(status);
         resultDto.setStatusDesc(status.getDesc());
         resultDto.setCurrentNodeHandler(currentNodeHandler);
-    }
-
-    private void getCurrentNode(String executionId) {
-        Execution execution = runtimeService.createExecutionQuery().executionId(executionId).singleResult();
-        // 当前审批节点
-        String crruentActivityId = execution.getActivityId();
-        execution.isEnded();
     }
 
     @Override
@@ -124,7 +171,7 @@ public class HolidayServiceImpl implements IHolidayService {
         String processInstanceId = applyForm.getProcessInstanceId();
         Map<String, Object> variables = Maps.newHashMap();
         // 设置请假提交人变量
-        variables.put("reqUser", SysUserHandler.getCurrentUser().getRealName());
+        variables.put("reqUser", SysUserHandler.getCurrentUser().getLoginName());
         variables.put(HOLIDAY_APPLY_VARIABLE_KEY, applyForm);
 
         if (StringUtils.isBlank(processInstanceId)) { // 开启新流程
@@ -154,13 +201,8 @@ public class HolidayServiceImpl implements IHolidayService {
         if (StringUtils.isBlank(processInstanceId)) {
             processInstanceDto = this.saveApply(applyForm);
             processInstanceId = processInstanceDto.getProcessInstanceId();
-        } else {
-            ProcessInstance processInstance = runtimeService.createProcessInstanceQuery()
-                    .processInstanceId(processInstanceId).singleResult();
-            processInstanceDto = WorkflowConverterUtil.toProcessInstanceDto(processInstance);
         }
         Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
-//        TaskInfoDto taskInfoDto = WorkflowConverterUtil.toTaskDto(task);
 
         String executionId = task.getExecutionId();
         Map<String, Object> variables = getRuntimeVariables(executionId);
@@ -171,8 +213,9 @@ public class HolidayServiceImpl implements IHolidayService {
         Map<String, Object> variablesTask = Maps.newHashMap();
         variablesTask.put("day", form.getDay());
         SysUserEntity deptManagerUser = userService.selectById(form.getApproveUser());
-        variablesTask.put("deptManagerUser", deptManagerUser.getRealName());
-        flowableService.completeTask(taskInfoDto.getTaskId(), variablesTask);
+        variablesTask.put("deptManagerUser", deptManagerUser.getLoginName());
+
+        flowableService.completeTask(taskInfoDto, variablesTask, CommentTypeEnum.TJ, "提交请假申请");
 
         return ResultData.ok();
     }

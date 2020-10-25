@@ -1,0 +1,159 @@
+{
+  "table": "TABLE_NAMES",
+  "rows":
+  [
+    {
+      "Tables_in_bk_admin_flowable": "act_de_databasechangelog"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_de_databasechangeloglock"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_de_model"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_de_model_history"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_de_model_relation"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_evt_log"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_ge_bytearray"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_ge_property"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_hi_actinst"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_hi_attachment"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_hi_comment"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_hi_detail"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_hi_entitylink"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_hi_identitylink"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_hi_procinst"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_hi_taskinst"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_hi_tsk_log"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_hi_varinst"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_id_bytearray"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_id_group"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_id_info"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_id_membership"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_id_priv"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_id_priv_mapping"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_id_property"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_id_token"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_id_user"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_procdef_info"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_re_deployment"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_re_model"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_re_procdef"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_ru_actinst"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_ru_deadletter_job"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_ru_entitylink"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_ru_event_subscr"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_ru_execution"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_ru_history_job"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_ru_identitylink"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_ru_job"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_ru_suspended_job"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_ru_task"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_ru_timer_job"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "act_ru_variable"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "flw_channel_definition"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "flw_ev_databasechangelog"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "flw_ev_databasechangeloglock"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "flw_event_definition"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "flw_event_deployment"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "flw_event_resource"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "flw_ru_batch"
+    },
+    {
+      "Tables_in_bk_admin_flowable": "flw_ru_batch_part"
+    }
+  ]
+}

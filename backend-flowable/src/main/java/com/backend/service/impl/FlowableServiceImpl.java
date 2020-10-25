@@ -112,14 +112,15 @@ public class FlowableServiceImpl implements FlowableService {
     public void addComment(String userId, String taskId, String processInstanceId, String type, String msg) {
 //        Command commentCmdAdd = new AddCommentCmd(taskId, processInstanceId, type, msg);
 //        managementService.executeCommand(commentCmdAdd);
-        taskService.addComment(taskId, processInstanceId, type, msg);
+        Task task = taskService.createTaskQuery().processInstanceId(processInstanceId).singleResult();
+        taskService.addComment(task.getId(), processInstanceId, type, msg);
     }
 
-    @Override
-    public void addComment(String taskId, String type, String msg){
+    /*@Override
+    public void addComment(String taskId, String type, String msg) {
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         this.addComment(null, taskId, task.getProcessInstanceId(), type, msg);
-    }
+    }*/
 
     @Override
     public void updateCommentById(HiCommentDto comment) {
@@ -363,7 +364,7 @@ public class FlowableServiceImpl implements FlowableService {
         Authentication.setAuthenticatedUserId(String.valueOf(userId));
         ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(processKey, variables);
         ProcessInstanceDto dto = WorkflowConverterUtil.toProcessInstanceDto(processInstance);
-        this.addComment(String.valueOf(userId), dto.getTaskId(), dto.getProcessInstanceId(), CommentTypeEnum.TJ.getDesc(), "请假提交申请");
+        this.addComment(String.valueOf(userId), dto.getTaskId(), dto.getProcessInstanceId(), CommentTypeEnum.TJ.getDesc(), "提交请假申请");
         return dto;
     }
 
@@ -382,20 +383,35 @@ public class FlowableServiceImpl implements FlowableService {
     }
 
     @Override
-    public void completeTask(String taskId) {
-        taskService.complete(taskId);
+    public TaskInfoDto getTaskByTaskId(String taskId) {
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        TaskInfoDto dto = WorkflowConverterUtil.toTaskDto(task);
+        return dto;
     }
 
     @Override
-    public void completeTask(String taskId, Map<String, Object> variables) {
+    public void completeTask(String taskId, CommentTypeEnum commentType, String commentMsg) {
+        TaskInfoDto taskInfoDto = this.getTaskByTaskId(taskId);
+        this.completeTask(taskInfoDto, null, commentType, commentMsg);
+    }
+
+    @Override
+    public void completeTask(TaskInfoDto taskInfo, Map<String, Object> variables, CommentTypeEnum commentType, String commentMsg) {
+        String taskId = taskInfo.getTaskId();
+        if (null != variables && !variables.isEmpty()) {
+            taskService.setVariables(taskId, variables);
+        }
         taskService.complete(taskId, variables);
-        this.addComment(taskId, CommentTypeEnum.SP.getDesc(), "请假审批");
+        this.addComment(null, taskId, taskInfo.getProcessInstanceId(), commentType.getDesc(), commentMsg);
     }
 
     @Override
-    public void completeTask(String taskId, String variableKey, Object variableValue) {
-        taskService.setVariable(taskId, variableKey, variableValue);
-        taskService.complete(taskId);
+    public void completeTask(String taskId, String variableKey, Object variableValue, CommentTypeEnum commentType, String commentMsg) {
+//        taskService.setVariable(taskId, variableKey, variableValue);
+        Map<String, Object> variables = Maps.newHashMap();
+        variables.put(variableKey, variableValue);
+        TaskInfoDto taskInfoDto = this.getTaskByTaskId(taskId);
+        this.completeTask(taskInfoDto, variables, commentType, commentMsg);
     }
 
     /**
@@ -446,7 +462,7 @@ public class FlowableServiceImpl implements FlowableService {
         return false;
     }
 
-    private void deployment(){
+    private void deployment() {
         DeploymentBuilder deployment = repositoryService.createDeployment();
     }
 

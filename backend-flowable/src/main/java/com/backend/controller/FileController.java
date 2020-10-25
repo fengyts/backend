@@ -5,24 +5,17 @@ import com.backend.util.ExportUtil;
 import com.google.common.collect.Maps;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
-import freemarker.template.TemplateException;
 import freemarker.template.Version;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URLEncoder;
 import java.util.Map;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.http.entity.ContentType;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.MimeType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,7 +46,7 @@ public class FileController extends BaseController {
             //设置编码
             configuration.setDefaultEncoding("UTF-8");
             //ftl模板文件
-            String templateDirPath = "template";
+            String templateDirPath = "ftl-template";
 //            Resource resource = new ClassPathResource(templateDirPath);
 //            File templateDir = resource.getFile();
 //            configuration.setDirectoryForTemplateLoading(templateDir);

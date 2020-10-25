@@ -1,7 +1,9 @@
 package com.backend.controller;
 
 import com.backend.common.ResultData;
+import com.backend.model.dto.MyHistoryTaskDto;
 import com.backend.model.dto.MyInitiateTaskDto;
+import com.backend.model.dto.MyToDoTaskDto;
 import com.backend.model.dto.flowable.HistoricTaskInstanceDto;
 import com.backend.model.dto.flowable.TaskInfoDto;
 import com.backend.service.IHolidayService;
@@ -34,8 +36,7 @@ public class TaskController extends FlowableBaseController {
     @GetMapping("getToDoTasks")
     @ResponseBody
     public ResultData listToDoTasks(){
-        String assignee = getCurrentLoginUser().getLoginName();
-        List<TaskInfoDto> taskList = holidayService.listRunTimeTask(assignee);
+        List<MyToDoTaskDto> taskList = holidayService.listRunTimeTask(getCurrentLoginUser());
         return ResultData.ok(taskList);
     }
 
@@ -46,8 +47,7 @@ public class TaskController extends FlowableBaseController {
     @GetMapping("getHistoryTask")
     @ResponseBody
     public ResultData listHistoryTask(){
-        String assignee = getCurrentLoginUser().getLoginName();
-        List<HistoricTaskInstanceDto> historyTaskList = holidayService.listHistoryTask(assignee);
+        List<MyHistoryTaskDto> historyTaskList = holidayService.listHistoryTask(getCurrentLoginUser());
         return ResultData.ok(historyTaskList);
     }
 

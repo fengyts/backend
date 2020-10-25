@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ExportUtil {
 
-    private static final String FTL_FP = "template";
+    private static final String FTL_FP = "ftl-template";
 
     private static Configuration configuration = init();
     private static final String encoding = "UTF-8";
@@ -31,7 +31,7 @@ public class ExportUtil {
     public static Configuration init() {
         Configuration configuration = new Configuration(new Version("2.3.30"));
         configuration.setDefaultEncoding(encoding);
-        configuration.setClassForTemplateLoading(ExportUtil.class, "/template");
+        configuration.setClassForTemplateLoading(ExportUtil.class, "/ftl-template");
         return configuration;
     }
 

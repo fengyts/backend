@@ -11,11 +11,14 @@ import com.backend.model.dto.flowable.ProcessDefinitionDto;
 import com.backend.model.dto.flowable.ProcessInstanceDto;
 import com.backend.model.dto.flowable.TaskInfoDto;
 import com.google.common.collect.Maps;
+import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.flowable.common.engine.impl.persistence.entity.Entity;
 import org.flowable.engine.history.HistoricActivityInstance;
 import org.flowable.engine.history.HistoricProcessInstance;
+import org.flowable.engine.impl.persistence.entity.ExecutionEntity;
 import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.runtime.ActivityInstance;
@@ -23,6 +26,7 @@ import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.Task;
 import org.flowable.task.api.TaskInfo;
 import org.flowable.task.api.history.HistoricTaskInstance;
+import org.flowable.task.service.impl.persistence.entity.TaskEntity;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 
@@ -106,6 +110,22 @@ public class WorkflowConverterUtil {
     public static ProcessInstanceDto toProcessInstanceDto(ProcessInstance processInstance) {
         ProcessInstanceDto dto = new ProcessInstanceDto();
         try {
+            if(processInstance instanceof ExecutionEntity){
+                ExecutionEntity executionEntity = (ExecutionEntity) processInstance;
+                List<? extends ExecutionEntity> executions = executionEntity.getExecutions();
+                if (CollectionUtils.isNotEmpty(executions)) {
+                    ExecutionEntity ee = executions.get(0);
+                    dto.setExecutionId(ee.getId());
+
+                    /*
+                    // 巨坑：taskId 会生成两次，造成taskId覆盖
+                    List<TaskEntity> tasks = ee.getTasks();
+                    if (CollectionUtils.isNotEmpty(tasks)) {
+                        TaskEntity taskEntity = tasks.get(0);
+                        dto.setTaskId(taskEntity.getId());
+                    }*/
+                }
+            }
             setPersistentState(processInstance, dto);
 
             dto.setProcessDefinitionId(processInstance.getProcessDefinitionId());

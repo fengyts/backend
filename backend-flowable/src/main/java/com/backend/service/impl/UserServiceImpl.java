@@ -5,6 +5,7 @@ import com.backend.model.entity.SysUserEntity;
 import com.backend.service.IUserService;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,7 +19,14 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public SysUserEntity selectUserByLoginName(String loginName) {
-        return null;
+        if (StringUtils.isBlank(loginName)) {
+            return null;
+        }
+        List<SysUserEntity> users = getAllSysUsers();
+        SysUserEntity sysUserEntity = users.stream()
+                .filter(u -> loginName.equals(u.getLoginName()))
+                .collect(Collectors.toList()).get(0);
+        return sysUserEntity;
     }
 
     @Override

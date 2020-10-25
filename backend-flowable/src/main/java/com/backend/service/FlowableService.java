@@ -1,6 +1,7 @@
 package com.backend.service;
 
 import com.backend.common.ResultData;
+import com.backend.enums.CommentTypeEnum;
 import com.backend.model.dto.flowable.ActivityInstanceDto;
 import com.backend.model.dto.flowable.DeploymentDto;
 import com.backend.model.dto.flowable.HiCommentDto;
@@ -39,11 +40,13 @@ public interface FlowableService {
 
     TaskInfoDto getTaskByAssignee(String assigne);
 
-    void completeTask(String taskId);
+    TaskInfoDto getTaskByTaskId(String taskId);
 
-    void completeTask(String taskId, Map<String, Object> variables);
+    void completeTask(String taskId, CommentTypeEnum commentType, String commentMsg);
 
-    void completeTask(String taskId, String variableKey, Object variableValue);
+    void completeTask(TaskInfoDto taskInfo, Map<String, Object> variables, CommentTypeEnum commentType, String commentMsg);
+
+    void completeTask(String taskId, String variableKey, Object variableValue, CommentTypeEnum commentType, String commentMsg);
 
     /**
      * 添加任务备注信息
@@ -55,7 +58,7 @@ public interface FlowableService {
      */
     void addComment(String userId, String taskId, String processInstanceId, String type, String msg);
 
-    void addComment(String taskId, String type, String msg);
+//    void addComment(String taskId, String type, String msg);
 
     void updateCommentById(HiCommentDto comment);
 
