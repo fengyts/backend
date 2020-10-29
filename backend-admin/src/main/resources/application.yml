@@ -16,6 +16,10 @@ mybatis-plus:
 #  mapper-locations: classpath*:/mapper/**/*.xml
 
 spring:
+  # 国际化 messages 配置
+  messages:
+    basename: static/i18n/messages
+
   mail:
     host: smtp.163.com
     username: yangguangshequ2018@163.com
