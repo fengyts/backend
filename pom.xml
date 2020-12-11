@@ -15,6 +15,7 @@
         <module>backend-flowable</module>
         <module>backend-flowable-modeler</module>
         <module>backend-common</module>
+        <module>backend-note</module>
     </modules>
 
     <properties>
