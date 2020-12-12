@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.backend</groupId>
-    <artifactId>note</artifactId>
+    <artifactId>backend-note</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>note</name>
+    <name>backend-note</name>
     <description>learn and note project for Spring Boot</description>
 
     <properties>
