@@ -1,0 +1,38 @@
+server:
+  port: 8081
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+
+spring:
+  mail:
+    host: smtp.163.com
+    username: yangguangshequ2018@163.com
+    password: Zhanyi88
+    default-encoding: UTF-8
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://10.10.128.106:3307/voucher?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&autoReconnect=true
+    username: root
+    password: 123456
+
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    cache: false
+
+  redis:
+    host: 47.94.199.26
+    port: 6380
+    timeout: 5000
+#    password: aZ$Q%Gqdh*Xz~-Fv0mk!
+
+    jedis:
+      pool:
+        max-active: 20
+        max-idle: 10
+        max-wait: 1000
+        min-idle: 5
+
+
