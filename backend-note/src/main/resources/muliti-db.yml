@@ -1,0 +1,7 @@
+muliti-db:
+  defaultDb: db1
+  dataSources:
+    {
+      db1: {url: url1, username: username, password: 123},
+      db2: {url: url2}
+    }
