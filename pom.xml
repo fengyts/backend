@@ -16,6 +16,7 @@
         <module>backend-flowable-modeler</module>
         <module>backend-common</module>
         <module>backend-note</module>
+        <module>backend-mybatis-generator</module>
     </modules>
 
     <properties>
