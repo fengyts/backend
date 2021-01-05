@@ -18,6 +18,8 @@
         <java.version>1.8</java.version>
         <mybatis-spring-boot.version>2.1.4</mybatis-spring-boot.version>
         <mybatis-plus.version>3.4.1</mybatis-plus.version>
+        <druid.version>1.2.4</druid.version>
+        <google-collections.version>1.0</google-collections.version>
     </properties>
 
     <dependencies>
@@ -66,7 +68,11 @@
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>${druid.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
@@ -77,6 +83,18 @@
             <artifactId>mybatis-plus-generator</artifactId>
             <version>${mybatis-plus.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.google.collections</groupId>
+            <artifactId>google-collections</artifactId>
+            <version>${google-collections.version}</version>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>cglib</groupId>-->
+<!--            <artifactId>cglib</artifactId>-->
+<!--            <version>3.3.0</version>-->
+<!--        </dependency>-->
+
     </dependencies>
 
     <build>
