@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * @author fengyts
  */
 @Component
-@PropertySource(value = {"classpath:muliti-db.yml"}, encoding = "utf-8", factory = YamlPropertyLoaderFactory.class)
+//@PropertySource(value = {"classpath:muliti-db.yml"}, encoding = "utf-8", factory = YamlPropertyLoaderFactory.class)
 @ConfigurationProperties(prefix = "muliti-db")
 @Data
 public class MulitiDatasourcePropertie {
