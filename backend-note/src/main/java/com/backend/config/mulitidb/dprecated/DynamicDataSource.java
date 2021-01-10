@@ -1,9 +1,10 @@
-package com.backend.config.mulitidb;
+package com.backend.config.mulitidb.dprecated;
 
 import java.util.Map;
 import javax.sql.DataSource;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
+@Deprecated
 public class DynamicDataSource extends AbstractRoutingDataSource {
 
     private static final ThreadLocal<GloableDatasourceEnum> contextHolder = new ThreadLocal<>();

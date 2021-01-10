@@ -11,6 +11,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DbSource {
 
-    GloableDatasourceEnum value() default GloableDatasourceEnum.WRITE;
+    String value();
 
 }

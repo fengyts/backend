@@ -14,9 +14,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 //@PropertySource(value = {"classpath:muliti-db.yml"}, encoding = "utf-8", factory = YamlPropertyLoaderFactory.class)
-@ConfigurationProperties(prefix = "muliti-db")
+@ConfigurationProperties(prefix = "spring.datasource.muliti-db")
 @Data
-public class MulitiDatasourcePropertie {
+public class MulitiDataSourceProperties {
 
     /**
      * 默认数据库

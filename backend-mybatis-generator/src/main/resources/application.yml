@@ -11,12 +11,29 @@ spring:
     username: root
     password: 123456
 
-muliti-db:
-  read:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3006/test?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&autoReconnect=true
-    username: root
-    password: 123456
+    muliti-db:
+      default-datasource: write
+      datasources:
+        write:
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://localhost:3006/test?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&autoReconnect=true
+          username: root
+          password: 123456
+        read:
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: jdbc:mysql://localhost:3006/test?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&autoReconnect=true
+          username: root
+          password: 123456
+        ds1:
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: url1
+          username: root
+          password: 123456
+        impala:
+          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: url1
+          username: root
+          password: 123456
 
   thymeleaf:
     prefix: classpath:/templates/

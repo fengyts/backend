@@ -1,6 +1,6 @@
 package com.backend;
 
-import com.backend.config.mulitidb.DynamicDataSourceConfig;
+import com.backend.config.mulitidb.dprecated.DynamicDataSourceConfig;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

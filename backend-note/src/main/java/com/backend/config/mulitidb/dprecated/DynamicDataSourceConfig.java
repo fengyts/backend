@@ -1,4 +1,4 @@
-package com.backend.config.mulitidb;
+package com.backend.config.mulitidb.dprecated;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import com.google.common.collect.Maps;
@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 @Configuration
+@Deprecated
 public class DynamicDataSourceConfig {
 
     @Bean(name = "readDb")
