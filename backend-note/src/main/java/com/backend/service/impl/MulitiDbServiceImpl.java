@@ -1,6 +1,6 @@
 package com.backend.service.impl;
 
-import com.backend.config.mulitidb.DbSource;
+import com.backend.mulitidb.DbSource;
 import com.backend.mybatis.entity.MulitiDb;
 import com.backend.mybatis.mapper.MulitiMapper;
 import com.backend.service.IMulitiDbService;

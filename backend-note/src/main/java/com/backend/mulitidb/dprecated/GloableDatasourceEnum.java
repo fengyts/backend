@@ -1,4 +1,4 @@
-package com.backend.config.mulitidb.dprecated;
+package com.backend.mulitidb.dprecated;
 
 @Deprecated
 public enum GloableDatasourceEnum {

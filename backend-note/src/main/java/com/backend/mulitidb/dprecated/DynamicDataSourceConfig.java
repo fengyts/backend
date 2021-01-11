@@ -1,4 +1,4 @@
-package com.backend.config.mulitidb.dprecated;
+package com.backend.mulitidb.dprecated;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import com.google.common.collect.Maps;
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
-@Configuration
+//@Configuration
 @Deprecated
 public class DynamicDataSourceConfig {
 
@@ -47,7 +47,8 @@ public class DynamicDataSourceConfig {
         targetDataSources.put(GloableDatasourceEnum.OTHER, otherDataSource);
         // 还有数据源,在targetDataSources中继续添加
         System.out.println("DataSources:" + targetDataSources);
-        return new DynamicDataSource(readDataSource, targetDataSources);
+//        return new DynamicDataSource(readDataSource, targetDataSources);
+        return null;
     }
 
 }

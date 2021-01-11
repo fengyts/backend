@@ -1,4 +1,4 @@
-package com.backend.config.mulitidb;
+package com.backend.mulitidb;
 
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 import com.google.common.collect.Maps;
@@ -25,7 +25,7 @@ public class MulitiDataSourceConfig {
     //    @Autowired
 //    private Environment env;
 
-    private String defaultDb;
+    private String defaultDatasource;
     private static final Map<String, DataSource> DATA_SOURCE_MAP = Maps.newHashMap();
     private static final Map<Object, Object> TARGET_DATA_SOURCE_MAP = Maps.newHashMap();
 
@@ -71,21 +71,24 @@ public class MulitiDataSourceConfig {
                 log.info("初始化数据库多数据源配置异常:dbName-{}, {}", dsName, e);
             }
         }
-//        defaultDb = mulitiDbProperties.getDefaultDb();
-        setDefaultDataSource(mulitiDbProperties.getDefaultDb());
+//        defaultDatasource = mulitiDbProperties.getDefaultDb();
+        setDefaultDataSource(mulitiDbProperties.getDefaultDatasource());
         return DATA_SOURCE_MAP;
     }
 
     @Bean("dynamicDataSource")
     public MulitiDataSource createMulitiDynamicDbSource(@Qualifier("mulitiDb") Map<String, Object> mulitiDbs) {
-        MulitiDataSource mulitiDataSource = new MulitiDataSource();
+//        MulitiDataSource mulitiDataSource = new MulitiDataSource();
 //        Map<Object, Object> targetDataSources = Maps.newHashMapWithExpectedSize(mulitiDbs.size());
 //        for (String key : mulitiDbs.keySet()) {
 //            targetDataSources.put(key, mulitiDbs.get(key));
 //        }
 //        mulitiDataSource.setTargetDataSources(targetDataSources);
-        mulitiDataSource.setTargetDataSources(TARGET_DATA_SOURCE_MAP);
-        mulitiDataSource.setDefaultDb(defaultDb);
+//        mulitiDataSource.setTargetDataSources(TARGET_DATA_SOURCE_MAP);
+//        mulitiDataSource.setDefaultDb(defaultDatasource);
+
+        Object defaultTargetDataSource = TARGET_DATA_SOURCE_MAP.get(defaultDatasource);
+        MulitiDataSource mulitiDataSource = new MulitiDataSource(defaultTargetDataSource, TARGET_DATA_SOURCE_MAP);
         return mulitiDataSource;
     }
 
@@ -96,7 +99,7 @@ public class MulitiDataSourceConfig {
             }
             Set<String> keys = DATA_SOURCE_MAP.keySet();
             try {
-                defaultDb = keys.stream()
+                defaultDatasource = keys.stream()
                         .filter(key -> (keys.contains("write")
                                 || keys.contains("write1")
                                 || keys.contains("master")
@@ -105,8 +108,8 @@ public class MulitiDataSourceConfig {
                 return;
             } catch (Exception e) {
             }
-            if (ObjectUtils.isEmpty(defaultDb)) {
-                defaultDb = keys.stream().findFirst().get();
+            if (ObjectUtils.isEmpty(defaultDatasource)) {
+                defaultDatasource = keys.stream().findFirst().get();
             }
         }
     }

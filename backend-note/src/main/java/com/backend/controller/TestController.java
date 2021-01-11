@@ -1,7 +1,7 @@
 package com.backend.controller;
 
 import com.backend.common.ResultData;
-import com.backend.config.mulitidb.MulitiDataSourceProperties;
+import com.backend.mulitidb.MulitiDataSourceProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +18,7 @@ public class TestController {
 
     @GetMapping("/mulitiCfg")
     public ResultData mulitiCfgTest(){
-        String defaultDb = mulitiDbs.getDefaultDb();
+        String defaultDb = mulitiDbs.getDefaultDatasource();
 //        Map<String, DataSource> dsList = c.getDataSourceList();
         return ResultData.ok(defaultDb);
     }

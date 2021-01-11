@@ -1,4 +1,4 @@
-package com.backend.config.mulitidb;
+package com.backend.mulitidb;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

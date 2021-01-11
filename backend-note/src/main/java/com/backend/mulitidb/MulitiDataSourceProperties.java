@@ -1,12 +1,9 @@
-package com.backend.config.mulitidb;
+package com.backend.mulitidb;
 
-import com.alibaba.druid.pool.DruidDataSource;
-import com.backend.config.YamlPropertyLoaderFactory;
 import java.util.Map;
 import java.util.Properties;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 /**
@@ -21,7 +18,7 @@ public class MulitiDataSourceProperties {
     /**
      * 默认数据库
      */
-    private String defaultDb;
+    private String defaultDatasource;
 
     /**
      * 动态数据源配置属性

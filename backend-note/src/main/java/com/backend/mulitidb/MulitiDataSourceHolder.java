@@ -1,4 +1,4 @@
-package com.backend.config.mulitidb;
+package com.backend.mulitidb;
 
 /**
  * @author fengyts

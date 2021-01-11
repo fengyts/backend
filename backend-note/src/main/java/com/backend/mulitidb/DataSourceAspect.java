@@ -1,6 +1,5 @@
-package com.backend.config.mulitidb;
+package com.backend.mulitidb;
 
-import com.backend.config.mulitidb.dprecated.DynamicDataSource;
 import java.lang.reflect.Method;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -8,7 +7,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.Logger;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -22,7 +20,7 @@ public class DataSourceAspect implements Ordered {
     /**
      * 切点: 所有配置 DataSource 注解的方法
      */
-    @Pointcut("@annotation(com.backend.config.mulitidb.DbSource)")
+    @Pointcut("@annotation(com.backend.mulitidb.DbSource)")
     public void dataSourcePointCut() {
     }
 

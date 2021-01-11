@@ -46,6 +46,12 @@ spring:
     mode: HTML5
     cache: false
 
+  rabbitmq:
+    host: 192.168.224.132
+    port: 5672
+    username: admin
+    password: 123456
+
   redis:
     host: 47.94.199.26
     port: 6380
