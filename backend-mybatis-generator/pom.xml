@@ -95,11 +95,11 @@
 <!--            <version>3.3.0</version>-->
 <!--        </dependency>-->
 
-        <dependency>
-            <groupId>com.backend</groupId>
-            <artifactId>backend-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.backend</groupId>-->
+<!--            <artifactId>backend-common</artifactId>-->
+<!--            <version>0.0.1-SNAPSHOT</version>-->
+<!--        </dependency>-->
 
     </dependencies>
 

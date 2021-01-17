@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>代码生成</title>
+
+    <link rel="stylesheet" th:href="@{/plugins/layui/css/layui.css}" charset="UTF-8"/>
+    <style type="text/css">
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+        .margin-top10 {
+            margin-top: 10px;
+        }
+        .title {
+            margin-top: 10px;
+            color: red;
+            font-size: 16px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div class="title">代码生成器</div>
+    <div class="margin-top10">
+        <div style="background-color: cadetblue; height: 30px; line-height: 30px;">基础配置</div>
+        <div class="margin-top10" style="padding-right: 10px">
+            <form class="layui-form">
+                <div class="layui-form-item layui-row">
+                    <div class="layui-col-sm6">
+                        <label class="layui-form-label">基础包名</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="userName" placeholder="请输入基础包名" lay-verify="required" autocomplete="off"
+                                   class="layui-input" th:classappend="${config?.id}?'layui-disabled'" th:disabled="${config?.id}"
+                                   th:value="${config}?${config.basePackage}">
+                        </div>
+                    </div>
+                    <div class="layui-col-sm6">
+                        <label class="layui-form-label form-required">公共controller</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="nickName" placeholder="例如：com.base.BaseController" lay-verify="required" autocomplete="off"
+                                   class="layui-input" th:value="${config?.baseController}">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-row">
+                    <div class="layui-col-sm6">
+                        <label class="layui-form-label form-required">公共实体类</label>
+                        <div class="layui-input-block">
+                            <input type="tel" name="mobile" placeholder="例如：com.common.BaseEntity" lay-verify="required|phone" autocomplete="off"
+                                   class="layui-input" th:value="${config?.baseEntity}">
+                        </div>
+                    </div>
+                    <div class="layui-col-sm6">
+                        <label class="layui-form-label form-required">mybatis-xml映射包名</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="email" placeholder="例如：mappers" lay-verify="required|email" autocomplete="off"
+                                   class="layui-input" th:value="${config?.email}">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-row">
+                    <div class="layui-col-sm6">
+                        <label class="layui-form-label">是否使用mybatis-plus</label>
+                        <div class="layui-input-block">
+                            <input type="checkbox" name="status" lay-skin="switch" lay-filter="switchStatu"
+                                   value="1" lay-text="是|否" th:checked="${config}?${config?.status==1}:true">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div>
+    <script th:src="@{/plugins/jquery/jquery-3.5.1.min.js}" charset="utf-8"></script>
+    <script th:src="@{/plugins/layui/layui.js}" charset="utf-8"></script>
+    <script th:inline="javascript">
+        layui.use(['form', 'layer'], function () {
+            var form = layui.form,
+                layer = layui.layer;
+        });
+    </script>
+</div>
+</body>
+</html>
